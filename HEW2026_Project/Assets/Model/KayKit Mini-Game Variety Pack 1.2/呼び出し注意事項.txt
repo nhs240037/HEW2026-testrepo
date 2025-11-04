@@ -1,0 +1,9 @@
+複数メッシュで構築されたモデルのため、色ごとにマテリアルの切り替えが必要
+
+
+for (int i = 0; i < 【メッシュ数】; ++i) {
+	Model::Mesh* mesh = 【モデルクラス】->GetMesh(i);
+	Model::Material* material = 【モデルクラス】->GetMaterial(mesh->materialID);
+	ShaderList::SetMaterial(*material);
+	【モデルクラス】->Draw(i);
+}

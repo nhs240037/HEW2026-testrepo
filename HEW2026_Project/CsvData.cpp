@@ -97,8 +97,10 @@ void CsvData::Init()
             case DownloadState::Block_Drop_Speed:
                 this->block.posY = price;
                 break;
-            case DownloadState::Block_Respawn_Height:
-                this->
+//--- プログラムが書き途中のためビルドエラー回避でコメントアウトしています.
+//            case DownloadState::Block_Respawn_Height:
+//                this->
+//---
             }
             count++;
         }

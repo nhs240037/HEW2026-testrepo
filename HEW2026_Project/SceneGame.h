@@ -2,11 +2,12 @@
 #define __SCENE_GAME_H__
 
 #include "Scene.h"
-#include"Model.h"
-#include"Camera.h"
-#include"Player.h"
+#include "Model.h"
+#include "Camera.h"
+#include "Player.h"
 #include "Block.h"
-#include"Defines.h"
+#include "Defines.h"
+#include "Score.h"
 
 class SceneGame : public Scene
 {
@@ -17,10 +18,11 @@ public:
 	void Draw() final;
 
 private:
-	Model* m_pModel;
-	Camera* m_pCamera;
-	Player* m_pPlayer;
-	Block* m_pBlock[MAX_BLOCK];
+	Model *m_pModel;
+	Camera *m_pCamera;
+	Player *m_pPlayer;
+	Block *m_pBlock[MAX_BLOCK];
+	CScore *m_pScore;
 };
 
 #endif // __SCENE_GAME_H__

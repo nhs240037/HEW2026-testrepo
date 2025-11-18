@@ -1,4 +1,4 @@
-#include "SceneGame.h"
+﻿#include "SceneGame.h"
 #include "Geometory.h"
 #include "ShaderList.h"
 #include "Camera.h"
@@ -15,6 +15,7 @@ SceneGame::SceneGame()
 	SetDepthTest(true);
 	m_pModel = new Model();
 	m_pScore = new CScore();
+	m_pTimer = new CTimer();
 	if (!m_pModel->Load("Assets/Model/LowPolyNature/Branch_01.fbx", 0.01f, Model::None))
 	{ // 倍率と反転は省略可
 		// if (!m_pModel->Load("Assets/Model/Furina/furina.pmx", 0.5f,Model::ZFlip)) {
@@ -58,6 +59,12 @@ SceneGame::~SceneGame()
 	{
 		delete m_pBlock[i];
 		m_pBlock[i] = nullptr;
+	}
+
+	if (m_pTimer)
+	{
+		delete m_pTimer;
+		m_pTimer = nullptr;
 	}
 }
 
@@ -109,6 +116,15 @@ void SceneGame::Update()
 			m_pBlock[i] = nullptr;
 		}
 		m_pBlock[0] = new Block();
+	}
+	if (m_pTimer)
+	{
+		m_pTimer->Update();
+	}
+
+	if (m_pScore)
+	{
+		m_pScore->Update();
 	}
 }
 
@@ -277,6 +293,11 @@ void SceneGame::Draw()
 	if (m_pScore)
 	{
 		m_pScore->Draw();
+	}
+
+	if (m_pTimer)
+	{
+		m_pTimer->Draw();
 	}
 }
 

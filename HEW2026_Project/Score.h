@@ -16,11 +16,17 @@ public:
 	~CScore();
 	void Update();
 	void Draw();
-	void DrawDigit(int number, DirectX::XMFLOAT2 centerPos, DirectX::XMFLOAT2 size);
+	void AddScore(int amount);
 private:
 	Texture* m_pScoreTex;
 	Texture* m_pGaugeTex;
 	float m_rate;
+	int m_targetScore;		//目標スコア
+	int m_currentScore;		//現在のスコア
+
+	void DrawDigit(int number, DirectX::XMFLOAT2 centerPos, DirectX::XMFLOAT2 size);
+
+	DirectX::XMFLOAT4 CalculateUVForNumber(int number);
 
 	// テクスチャのレイアウト定数 (テクスチャ全体のサイズを1.0fとして正規化)
 	const float TEX_WIDTH_UNITS = 1.0f;
@@ -32,5 +38,4 @@ private:
 	const float GRID_W = TEX_WIDTH_UNITS / (float)NUM_COLS;
 	const float GRID_H = TEX_HEIGHT_UNITS / (float)NUM_ROWS;
 
-	DirectX::XMFLOAT4 CalculateUVForNumber(int number);
 };

@@ -2,11 +2,14 @@
 #include "Texture.h"
 #include <Sprite.h>
 #include "Defines.h"
+#include <Input.h>
 
 CScore::CScore()
 	:m_pScoreTex(nullptr)
 	,m_pGaugeTex(nullptr)
 	,m_rate(0.1f)
+	,m_targetScore(90)
+	,m_currentScore(0)
 {
 	m_pScoreTex = new Texture();
 	if (FAILED(m_pScoreTex->Create("Assets/Texture/Number.png")))
@@ -24,6 +27,10 @@ CScore::~CScore()
 
 void CScore::Update()
 {
+	if (IsKeyTrigger('P'))
+	{
+		AddScore(10);
+	}
 }
 
 void CScore::Draw()
@@ -47,35 +54,72 @@ void CScore::Draw()
 	Sprite::SetView(view);
 	Sprite::SetProjection(proj);
 
-	//スコア描画(プランナー操作〇)
-	int score = 999;	//スコアの値
+	{//文字を出力するために必ず必要な処理
+		//画面端からのパディング
+		const float PADDING = 150.0f;
 
-	//画面端からのパディング
-	const float PADDING = 150.0f;
+		//描画開始位置
+		DirectX::XMFLOAT2 startPos;
 
-	//描画開始位置
-	DirectX::XMFLOAT2 startPos;
+		//X座標
+		startPos.x = static_cast<float>(SCREEN_WIDTH) - PADDING;
+		//Y座標
+		startPos.y = static_cast<float>(SCREEN_HEIGHT) - 50.0f;
 
-	//X座標
-	startPos.x = static_cast<float>(SCREEN_WIDTH) - PADDING;
-	//Y座標
-	startPos.y = static_cast<float>(SCREEN_HEIGHT) - PADDING;
+		DirectX::XMFLOAT2 digitSize = { 40.0f,60.0f };	//一桁サイズ
+		const float DIGIT_SPACING = 5.0f;				//桁間のスペース
 
-	DirectX::XMFLOAT2 digitSize = { 40.0f,60.0f };	//一桁サイズ
-	const float DIGIT_SPACING = 5.0f;				//桁間のスペース
+		std::string scoreStr = std::to_string(m_targetScore);
+		int numDigits = scoreStr.length();
 
-	std::string scoreStr = std::to_string(score);
-	int numDigits = scoreStr.length();
+		for (int i = 0; i < numDigits; i++)
+		{
+			int number = scoreStr[i] - '0';
 
-	for (int i = 0; i < numDigits; i++)
-	{
-		int number = scoreStr[i] - '0';
+			//現在の桁の中心X座標を計算
+			float currentX = startPos.x + i * (digitSize.x + DIGIT_SPACING) + digitSize.x * 0.5f;
 
-		//現在の桁の中心X座標を計算
-		float currentX = startPos.x + i * (digitSize.x + DIGIT_SPACING) + digitSize.x * 0.5f;
-
-		DrawDigit(number, { currentX,startPos.y }, digitSize);
+			DrawDigit(number, { currentX,startPos.y }, digitSize);
+		}
 	}
+
+	int score = m_currentScore;
+	{//文字を出力するために必ず必要な処理
+	//画面端からのパディング
+		const float PADDING = 250.0f;
+
+		//描画開始位置
+		DirectX::XMFLOAT2 startPos;
+
+		//X座標
+		startPos.x = static_cast<float>(SCREEN_WIDTH) - PADDING;
+		//Y座標
+		startPos.y = static_cast<float>(SCREEN_HEIGHT)-50.0f;
+
+		DirectX::XMFLOAT2 digitSize = { 40.0f,60.0f };	//一桁サイズ
+		const float DIGIT_SPACING = 5.0f;				//桁間のスペース
+
+		std::string scoreStr = std::to_string(score);
+		int numDigits = scoreStr.length();
+
+		for (int i = 0; i < numDigits; i++)
+		{
+			int number = scoreStr[numDigits - 1 - i] - '0';
+
+			//桁位置を右から左へずらす
+			float currentX = startPos.x - i * (digitSize.x + DIGIT_SPACING);
+
+			DrawDigit(number, { currentX,startPos.y }, digitSize);
+		}
+	}
+}
+
+void CScore::AddScore(int amount)
+{
+	if (m_currentScore == m_targetScore)
+		MessageBox(NULL, "おめでとう！", "目標達成", MB_OK);
+	else
+		m_currentScore += amount;
 }
 
 void CScore::DrawDigit(int number, DirectX::XMFLOAT2 centerPos, DirectX::XMFLOAT2 size)

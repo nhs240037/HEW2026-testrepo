@@ -8,6 +8,7 @@
 #include "Block.h"
 #include "Defines.h"
 #include "Score.h"
+#include "Timer.h"
 
 class SceneGame : public Scene
 {
@@ -23,6 +24,7 @@ private:
 	Player *m_pPlayer;
 	Block *m_pBlock[MAX_BLOCK];
 	CScore *m_pScore;
+	CTimer *m_pTimer;
 };
 
 #endif // __SCENE_GAME_H__

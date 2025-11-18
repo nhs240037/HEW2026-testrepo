@@ -7,6 +7,9 @@
  *********************************************************************/
 #pragma once
 #include <string>
+#include "Sprite.h"
+#include "Texture.h"
+#include <DirectXMath.h>
 
 class UIObject
 {
@@ -15,7 +18,22 @@ public:
 	UIObject(std::string RelativeTexturePathFromTextureFolder);
 	UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY);
 	UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY, float Width, float Height);
+	UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY, float Width, float Height, float RotationX, float RotationY, float RotationZ);
 	~UIObject();
 	virtual void Update() {};
-	virtual void Draw() {};
+	void Draw();
+
+	void SetPosition(float X, float Y);
+	void SetSize(float W, float H);
+	void SetRotation(float X, float Y, float Z);
+
+	DirectX::XMFLOAT2 GetPosition(void);
+	DirectX::XMFLOAT2 GetSize(void);
+	DirectX::XMFLOAT3 GetRotation(void);
+
+private:
+	Texture* m_pTexture;
+	DirectX::XMFLOAT2 m_fPosition;
+	DirectX::XMFLOAT2 m_fSize;
+	DirectX::XMFLOAT3 m_fRotation;
 };

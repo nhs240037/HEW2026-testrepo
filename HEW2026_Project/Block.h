@@ -37,14 +37,15 @@ public:
 
 	enum Block_Color
 	{
-		None,
-		Bacon,
 		Buns_up,
 		Buns_Button,
+		Bacon,
 		Cheese,
 		Fried_egg,
 		Patty,
-		Tomato
+		Lettuce,
+		Tomato,
+		None,
 	};
 
 	void Update()override;
@@ -78,7 +79,11 @@ private:
 	float m_fStepSizeY;
 	Block_Color m_bColor;
 	std::string fileName[MAX_SHOKUZAI_LIST];
+
+	// NewÅI
 	Model* m_pModel;
+	DirectX::XMMATRIX m_dxpos;
+	DirectX::XMFLOAT4X4 wvp[3];
 public:
 	Block(Block_Color set);
 	Block(Block_Color set, float setX, float setY);

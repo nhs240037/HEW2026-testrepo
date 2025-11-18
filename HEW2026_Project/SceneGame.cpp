@@ -25,6 +25,7 @@ SceneGame::SceneGame()
 	m_pPlayer = new Player();
 
 	m_pBlock[0] = new Block();
+	m_pBlock[0]->GetCamera(m_pCamera);
 
 	m_pPlayer->SetCamera(m_pCamera);
 	m_pBlock[0]->SetCollision({m_pPlayer->GetPos().x,m_pPlayer->GetPos().z});
@@ -71,6 +72,7 @@ void SceneGame::Update()
 	for (int i = 0; i < MAX_BLOCK; ++i) {
 		if (m_pBlock[i] != nullptr) {
 			m_pBlock[i]->SetPlayerPos(playerPos);
+			m_pBlock[i]->GetCamera(m_pCamera);
 		}
 	}
 	for(int i = 0;i < MAX_BLOCK;i++)

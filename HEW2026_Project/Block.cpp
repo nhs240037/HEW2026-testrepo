@@ -12,9 +12,9 @@ Block::Block()
 	, m_CollisionSize{}
 	, m_bColor(Block_Color::None)
 {
-	m_pos.x = csv.GetBlockState().pos.x;
-	m_pos.y = 10.0f;
-	m_pos.z = csv.GetBlockState().pos.y;
+	m_pos.x = csv.GetBlockState().blo.pos.x;
+	m_pos.y = csv.GetBlockState().height;
+	m_pos.z = csv.GetBlockState().blo.pos.y;
 }
 
 Block::~Block()
@@ -30,14 +30,14 @@ void Block::Update()
 	case Block::Block_Idle:
 		break;
 	case Block::Block_Drop:
-		m_pos.y -= csv.GetBlockState().posY;
+		m_pos.y -= csv.GetBlockState().blo.posY;
 
 		// 最新のプレイヤー位置で当たり判定する
-		if (m_playerPos.x > m_pos.x - (csv.GetBlockState().size.x / 2.0f) &&
-			m_playerPos.x < m_pos.x + (csv.GetBlockState().size.x / 2.0f))
+		if (m_playerPos.x > m_pos.x - (csv.GetBlockState().blo.size.x / 2.0f) &&
+			m_playerPos.x < m_pos.x + (csv.GetBlockState().blo.size.x / 2.0f))
 		{
-			if (m_playerPos.z > m_pos.z - (csv.GetBlockState().size.y / 2.0f) &&
-				m_playerPos.z < m_pos.z + (csv.GetBlockState().size.y / 2.0f))
+			if (m_playerPos.z > m_pos.z - (csv.GetBlockState().blo.size.y / 2.0f) &&
+				m_playerPos.z < m_pos.z + (csv.GetBlockState().blo.size.y / 2.0f))
 			{
 				float playerTopY = csv.GetPlayerState().size.y + (m_nStep * m_fStepSizeY);
 				if (playerTopY > m_pos.y)
@@ -69,7 +69,7 @@ void Block::Draw()
 	DirectX::XMFLOAT4X4 fMat;
 
 	T = DirectX::XMMatrixTranslation(m_pos.x,m_pos.y,m_pos.z);
-	S = DirectX::XMMatrixScaling(csv.GetBlockState().size.x, m_fStepSizeY, csv.GetBlockState().size.y);
+	S = DirectX::XMMatrixScaling(csv.GetBlockState().blo.size.x, m_fStepSizeY, csv.GetBlockState().blo.size.y);
 	mat = S * T;
 	mat = DirectX::XMMatrixTranspose(mat);
 
@@ -170,9 +170,9 @@ Block::Block(Block_Color set)
 	, m_CollisionSize{}
 	, m_bColor(set)
 {
-	m_pos.x = csv.GetBlockState().pos.x;
+	m_pos.x = csv.GetBlockState().blo.pos.x;
 	m_pos.y = 5.0f;
-	m_pos.z = csv.GetBlockState().pos.y;
+	m_pos.z = csv.GetBlockState().blo.pos.y;
 }
 
 Block::Block(Block_Color set, float setX, float setY)

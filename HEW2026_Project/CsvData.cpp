@@ -83,22 +83,22 @@ void CsvData::Init()
                 this->speed = (price) * 0.01f;
                 break;
             case DownloadState::Block_Pos_X:
-                this->block.pos.x = price;
+                this->block.blo.pos.x = price;
                 break;
             case DownloadState::Block_Pos_Y:
-                this->block.pos.y = price;
+                this->block.blo.pos.y = price;
                 break;
             case DownloadState::Block_Size_X:
-                this->block.size.x = price;
+                this->block.blo.size.x = price;
                 break;
             case DownloadState::Block_Size_Y:
-                this->block.size.y = price;
+                this->block.blo.size.y = price;
                 break;
             case DownloadState::Block_Drop_Speed:
-                this->block.posY = price;
+                this->block.blo.posY = price;
                 break;
             case DownloadState::Block_Respawn_Height:
-                this->
+                this->block.height = price;
             }
             count++;
         }

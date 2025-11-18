@@ -64,7 +64,7 @@ private:
 
     Player player;
     Field field;
-    Object block;
+    Block block;
 
     int width;
     int height;
@@ -81,7 +81,7 @@ public:
 
     Player GetPlayerState() { return player; }
     Field GetFieldState() { return field; }
-    Object GetBlockState() { return block; }
+    Block GetBlockState() { return block; }
 
     static CsvData& get_instance()
     {

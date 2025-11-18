@@ -8,6 +8,7 @@
 #include"Defines.h"
 #include<DirectXMath.h>
 #include"Sprite.h"
+#include"Model.h"
 
 class Player : public GameObject {
 public:
@@ -61,8 +62,11 @@ private:
 	Texture* m_pShadowTex;	// ‰e‚ÌŒ©‚½–Ú
 	DirectX::XMFLOAT3	m_shadowPos;	// ‰e‚ÌˆÊ’u
 
+	// New!
 	CsvData& csv;
-
+	Model* m_pModel;
+	DirectX::XMMATRIX m_dxpos;
+	DirectX::XMFLOAT4X4 wvp[3];
 };
 
 #endif//_PLAYER_H

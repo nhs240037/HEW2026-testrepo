@@ -2,6 +2,7 @@
 #include"Defines.h"
 #include"Main.h"
 #include"Sprite.h"
+#include "ShaderList.h"
 
 #include"CsvData.h"
 
@@ -26,6 +27,7 @@ Player::Player()
 	, m_angle(0.0f)
 	, m_shadowPos{ 0.0f,0.0f,0.0f }
 	, csv(CsvData::get_instance())
+	, m_pModel(nullptr)
 {
 	m_collision.type = Collision::eBox;
 	m_collision.box = {
@@ -37,6 +39,33 @@ Player::Player()
 		MessageBox(NULL, "Texture load failed.\nPlayer.cpp", "Error", MB_OK);
 	}
 
+	m_pModel = new Model();
+	if (!m_pModel->Load("Assets/Model/Prototype/MD_Player.fbx", 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+		MessageBox(NULL, "Branch_01", "Error", MB_OK); // エラーメッセージの表示
+	}
+
+	DirectX::XMMATRIX view, proj;
+	m_dxpos = DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z);
+	m_dxpos *= DirectX::XMMatrixScaling(
+		csv.GetPlayerState().size.x,
+		csv.GetBlockState().height,
+		csv.GetPlayerState().size.y);
+
+	view = DirectX::XMMatrixLookAtLH(
+		DirectX::XMVectorSet(5.0f, 5.0f, 0.0f, 0.0f),
+		DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
+		DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
+	);
+	proj = DirectX::XMMatrixPerspectiveFovLH
+	(
+		(1.0f / 6.0f) * 3.1415f * 2.0f,	// FovAngleY
+		16.0f / 9,	// AspectRatio
+		0.001f,	// NearZ
+		10.0f	// FarZ
+	);
+	DirectX::XMStoreFloat4x4(&wvp[0], DirectX::XMMatrixTranspose(m_dxpos));
+	DirectX::XMStoreFloat4x4(&wvp[1], DirectX::XMMatrixTranspose(view));
+	DirectX::XMStoreFloat4x4(&wvp[2], DirectX::XMMatrixTranspose(proj));
 }
 
 Player::~Player()
@@ -45,7 +74,11 @@ Player::~Player()
 		delete m_pShadowTex;
 		m_pShadowTex = nullptr;
 	}
-
+	if (m_pModel)
+	{
+		delete m_pModel;
+		m_pModel = nullptr;
+	}
 }
 
 // プレイヤーの動きを更新するための関数
@@ -207,14 +240,48 @@ void Player::Draw()
 	DirectX::XMFLOAT4X4 Sprite_fMat; // 描画専用変数を定義
 	DirectX::XMStoreFloat4x4(&Sprite_fMat, Sprite_mat);//mWorldを転置してmatに格納
 
-	// 影の表示
-	Sprite::SetWorld(Sprite_fMat);
-	Sprite::SetColor(DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, scale * 0.8f)); // 影の透明度を設定
-	Sprite::SetTexture(m_pShadowTex);
-	Sprite::Draw();
+	// 場所を指定
+	m_dxpos = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(
+			(IsKeyPress('D') * -90.0f) + (IsKeyPress('A') * 90.0f) + 
+			(IsKeyPress('W') * 180.0f) + (IsKeyPress('S') * 0.0f)
+		))
+		* DirectX::XMMatrixTranslation(m_pos.x, 0.5f, m_pos.z);
 
-	Geometory::SetWorld(fMat); // ボックスに変換行列を設定
-	Geometory::DrawCylinder();// 影の大きさを計算
+	//　計算用のデータから読み取り用のデータに変換
+	DirectX::XMStoreFloat4x4(&wvp[0], DirectX::XMMatrixTranspose(m_dxpos));
+
+	// モデルに変換行列を設定
+	wvp[1] = m_pCamera->GetViewMatrix();
+	wvp[2] = m_pCamera->GetProjectionMatrix();
+
+	//　シェーダーへ変換行列を設定
+	ShaderList::SetWVP(wvp);	//　引数にはXMFLOAT4X4型の、要素数３の配列のアドレスを渡すこと
+
+
+	Geometory::SetView(m_pCamera->GetViewMatrix(true));
+	Geometory::SetProjection(m_pCamera->GetProjectionMatrix(true));
+	// Spriteへの設定
+	Sprite::SetView(m_pCamera->GetViewMatrix(true));
+	Sprite::SetProjection(m_pCamera->GetProjectionMatrix(true));
+
+	//　モデルに使用する頂点シェーダー、ピクセルシェーダーを設定
+	m_pModel->SetVertexShader(ShaderList::GetVS(ShaderList::VS_WORLD));
+	m_pModel->SetPixelShader(ShaderList::GetPS(ShaderList::PS_LAMBERT));
+
+	//　複数のメッシュで構成されている場合、ある部分は金属的な表現、ある部分は非金属的な表現と
+	// 分ける場合がある。前回の表示は同じマテリアルで一括表示していたため、メッシュごとにマテリアルを
+	// 切り替える。
+	for (int i = 0; i < m_pModel->GetMeshNum(); ++i) 
+	{
+		// モデルのメッシュを取得
+		Model::Mesh mesh = *m_pModel->GetMesh(i);
+		// メッシュに割り当てられているマテリアルを取得
+		Model::Material	material = *m_pModel->GetMaterial(mesh.materialID);
+		// シェーダーへマテリアルを設定
+		ShaderList::SetMaterial(material);
+		// モデルの描画
+		m_pModel->Draw(i);
+	}
 }
 
 

@@ -15,6 +15,15 @@ Block::Block()
 	m_pos.x = csv.GetBlockState().blo.pos.x;
 	m_pos.y = csv.GetBlockState().height;
 	m_pos.z = csv.GetBlockState().blo.pos.y;
+
+	int count=0;
+	fileName[count] = "Assets/Model/Prototype/MD_Buns_Bottom.fbx";	count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Buns_Top.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Cheese.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Egg.fbx";			count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Patty.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Tomato.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Lettuce.fbx";		count++;
 }
 
 Block::~Block()
@@ -171,8 +180,38 @@ Block::Block(Block_Color set)
 	, m_bColor(set)
 {
 	m_pos.x = csv.GetBlockState().blo.pos.x;
-	m_pos.y = 5.0f;
+	m_pos.y = csv.GetBlockState().height;
 	m_pos.z = csv.GetBlockState().blo.pos.y;
+
+	int count = 0;
+	fileName[count] = "Assets/Model/Prototype/MD_Buns_Bottom.fbx";	count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Buns_Top.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Cheese.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Egg.fbx";			count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Patty.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Tomato.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Lettuce.fbx";		count++;
+	switch (m_bColor)
+	{
+	case Block::None:
+		break;
+	case Block::Bacon:
+		break;
+	case Block::Buns_up:
+		break;
+	case Block::Buns_Button:
+		break;
+	case Block::Cheese:
+		break;
+	case Block::Fried_egg:
+		break;
+	case Block::Patty:
+		break;
+	case Block::Tomato:
+		break;
+	default:
+		break;
+	}
 }
 
 Block::Block(Block_Color set, float setX, float setY)
@@ -186,7 +225,16 @@ Block::Block(Block_Color set, float setX, float setY)
 	, m_CollisionSize{}
 	, m_bColor(set)
 {
-	m_pos.x = setX;
-	m_pos.y = 5.0f;
-	m_pos.z = setY;
+	m_pos.x = csv.GetBlockState().blo.pos.x;
+	m_pos.y = csv.GetBlockState().height;
+	m_pos.z = csv.GetBlockState().blo.pos.y;
+
+	int count = 0;
+	fileName[count] = "Assets/Model/Prototype/MD_Buns_Bottom.fbx";	count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Buns_Top.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Cheese.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Egg.fbx";			count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Patty.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Tomato.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Lettuce.fbx";		count++;
 }

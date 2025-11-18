@@ -7,24 +7,85 @@
 
 void CsvData::Init()
 {
-
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            this->hamb[i].type[j] = -1;
+        }
+    }
+    this->hamb[0].type[0] = NULL;
 
     const char* filename = "Assets/Csv/debug.csv";
+    const char* filename_humb = "Assets/Csv/hamburger_menu.csv";
 
     std::ifstream inputFile(filename);
+    std::ifstream inputFile_humb(filename_humb);
 
     if (!inputFile.is_open()) 
     {
+        return;
+    }
+    if (!inputFile_humb.is_open()) 
+    {
+        return;
     }
 
     std::string line;
+    std::string line_h;
 
     // ヘッダ行をスキップ (オプション)
     //std::getline(inputFile, line);
     // 今回はスキップ
+    while (std::getline(inputFile_humb, line_h))
+    {
+        std::stringstream ss_h(line_h);
+        std::string cell_h[5];
+        int count = 0;
+        static int s_count_h;
+        if (!std::getline(ss_h, cell_h[count], ',')) count++;
+        if (!std::getline(ss_h, cell_h[count], ',')) count++;
+        if (!std::getline(ss_h, cell_h[count], ',')) count++;
+        if (!std::getline(ss_h, cell_h[count], ',')) count++;
+        if (!std::getline(ss_h, cell_h[count], ',')) count++;
+        continue;
+        try
+        {
+            static int s_count;
+            int kari;
+            switch (s_count)
+            {
+            case CsvData::Hamburger_Tag1:
+                kari = std::stod(cell_h[0]);
+                this->hamb[s_count_h].type[0] = kari;
+                break;
+            case CsvData::Hamburger_Tag2:
+                kari = std::stod(cell_h[1]);
+                this->hamb[s_count_h].type[1] = kari;
+                break;
+            case CsvData::Hamburger_Tag3:
+                kari = std::stod(cell_h[2]);
+                this->hamb[s_count_h].type[2] = kari;
+                break;
+            case CsvData::Hamburger_Tag4:
+                kari = std::stod(cell_h[3]);
+                this->hamb[s_count_h].type[3] = kari;
+                break;
+            case CsvData::Hamburger_Tag5:
+                kari = std::stod(cell_h[4]);
+                this->hamb[s_count_h].type[4] = kari;
+                break;
+            }
+        }
+        catch(const std::invalid_argument& e)
+        {
 
+        }
+        s_count_h++;
+    }
     // データ行の処理
-    while (std::getline(inputFile, line)) {
+    while (std::getline(inputFile, line))
+    {
         std::stringstream ss(line);
         std::string cell;
 
@@ -39,7 +100,8 @@ void CsvData::Init()
         std::string price_str;
         if (!std::getline(ss, price_str, ',')) continue;
 
-        try {
+        try 
+        {
             // 文字列を float 型の数値に変換
             float price = std::stod(price_str);
 

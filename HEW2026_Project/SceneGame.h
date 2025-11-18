@@ -21,6 +21,8 @@ private:
 	Camera* m_pCamera;
 	Player* m_pPlayer;
 	Block* m_pBlock[MAX_BLOCK];
+	int m_menu[5];
+	CsvData &csv;
 };
 
 #endif // __SCENE_GAME_H__

@@ -1,11 +1,13 @@
 ﻿#include "SceneGame.h"
-#include"Geometory.h"
+#include "Geometory.h"
 #include "ShaderList.h"
 #include "Camera.h"
-#include"CameraDebug.h"
+#include "CameraDebug.h"
 
 SceneGame::SceneGame()
 	: m_pBlock{nullptr}
+	, m_menu{}
+	, csv(CsvData::get_instance())
 {
 	//--- モデルの描画
 	RenderTarget* pRTV = GetDefaultRTV(); // デフォルトのRenderTargetViewを取得
@@ -26,6 +28,14 @@ SceneGame::SceneGame()
 
 	m_pPlayer->SetCamera(m_pCamera);
 	m_pBlock[0]->SetCollision({m_pPlayer->GetPos().x,m_pPlayer->GetPos().z});
+
+	csv.Init();
+
+	for (int i = 0; i < 5; i++)
+	{
+		m_menu[i] = csv.GetHambuger()->type[i];
+	}
+
 }
 
 SceneGame::~SceneGame()
@@ -54,6 +64,7 @@ SceneGame::~SceneGame()
 void SceneGame::Update()
 {
 	m_pCamera->Update();
+	m_pPlayer->SetCamera(m_pCamera);
 	m_pPlayer->Update();
 	// Update の先頭でプレイヤー位置を各ブロックに渡す
 	DirectX::XMFLOAT3 playerPos = m_pPlayer->GetPos();
@@ -101,33 +112,20 @@ void SceneGame::Update()
 void SceneGame::Draw()
 {
 	//--- １つ目の地面
-	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f); // 天面がグリッドよりも下に来るように移動
-	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(3.0f, 0.2f, 5.0f); // 地面となるように、前後左右に広く、上下に狭くする
-	DirectX::XMMATRIX mat = S * T;
-
-	T = DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f); // 天面がグリッドよりも下に来るように移動
-	S = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f); // 地面となるように、前後左右に広く、上下に狭くする
-	mat = S * T;
-	mat = DirectX::XMMatrixTranspose(mat);
+	DirectX::XMMATRIX T; // 位置情報を作成
+	DirectX::XMMATRIX R; // 回転情報を作成
+	DirectX::XMMATRIX S; // 拡縮を作成
+	DirectX::XMMATRIX mat; // それぞれを統合するマトリクスを作成
 	DirectX::XMFLOAT4X4 fMat; // 行列の格納先
-	DirectX::XMStoreFloat4x4(&fMat, mat);
-	Geometory::SetWorld(fMat); // ボックスに変換行列を設定
-	//Geometory::DrawBox();
-	//Geometory::DrawCylinder();
 
-	static float rad;
 	//　頂点シェーダーに渡す変換行列を作成
 	DirectX::XMFLOAT4X4 wvp[3];
 	DirectX::XMMATRIX world, view, proj;
 
-	DirectX::XMMATRIX R;
 	T = DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f);
-	//T = DirectX::XMMatrixTranslation(-750.0f, 0.0f, 500.0f);
-	//S = DirectX::XMMatrixScaling(50.0f, -100.0f, 50.0f);
 	S = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f);
-	R = DirectX::XMMatrixRotationY(rad);
+	R = DirectX::XMMatrixRotationY(0.0f);
 	mat = S * R * T;
-	rad += 0.01f;
 	world = mat;
 	world = T;
 	view = DirectX::XMMatrixLookAtLH(
@@ -135,26 +133,14 @@ void SceneGame::Draw()
 		DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
 		DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
 	);
-	if(true)
-	{
-		proj = DirectX::XMMatrixPerspectiveFovLH(
-			(1.0f / 6.0f) * 3.1415f * 2.0f,	// FovAngleY
-			16.0f / 9,	// AspectRatio
-			0.001f,	// NearZ
-			10.0f	// FarZ
-		);
-	}
-	if(false)
-	{
-		proj = DirectX::XMMatrixOrthographicOffCenterLH(
-			0.0f,	// viewLeft
-			SCREEN_HEIGHT,	// viewRight
-			SCREEN_WIDTH,	// viewBottom
-			0.0f,	// viewTop
-			0.001f,	// NearZ
-			1000.0f	//FarZ
-		);
-	}
+	proj = DirectX::XMMatrixPerspectiveFovLH
+	(
+		(1.0f / 6.0f) * 3.1415f * 2.0f,	// FovAngleY
+		16.0f / 9,	// AspectRatio
+		0.001f,	// NearZ
+		10.0f	// FarZ
+	);
+	
 
 
 	//　計算用のデータから読み取り用のデータに変換

@@ -7,6 +7,11 @@
 #include"Defines.h"
 #include<DirectXMath.h>
 #include"CsvData.h"
+#include"Model.h"
+#include<string>
+
+#define MAX_SHOKUZAI_LIST (7)
+#define MAX_INGREDIENTS_LIST (7)
 
 class Block :
     public GameObject
@@ -72,6 +77,8 @@ private:
 	int m_nStep;// ‰½’i–Ú‚É‚ ‚é‚Ì‚©
 	float m_fStepSizeY;
 	Block_Color m_bColor;
+	std::string fileName[MAX_SHOKUZAI_LIST];
+	Model* m_pModel;
 public:
 	Block(Block_Color set);
 	Block(Block_Color set, float setX, float setY);

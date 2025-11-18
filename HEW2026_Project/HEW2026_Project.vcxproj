@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="COrder.cpp" />
     <ClCompile Include="DirectX.cpp" />
     <ClCompile Include="Geometory.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="_model.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="COrder.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DirectX.h" />
     <ClInclude Include="Geometory.h" />

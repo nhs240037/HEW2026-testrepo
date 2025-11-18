@@ -81,6 +81,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>ソース ファイル\System\DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="COrder.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>ヘッダー ファイル\System\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="COrder.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

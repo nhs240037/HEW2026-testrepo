@@ -1,8 +1,11 @@
 ﻿#include "SceneGame.h"
-#include"Geometory.h"
+#include "Geometory.h"
 #include "ShaderList.h"
 #include "Camera.h"
-#include"CameraDebug.h"
+#include "CameraDebug.h"
+
+#define ___UITEST //UIのテスト用
+
 
 SceneGame::SceneGame()
 	: m_pBlock{nullptr}
@@ -26,6 +29,8 @@ SceneGame::SceneGame()
 
 	m_pPlayer->SetCamera(m_pCamera);
 	m_pBlock[0]->SetCollision({m_pPlayer->GetPos().x,m_pPlayer->GetPos().z});
+
+	m_pExampleUI = new UIObject("UIGauge.png", 960.f, 540.f, 100.f, 400.f);
 }
 
 SceneGame::~SceneGame()
@@ -48,6 +53,7 @@ SceneGame::~SceneGame()
 		delete m_pBlock[i];
 		m_pBlock[i] = nullptr;
 	}
+	SAFE_DELETE(m_pExampleUI);
 }
 
 
@@ -265,6 +271,9 @@ void SceneGame::Draw()
 		Geometory::DrawBox();
 	}
 
+	#ifdef ___UITEST
+		m_pExampleUI->Draw();
+	#endif
 }
 
 

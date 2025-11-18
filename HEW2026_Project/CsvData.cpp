@@ -97,8 +97,8 @@ void CsvData::Init()
             case DownloadState::Block_Drop_Speed:
                 this->block.posY = price;
                 break;
-            case DownloadState::Block_Respawn_Height:
-                this->
+//            case DownloadState::Block_Respawn_Height:
+//                this->
             }
             count++;
         }
@@ -116,3 +116,4 @@ void CsvData::Init()
 
     inputFile.close();
 }
+////////

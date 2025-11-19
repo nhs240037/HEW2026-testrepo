@@ -1,7 +1,7 @@
 /**
  * @file Camera.cpp
- * @author AT12C192-41 á—ÑŒÕ“O
- * @brief ƒJƒƒ‰‚ÌŠî–{‹@”\
+ * @author AT12C192-41 ï¿½ï¿½ÑŒÕ“O
+ * @brief ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ÌŠï¿½{ï¿½@ï¿½\
  * @date 2025-10-28
  *
  * @version 0.1
@@ -12,7 +12,7 @@
 //====| /Includes |====//
 
 /**
- * @brief Camera ‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
+ * @brief Camera ï¿½ÌƒRï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^
  */
 Camera::Camera()
 	: m_pos(5.f, 5.f, 5.f), m_look(0.f, .5f, 0.f), m_up(0.f, 1.f, 0.f), m_fovy(80.f), m_aspect(16 / 9.f), m_near(CMETER(0.1f)), m_far(METER(1000.f))
@@ -20,9 +20,9 @@ Camera::Camera()
 }
 
 /**
- * @brief ViewMatrix‚ğæ“¾
+ * @brief ViewMatrixï¿½ï¿½æ“¾
  *
- * @param transpose “]’u
+ * @param transpose ï¿½]ï¿½u
  * @return DirectX::XMFLOAT4X4
  */
 DirectX::XMFLOAT4X4 Camera::GetViewMatrix(bool transpose)
@@ -42,9 +42,9 @@ DirectX::XMFLOAT4X4 Camera::GetViewMatrix(bool transpose)
 }
 
 /**
- * \brief ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚Ìæ“¾.
+ * \brief ï¿½vï¿½ï¿½ï¿½Wï¿½Fï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½Ìæ“¾.
  * 
- * \param transpose “]’u
+ * \param transpose ï¿½]ï¿½u
  * \return DirectX::XMFLOAT4X4
  */
 DirectX::XMFLOAT4X4 Camera::GetProjectionMatrix(bool transpose)

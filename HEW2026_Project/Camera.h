@@ -1,52 +1,52 @@
 /**
  * @file Camera.h
- * @author AT12C192-41 á—ÑŒÕ“O
- * @brief ƒJƒƒ‰‚ÌŠî–{‹@”\
+ * @author AT12C192-41 ï¿½ï¿½ÑŒÕ“O
+ * @brief ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ÌŠï¿½{ï¿½@ï¿½\
  * @date 2025-10-28
  *
  * @version 0.1
  */
 #pragma once
 
-//====| ƒCƒ“ƒNƒ‹[ƒh |====//
+//====| ï¿½Cï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½[ï¿½h |====//
 #include <DirectXMath.h>
-//====| /ƒCƒ“ƒNƒ‹[ƒh |====//
+//====| /ï¿½Cï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½[ï¿½h |====//
 
-//====| ’è”Eƒ}ƒNƒ’è‹` |====//
+//====| ï¿½è”ï¿½Eï¿½}ï¿½Nï¿½ï¿½ï¿½ï¿½` |====//
 
-//====| /’è”Eƒ}ƒNƒ’è‹` |====//
+//====| /ï¿½è”ï¿½Eï¿½}ï¿½Nï¿½ï¿½ï¿½ï¿½` |====//
 
-//====| ƒNƒ‰ƒXE\‘¢‘Ì’è‹` |====//
+//====| ï¿½Nï¿½ï¿½ï¿½Xï¿½Eï¿½\ï¿½ï¿½ï¿½Ì’ï¿½` |====//
 class Camera
 {
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ï¿½Rï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^
   Camera();
-  // ƒfƒXƒgƒ‰ƒNƒ^
+  // ï¿½fï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^
   virtual ~Camera() {}
-  // XVˆ— (Œp³æ‚Å•K‚¸À‘•)
+  // ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½ (ï¿½pï¿½ï¿½ï¿½ï¿½Å•Kï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
   virtual void Update() = 0;
 
-	// ƒrƒ…[s—ñ‚Ìæ“¾iƒfƒtƒHƒ‹ƒg‚Å‚Í“]’uÏ‚İ‚Ìs—ñ‚ğŒvZ‚·‚é
+	// ï¿½rï¿½ï¿½ï¿½[ï¿½sï¿½ï¿½Ìæ“¾ï¿½iï¿½fï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½Å‚Í“]ï¿½uï¿½Ï‚İ‚Ìsï¿½ï¿½ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½
   DirectX::XMFLOAT4X4 GetViewMatrix(bool transpose = true);
 
-	// ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚Ìæ“¾iƒfƒtƒHƒ‹ƒg‚Å‚Í“]’uÏ‚İ‚Ìs—ñ‚ğŒvZ‚·‚é
+	// ï¿½vï¿½ï¿½ï¿½Wï¿½Fï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½Ìæ“¾ï¿½iï¿½fï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½Å‚Í“]ï¿½uï¿½Ï‚İ‚Ìsï¿½ï¿½ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½
   DirectX::XMFLOAT4X4 GetProjectionMatrix(bool transpose = true);
 
-	// À•W‚Ìæ“¾
+	// ï¿½ï¿½ï¿½Wï¿½Ìæ“¾
   DirectX::XMFLOAT3 GetPos();
-	// ’‹“_‚Ìæ“¾
+	// ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½Ìæ“¾
   DirectX::XMFLOAT3 GetLook();
 
 	virtual void SetPos(const DirectX::XMFLOAT3& pos) = 0;
 
   void SetLook(DirectX::XMFLOAT3 look);
 protected:
-  DirectX::XMFLOAT3 m_pos;  // À•W
-  DirectX::XMFLOAT3 m_look; // ’‹“_
-  DirectX::XMFLOAT3 m_up;   // ã•ûƒxƒNƒgƒ‹
-  float m_fovy;             // ‰æŠp
-  float m_aspect;           // ƒAƒXƒyƒNƒg”ä
-  float m_near;             // ƒjƒAƒNƒŠƒbƒv
-  float m_far;              // ƒtƒ@[ƒNƒŠƒbƒv
+  DirectX::XMFLOAT3 m_pos;  // ï¿½ï¿½ï¿½W
+  DirectX::XMFLOAT3 m_look; // ï¿½ï¿½ï¿½ï¿½ï¿½_
+  DirectX::XMFLOAT3 m_up;   // ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½
+  float m_fovy;             // ï¿½ï¿½p
+  float m_aspect;           // ï¿½Aï¿½Xï¿½yï¿½Nï¿½gï¿½ï¿½
+  float m_near;             // ï¿½jï¿½Aï¿½Nï¿½ï¿½ï¿½bï¿½v
+  float m_far;              // ï¿½tï¿½@ï¿½[ï¿½Nï¿½ï¿½ï¿½bï¿½v
 };

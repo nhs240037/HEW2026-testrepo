@@ -2,7 +2,7 @@
  * \file   CameraDebug.cpp
  * \brief  
  * 
- * \author AT12C-41 Kotetsu Wakabayashi, R–{ˆè–ç
+ * \author AT12C-41 Kotetsu Wakabayashi, ï¿½Rï¿½{ï¿½ï¿½ï¿½
  * \date   2025-11-11
  *********************************************************************/
  //=====| Includes |=====//
@@ -27,12 +27,12 @@ CameraDebug::~CameraDebug()
 
 void CameraDebug::Update()
 {
-	// ’‹“_‚ÌˆÚ“®@©(-x)A¨(+x)Aª(+z)A«(-z)AShift(+y)ACtrl(-y)
-		//--- ƒJƒƒ‰ˆÊ’u‚ÌˆÚ“®(Œãq)
+	// ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ÌˆÚ“ï¿½ï¿½@ï¿½ï¿½(-x)ï¿½Aï¿½ï¿½(+x)ï¿½Aï¿½ï¿½(+z)ï¿½Aï¿½ï¿½(-z)ï¿½AShift(+y)ï¿½ACtrl(-y)
+		//--- ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ê’uï¿½ÌˆÚ“ï¿½(ï¿½ï¿½q)
 
 	static float count;
 
-	//‰ñ‚è‚İ‚Ìˆ—
+	//ï¿½ï¿½èï¿½İ‚Ìï¿½ï¿½ï¿½
 	if (IsKeyPress('E'))
 	{
 		m_radXZ += IIKANJINOTEISU + (IsKeyPress(VK_SHIFT) * IIKANJINOTEISU2);
@@ -44,7 +44,7 @@ void CameraDebug::Update()
 		count -= IIKANJINOTEISU;
 	}
 
-	// ƒJƒƒ‰‚Ì‹——£‚ğ•Ï‚¦‚éˆ—
+	// ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½Ï‚ï¿½ï¿½éˆï¿½ï¿½
 	if (IsKeyPress(VK_DOWN))
 	{
 		m_radius += (IsKeyPress(VK_SHIFT) * IIKANJINOTEISU2);
@@ -56,7 +56,7 @@ void CameraDebug::Update()
 		m_radY -= IIKANJINOTEISU + (IsKeyPress(VK_CONTROL) * IIKANJINOTEISU * 10.0f);
 	}
 
-	// ƒJƒƒ‰ˆÊ’u‚ÌŒvZ
+	// ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ê’uï¿½ÌŒvï¿½Z
 	m_pos.x = m_radius * cosf(m_radXZ);
 	m_pos.y = m_radius * sinf(m_radY);
 	m_pos.z = m_radius * sinf(m_radXZ);

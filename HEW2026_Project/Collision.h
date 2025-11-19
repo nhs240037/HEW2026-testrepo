@@ -1,6 +1,6 @@
 /*********************************************************************
  * \file   Collision.h
- * \brief  Õ“Ë”»’è Collision
+ * \brief  ï¿½Õ“Ë”ï¿½ï¿½ï¿½ Collision
  * 
  * \author AT12C-41 Kotetsu Wakabayashi
  * \date   2025-11-13
@@ -16,29 +16,29 @@
 class Collision
 {
 public:
-	//--- “–‚½‚è”»’èŒ`ó‚Ìí—Ş Type of collision shapes.
+	//--- ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½`ï¿½ï¿½Ìï¿½ï¿½ Type of collision shapes.
 	enum Type
 	{
 		eNone,
-		eBox,			// ƒ{ƒbƒNƒX
-		eSphere,	// ‹…
-		ePlane,		// •½–Ê
-		eRay,			// ƒŒƒC
-		eLine,		// ü
+		eBox,			// ï¿½{ï¿½bï¿½Nï¿½X
+		eSphere,	// ï¿½ï¿½
+		ePlane,		// ï¿½ï¿½ï¿½ï¿½
+		eRay,			// ï¿½ï¿½ï¿½C
+		eLine,		// ï¿½ï¿½
 		ePoint,
 		eTriangle,
 	};
 
-	//--- “–‚½‚è”»’è‚ÌŒ`ó shape of collision.
+	//--- ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½ÌŒ`ï¿½ï¿½ shape of collision.
 	struct Box
 	{
-		DirectX::XMFLOAT3 center;		// ’†SÀ•W
-		DirectX::XMFLOAT3 size;			// ƒTƒCƒY
+		DirectX::XMFLOAT3 center;		// ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½W
+		DirectX::XMFLOAT3 size;			// ï¿½Tï¿½Cï¿½Y
 	};
 	struct Sphere
 	{
-		DirectX::XMFLOAT3 center;		// ’†SÀ•W
-		float radius;								// ”¼Œa
+		DirectX::XMFLOAT3 center;		// ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½W
+		float radius;								// ï¿½ï¿½ï¿½a
 	};
 	struct Plane
 	{
@@ -81,17 +81,17 @@ public:
 
 	struct Result
 	{
-		bool isHit;								// “–‚½‚Á‚½‚©‚Ç‚¤‚©
-		DirectX::XMFLOAT3 point;	// ƒqƒbƒgˆÊ’u
-		DirectX::XMFLOAT3 normal;	// ƒqƒbƒg•½–Ê
-		Info other;								// “–‚½‚è”»’èƒIƒuƒWƒFƒNƒg
+		bool isHit;								// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½
+		DirectX::XMFLOAT3 point;	// ï¿½qï¿½bï¿½gï¿½Ê’u
+		DirectX::XMFLOAT3 normal;	// ï¿½qï¿½bï¿½gï¿½ï¿½ï¿½ï¿½
+		Info other;								// ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½g
 	};
 
 public:
-	// InfoŒ^‚Å‚Ì“–‚½‚è”»’è
+	// Infoï¿½^ï¿½Å‚Ì“ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½
 	static Result Hit(Info a, Info b);
 
-	// lŠp“¯m‚Ì“–‚½‚è”»’è
+	// ï¿½lï¿½pï¿½ï¿½ï¿½mï¿½Ì“ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½
 	static Result Hit(Box a, Box b);
 	static Result Hit(Sphere z, Sphere b);
 	static Result Hit(Plane plane, Ray ray, float lenght);

@@ -11,9 +11,9 @@ public:
   void Update() final;
 	void SetPos(const DirectX::XMFLOAT3& pos)override;
 private: 
-	float m_radXZ;		// ƒJƒƒ‰‚Ì‰¡‰ñ“]
-	float m_radY;		// ƒJƒƒ‰‚Ìc‰ñ“]
-	float m_radius;	// ƒJƒƒ‰‚Æ’‹“_‚Ì‹——£
+	float m_radXZ;		// ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ì‰ï¿½ï¿½ï¿½]
+	float m_radY;		// ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ìcï¿½ï¿½]
+	float m_radius;	// ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Æ’ï¿½ï¿½ï¿½ï¿½_ï¿½Ì‹ï¿½ï¿½ï¿½
 
 };
 

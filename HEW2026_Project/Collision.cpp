@@ -1,6 +1,6 @@
 /*********************************************************************
  * \file   Collision.cpp
- * \brief  Õ“Ë”»’è Collision
+ * \brief  ï¿½Õ“Ë”ï¿½ï¿½ï¿½ Collision
  * 
  * \author AT12C-41 Kotetsu Wakabayashi
  * \date   2025-11-13
@@ -34,15 +34,15 @@ Collision::Result Collision::Hit(Info a, Info b)
 Collision::Result Collision::Hit(Box a, Box b)
 {
 	Result out = {};
-	// VECTORŒ^‚É•ÏŠ·
+	// VECTORï¿½^ï¿½É•ÏŠï¿½
 	DirectX::XMVECTOR vPosA = DirectX::XMLoadFloat3(&a.center);
 	DirectX::XMVECTOR vPosB = DirectX::XMLoadFloat3(&b.center);
 	DirectX::XMVECTOR vSizeA = DirectX::XMLoadFloat3(&a.size);
 	DirectX::XMVECTOR vSizeB = DirectX::XMLoadFloat3(&b.size);
-	// ƒ{ƒbƒNƒX‚Ì”¼•ª‚ÌƒTƒCƒY‚ðŽæ“¾
+	// ï¿½{ï¿½bï¿½Nï¿½Xï¿½Ì”ï¿½ï¿½ï¿½ï¿½ÌƒTï¿½Cï¿½Yï¿½ï¿½æ“¾
 	vSizeA = DirectX::XMVectorScale(vSizeA, 0.5f);
 	vSizeB = DirectX::XMVectorScale(vSizeB, 0.5f);
-	// ƒ{ƒbƒNƒX‚ÌŠeŽ²‚ÌÅ‘å’lAÅ¬’l‚ðŽæ“¾
+	// ï¿½{ï¿½bï¿½Nï¿½Xï¿½ÌŠeï¿½ï¿½ï¿½ÌÅ‘ï¿½lï¿½Aï¿½Åï¿½ï¿½lï¿½ï¿½æ“¾
 	DirectX::XMVECTOR vMaxA = DirectX::XMVectorAdd(vPosA, vSizeA);
 	DirectX::XMVECTOR vMinA = DirectX::XMVectorSubtract(vPosA, vSizeA);
 	DirectX::XMVECTOR vMaxB = DirectX::XMVectorAdd(vPosB, vSizeB);
@@ -53,7 +53,7 @@ Collision::Result Collision::Hit(Box a, Box b)
 	DirectX::XMStoreFloat3(&maxB, vMaxB);   
 	DirectX::XMStoreFloat3(&minB, vMinB);    
 	
-	// ƒ{ƒbƒNƒX‚Ì–Ê“¯Žm‚ÌŠÖŒW‚©‚ç“–‚½‚è”»’è‚ðs‚¤   
+	// ï¿½{ï¿½bï¿½Nï¿½Xï¿½Ì–Ê“ï¿½ï¿½mï¿½ÌŠÖŒWï¿½ï¿½ï¿½ç“–ï¿½ï¿½ï¿½è”»ï¿½ï¿½ï¿½sï¿½ï¿½   
 	out.isHit = false;   
 	if (maxA.x >= minB.x && minA.x <= maxB.x) {
 		if (maxA.y >= minB.y && minA.y <= maxB.y) {
@@ -61,11 +61,11 @@ Collision::Result Collision::Hit(Box a, Box b)
 				out.isHit = true; 
 
 
-				// ŠeŽ²‚Ì‚ß‚èž‚Ý—Ê‚ðŒvŽZ
+				// ï¿½eï¿½ï¿½ï¿½Ì‚ß‚èžï¿½Ý—Ê‚ï¿½vï¿½Z
 				out.normal.x = std::min(maxA.x - minB.x, maxB.x - minA.x);      
 				out.normal.y = std::min(maxA.y - minB.y, maxB.y - minA.y) * 0.5f;      
 				out.normal.z = std::min(maxA.z - minB.z, maxB.z - minA.z);      
-				// ‚ß‚èž‚Ý‚ª­‚È‚¢–Ê‚ð“–‚½‚Á‚½–Ê‚Æ‚Ý‚È‚µA–Ê‚Ì–@ü‚ðŒvŽZ‚·‚é      
+				// ï¿½ß‚èžï¿½Ý‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½Ê‚ð“–‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê‚Æ‚Ý‚È‚ï¿½ï¿½Aï¿½Ê‚Ì–@ï¿½ï¿½ï¿½ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½      
 				if (out.normal.x < out.normal.y) {
 					if (out.normal.x < out.normal.z)        
 						out.normal = DirectX::XMFLOAT3(
@@ -91,7 +91,7 @@ Collision::Result Collision::Hit(Box a, Box b)
 Collision::Result Collision::Hit(Sphere a, Sphere b)
 {
 	Result out = {};
-	// ŒvŽZ‚É•K—v‚Èƒf[ƒ^‚ðŒvŽZ   
+	// ï¿½vï¿½Zï¿½É•Kï¿½vï¿½Èƒfï¿½[ï¿½^ï¿½ï¿½vï¿½Z   
 	DirectX::XMVECTOR vPosA = DirectX::XMLoadFloat3(&a.center);
 	DirectX::XMVECTOR vPosB = DirectX::XMLoadFloat3(&b.center);
 	DirectX::XMVECTOR vDist = DirectX::XMVectorSubtract(vPosA, vPosB);
@@ -107,7 +107,7 @@ Collision::Result Collision::Hit(Sphere a, Sphere b)
 Collision::Result Collision::Hit(Plane plane, Line line)
 {
 	Result out = {};
-	// ŒvŽZ‚É•K—v‚Èƒpƒ‰ƒ[ƒ^‚ð’è‹`
+	// ï¿½vï¿½Zï¿½É•Kï¿½vï¿½Èƒpï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½ï¿½ï¿½`
 	DirectX::XMVECTOR vPlanePos = DirectX::XMLoadFloat3(&plane.pos);
 	DirectX::XMVECTOR vPlaneN = DirectX::XMLoadFloat3(&plane.normal);
 	DirectX::XMVECTOR vLineStart = DirectX::XMLoadFloat3(&line.start);
@@ -116,27 +116,27 @@ Collision::Result Collision::Hit(Plane plane, Line line)
 
 
 
-	// •½–Ê‚Ìˆê“_‚©‚çü•ª‚ÌŽn“_‚ÆI“_‚ÉŒü‚©‚¤ƒxƒNƒgƒ‹‚ðŒvŽZ
+	// ï¿½ï¿½ï¿½Ê‚Ìˆï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌŽnï¿½_ï¿½ÆIï¿½_ï¿½ÉŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½vï¿½Z
 	DirectX::XMVECTOR vToStart = DirectX::XMVectorSubtract(vLineStart, vPlanePos);
 	DirectX::XMVECTOR vToEnd = DirectX::XMVectorSubtract(vLineEnd, vPlanePos);
 	DirectX::XMVECTOR vDotStart = DirectX::XMVector3Dot(vDotStart, vPlaneN);
 	DirectX::XMVECTOR vDotEnd = DirectX::XMVector3Dot(vDotEnd, vPlaneN);
 
-	// Še“àÏ‚©‚ç•½–Ê‚ðŠÑ’Ê‚µ‚Ä‚¢‚é‚©”»’è
+	// ï¿½eï¿½ï¿½Ï‚ï¿½ï¿½ç•½ï¿½Ê‚ï¿½Ñ’Ê‚ï¿½ï¿½Ä‚ï¿½ï¿½é‚©ï¿½ï¿½ï¿½ï¿½
 	float dotStart, dotEnd;
 	DirectX::XMStoreFloat(&dotStart, vDotStart);
 	DirectX::XMStoreFloat(&dotEnd, vDotEnd);
 
 	if ((dotStart * dotEnd) > 0.0f) {
-		// Še“àÏ‚Ì’l‚ðâ‘Î’l‚É•ÏŠ·‚µ‚ÄAÕ“ËˆÊ’u‚Ü‚Å‚ÌƒxƒNƒgƒ‹‚ðŒvŽZ
+		// ï¿½eï¿½ï¿½Ï‚Ì’lï¿½ï¿½ï¿½Î’lï¿½É•ÏŠï¿½ï¿½ï¿½ï¿½ÄAï¿½Õ“ËˆÊ’uï¿½Ü‚Å‚Ìƒxï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½vï¿½Z
 		dotStart = fabsf(dotStart);
 		dotEnd = fabsf(dotEnd);
-		float rate = dotStart / (dotStart + dotEnd); // Õ“Ë–Ê‚Ü‚Å‚Ì‹——£‚ÌŠ„‡‚ðŒvŽZ
+		float rate = dotStart / (dotStart + dotEnd); // ï¿½Õ“Ë–Ê‚Ü‚Å‚Ì‹ï¿½ï¿½ï¿½ï¿½ÌŠï¿½ï¿½ï¿½ï¿½ï¿½vï¿½Z
 		DirectX::XMVECTOR vDist = DirectX::XMVectorSubtract(vLineEnd, vLineStart);
-		vDist = DirectX::XMVectorScale(vDist, rate); // ü•ª‚ÌƒxƒNƒgƒ‹‚ðÕ“Ë–Ê‚Ü‚Å‚Ì’·‚³‚É•ÏŠ·
-		vDist = DirectX::XMVectorAdd(vLineStart, vDist); // Žn“_‚©‚çƒxƒNƒgƒ‹•ªˆÚ“®
+		vDist = DirectX::XMVectorScale(vDist, rate); // ï¿½ï¿½ï¿½ï¿½ï¿½Ìƒxï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½Õ“Ë–Ê‚Ü‚Å‚Ì’ï¿½ï¿½ï¿½ï¿½É•ÏŠï¿½
+		vDist = DirectX::XMVectorAdd(vLineStart, vDist); // ï¿½nï¿½_ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½Ú“ï¿½
 
-		// •½–Ê‚Æ‚Ì“–‚½‚è”»’è‚ÌŒ‹‰Ê‚ðŠi”[
+		// ï¿½ï¿½ï¿½Ê‚Æ‚Ì“ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½ÌŒï¿½ï¿½Ê‚ï¿½iï¿½[
 		out.isHit = true;
 		out.normal = plane.normal;
 		DirectX::XMStoreFloat3(&out.point, vDist);
@@ -145,17 +145,17 @@ Collision::Result Collision::Hit(Plane plane, Line line)
 };
 
 Collision::Result Collision::Hit(Plane plane, Ray ray, float lenght) {
-	// ŒvŽZ—p‚ÌŒ^‚É•ÏŠ·
+	// ï¿½vï¿½Zï¿½pï¿½ÌŒ^ï¿½É•ÏŠï¿½
 	DirectX::XMVECTOR vPos = DirectX::XMLoadFloat3(&ray.origin);
 	DirectX::XMVECTOR vRay = DirectX::XMLoadFloat3(&ray.dir);
-	// ƒxƒNƒgƒ‹‚Ì’·‚³‚ðŒvŽZ
+	// ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½Ì’ï¿½ï¿½ï¿½ï¿½ï¿½vï¿½Z
 	vRay = DirectX::XMVector3Normalize(vRay);
 	vRay = DirectX::XMVectorScale(vRay, lenght);
-	// ŒvŽZŒ‹‰Ê‚ðŒ³‚Éü•ª‚Ìî•ñ‚ðì¬
+	// ï¿½vï¿½Zï¿½ï¿½ï¿½Ê‚ï¿½ï¿½ï¿½Éï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ì¬
 	Line line = {};
 	line.start = ray.origin;
 	DirectX::XMStoreFloat3(&line.end, DirectX::XMVectorAdd(vPos, vRay));
-	// •½–Ê‚Æ’¼ü‚Ì“–‚½‚è”»’è‚ðŽÀs
+	// ï¿½ï¿½ï¿½Ê‚Æ’ï¿½ï¿½ï¿½ï¿½Ì“ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½ï¿½ï¿½ï¿½s
 	return Hit(plane, line);
 };
 
@@ -186,25 +186,25 @@ Collision::Result Collision::Hit(Point point, Triangle triangle)
 	vNormal = DirectX::XMVector3Cross(DirectX::XMVectorSubtract(vTriPoint[1], vTriPoint[0]), DirectX::XMVectorSubtract(vTriPoint[2], vTriPoint[0]));
 	vNormal = DirectX::XMVector3Normalize(vNormal);
 
-	// “_‚ªŽOŠpŒ`‚Ì–Êã‚É‘¶Ý‚·‚é‚©”»’è
+	// ï¿½_ï¿½ï¿½ï¿½Oï¿½pï¿½`ï¿½Ì–Êï¿½É‘ï¿½ï¿½Ý‚ï¿½ï¿½é‚©ï¿½ï¿½ï¿½ï¿½
 	float dot[3];
 	DirectX::XMStoreFloat(&dot[0], DirectX::XMVector3Dot(vNormal, vToPoint[0]));
-	if (fabsf(dot[0]) > FLT_EPSILON) { // FLT_EPSILON ‚ 0i‚Ù‚Ú0AfloatŒ^‚ÌŒvŽZŒë·‚Ì’lj
-		return out; // –Ê‚Ì–@ü‚Æ“_‚ÉŒü‚©‚¤ƒxƒNƒgƒ‹‚ª‚’¼‚É‚È‚Á‚Ä‚È‚¯‚ê‚Î•½–Êã‚É‚È‚¢
+	if (fabsf(dot[0]) > FLT_EPSILON) { // FLT_EPSILON ï¿½ï¿½ 0ï¿½iï¿½Ù‚ï¿½0ï¿½Afloatï¿½^ï¿½ÌŒvï¿½Zï¿½ë·ï¿½Ì’lï¿½j
+		return out; // ï¿½Ê‚Ì–@ï¿½ï¿½ï¿½Æ“_ï¿½ÉŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É‚È‚ï¿½ï¿½Ä‚È‚ï¿½ï¿½ï¿½Î•ï¿½ï¿½Êï¿½É‚È‚ï¿½
 	}
 
-	// ŠeƒxƒNƒgƒ‹‚ÌŠOÏ‚ðŒvŽZ
+	// ï¿½eï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ÌŠOï¿½Ï‚ï¿½vï¿½Z
 	DirectX::XMVECTOR vCross[3];
 	for (int i = 0; i < 3; ++i) {
 		vCross[i] = DirectX::XMVector3Cross(vEdge[i], vToPoint[i]);
 	}
 
-	// ŠOÏ‚ÌƒxƒNƒgƒ‹‚Æ–Ê‚ÌƒxƒNƒgƒ‹‚ª“¯‚¶•ûŒü‚ðŒü‚¢‚Ä‚¢‚é‚©ŒvŽZ
+	// ï¿½Oï¿½Ï‚Ìƒxï¿½Nï¿½gï¿½ï¿½ï¿½Æ–Ê‚Ìƒxï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚©ï¿½vï¿½Z
 	for (int i = 0; i < 3; ++i) {
 		DirectX::XMStoreFloat(&dot[i], DirectX::XMVector3Dot(vNormal, vCross[i]));
 	}
 
-	// “–‚½‚è”»’è‚ÌŒ‹‰Ê‚ðŠi”[
+	// ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½ÌŒï¿½ï¿½Ê‚ï¿½iï¿½[
 	if ((dot[0] > 0 && dot[1] > 0 && dot[2] > 0) || (dot[0] < 0 && dot[1] < 0 && dot[2] < 0)) {
 		out.isHit = true;
 		out.point = point.pos;

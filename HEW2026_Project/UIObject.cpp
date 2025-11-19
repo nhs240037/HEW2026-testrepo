@@ -11,6 +11,9 @@
 
 UIObject::UIObject() : UIObject("Placeholder.png") {};
 UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder) : UIObject(RelativeTexturePathFromTextureFolder, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f) {};
+UIObject::UIObject(float PositionX, float PositionY) : UIObject("Placeholder.png", PositionX, PositionY) {};
+UIObject::UIObject(float PositionX, float PositionY, float Width, float Height) : UIObject("Placeholder.png", PositionX, PositionY, Width, Height) {};
+UIObject::UIObject(float PositionX, float PositionY, float Width, float Height, float RotationX, float RotationY, float RotationZ) : UIObject("Placeholder.png", PositionX, PositionY, Width, Height, RotationX, RotationY, RotationZ) {};
 UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY) : UIObject(RelativeTexturePathFromTextureFolder, PositionX, PositionY, 100.f, 100.f) {};
 UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY, float Width, float Height) : UIObject(RelativeTexturePathFromTextureFolder, PositionX, PositionY, Width, Height, 0.f, 0.f, 0.f) {};
 UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY, float Width, float Height, float RotationX, float RotationY, float RotationZ): m_pTexture(nullptr)
@@ -30,6 +33,18 @@ UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder, float Posit
 UIObject::~UIObject()
 {
 	SAFE_DELETE(m_pTexture);
+}
+
+void UIObject::SetTexture(std::string RelativeTexturePathFromTextureFolder)
+{
+	std::string TexturePath = "Assets/Texture/" + RelativeTexturePathFromTextureFolder;
+	std::string FailedMsg = "Texture load failed.\n" + TexturePath;
+
+	SAFE_DELETE(m_pTexture);
+
+	m_pTexture = new Texture();
+	if (FAILED(m_pTexture->Create(TexturePath.c_str())))
+		MessageBox(NULL, FailedMsg.c_str(), "Error", MB_OK);
 }
 
 void UIObject::Draw()

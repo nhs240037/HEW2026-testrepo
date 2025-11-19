@@ -10,7 +10,7 @@ static const int FPS = 60;
 static const float fFPS = static_cast<float>(FPS);
 
 // リソースパス
-#define ASSET(path) "Assets/" path
+#define ASSET(path)	"Assets/"path
 
 // 3D空間定義
 #define CMETER(value) (value * 0.01f)
@@ -20,18 +20,15 @@ static const float fFPS = static_cast<float>(FPS);
 static const float GRAVITY = 0.98f;
 
 // タイトル
-static const char *APP_TITLE = "DX22_Golf";
+static const char* APP_TITLE = "DX22_Golf";
 
 // 画面サイズ
-static const int SCREEN_WIDTH = 1280;
-static const int SCREEN_HEIGHT = 720;
+static const int SCREEN_WIDTH	= 1280;
+static const int SCREEN_HEIGHT	= 720;
 
 // グリッドサイズ(デバッグ用
-static const int DEBUG_GRID_NUM = 20;               // グリッド中心から端までの線の本数
-static const float DEBUG_GRID_MARGIN = METER(1.0f); // グリッド配置幅
+static const int	DEBUG_GRID_NUM		= 20;			// グリッド中心から端までの線の本数
+static const float	DEBUG_GRID_MARGIN	= METER(1.0f);	// グリッド配置幅
 
-// ジオメトリ生成用
-static const int GEOMETORY_CYLINDER_CIRCLE_VERTEX = 8;
-static const int GEOMETORY_CYLINDER_CIRCLE_INDEX = (GEOMETORY_CYLINDER_CIRCLE_VERTEX - 2) * 3;
 
 #endif // __DEFINES_H__

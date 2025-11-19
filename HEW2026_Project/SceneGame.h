@@ -3,6 +3,9 @@
 
 #include "Scene.h"
 #include "Model.h"
+#include "Camera.h"
+#include "Player.h"
+#include "NextItem.h"
 
 class SceneGame : public Scene
 {
@@ -14,6 +17,9 @@ public:
 
 private:
 	Model* m_pModel;
+	Camera* m_pCamera = nullptr;
+	Player* m_pPlayer = nullptr;
+	NextItem* m_pNext = nullptr;
 };
 
 #endif // __SCENE_GAME_H__

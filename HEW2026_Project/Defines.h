@@ -72,11 +72,11 @@ static const float GRAVITY = 0.98f;
 static const char* APP_TITLE = "DX22_Prototype";
 
 // 画面サイズ
-static const int SCREEN_WIDTH	= 0x500;
-static const int SCREEN_HEIGHT	= 0x2D0;
+static const int SCREEN_WIDTH	= 1280;
+static const int SCREEN_HEIGHT	= 720;
 
 // グリッドサイズ(デバッグ用
-static const int	DEBUG_GRID_NUM		= 0xA;			// グリッド中心から端までの線の本数
+static const int	DEBUG_GRID_NUM		= 20;			// グリッド中心から端までの線の本数
 static const float	DEBUG_GRID_MARGIN	= METER(1.0f);	// グリッド配置幅
 
 

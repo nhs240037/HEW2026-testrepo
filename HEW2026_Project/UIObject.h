@@ -16,6 +16,9 @@ class UIObject
 public:
 	UIObject();
 	UIObject(std::string RelativeTexturePathFromTextureFolder);
+	UIObject(float PositionX, float PositionY);
+	UIObject(float PositionX, float PositionY, float Width, float Height);
+	UIObject(float PositionX, float PositionY, float Width, float Height, float RotationX, float RotationY, float RotationZ);
 	UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY);
 	UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY, float Width, float Height);
 	UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY, float Width, float Height, float RotationX, float RotationY, float RotationZ);
@@ -26,6 +29,7 @@ public:
 	void SetPosition(float X, float Y);
 	void SetSize(float W, float H);
 	void SetRotation(float X, float Y, float Z);
+	void SetTexture(std::string RelativeTexturePathFromTextureFolder);
 
 	DirectX::XMFLOAT2 GetPosition(void);
 	DirectX::XMFLOAT2 GetSize(void);

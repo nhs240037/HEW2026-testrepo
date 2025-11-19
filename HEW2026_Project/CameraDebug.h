@@ -6,11 +6,11 @@
 class CameraDebug : public Camera 
 {
 public:
-	CameraDebug();
-	~CameraDebug();
-	void Update() final;
+  CameraDebug();
+  ~CameraDebug();
+  void Update() final;
 	void SetPos(const DirectX::XMFLOAT3& pos)override;
-private:
+private: 
 	float m_radXZ;		// ƒJƒƒ‰‚Ì‰¡‰ñ“]
 	float m_radY;		// ƒJƒƒ‰‚Ìc‰ñ“]
 	float m_radius;	// ƒJƒƒ‰‚Æ’‹“_‚Ì‹——£

@@ -1,12 +1,15 @@
 /*********************************************************************
  * \file   CameraDebug.cpp
- * 概要：
+ * \brief  
  * 
- * 制作者 山本郁也
- * \date　October 2025
+ * \author AT12C-41 Kotetsu Wakabayashi, 山本郁也
+ * \date   2025-11-11
  *********************************************************************/
+ //=====| Includes |=====//
 
 #include "CameraDebug.h"
+#include "Input.h"
+//=====| /Includes |=====//
 #include"Defines.h"
 
 

@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <random>
 #include "Defines.h"
+#include "Block.h"
 
 NextItem::NextItem()
 	:m_QueueItem{nullptr}, m_NextItem(nullptr), m_NextFrame(nullptr), m_QueueFrame{nullptr}
@@ -38,13 +39,19 @@ void NextItem::Draw()
 
 void NextItem::AddLootTable()
 {
-	std::vector<Item> arr{ Item(1),Item(2),Item(3),Item(4), Item(5), Item(6), Item(7)};
+	std::list<Item> ItemList{ Item(1),Item(2),Item(3),Item(4), Item(5), Item(6), Item(7)};
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::shuffle(arr.begin(), arr.end(), gen);
-	m_Queue.insert(m_Queue.end(), arr.begin(), arr.end());
+	std::shuffle(ItemList.begin(), ItemList.end(), gen);
+	m_Queue.insert(m_Queue.end(), ItemList.begin(), ItemList.end());
 }
 
+/**
+ * \brief Ş—¿ƒLƒ…[æ‘—‚è.
+ * 
+ * \note 
+ * 
+ */
 void NextItem::Next()
 {
 	//Ÿ‘—‚è

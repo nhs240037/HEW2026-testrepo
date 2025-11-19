@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include <list>
 #include "Sprite.h"
 #include "Texture.h"
 #include "UIObject.h"
@@ -42,7 +42,7 @@ public:
 private:
 	void AddLootTable();
 private:
-	std::vector<Item> m_Queue;
+	std::list<Item> m_Queue;
 	UIObject* m_NextItem;
 	UIObject* m_NextFrame;
 	UIObject* m_QueueItem[5];

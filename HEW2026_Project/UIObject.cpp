@@ -16,6 +16,7 @@ UIObject::UIObject(float PositionX, float PositionY, float Width, float Height) 
 UIObject::UIObject(float PositionX, float PositionY, float Width, float Height, float RotationX, float RotationY, float RotationZ) : UIObject("Placeholder.png", PositionX, PositionY, Width, Height, RotationX, RotationY, RotationZ) {};
 UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY) : UIObject(RelativeTexturePathFromTextureFolder, PositionX, PositionY, 100.f, 100.f) {};
 UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY, float Width, float Height) : UIObject(RelativeTexturePathFromTextureFolder, PositionX, PositionY, Width, Height, 0.f, 0.f, 0.f) {};
+
 UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY, float Width, float Height, float RotationX, float RotationY, float RotationZ): m_pTexture(nullptr)
 {
 	m_fPosition = {PositionX, PositionY};
@@ -32,7 +33,11 @@ UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder, float Posit
 
 UIObject::~UIObject()
 {
-	SAFE_DELETE(m_pTexture);
+	if (m_pTexture)
+	{
+		delete m_pTexture;
+		m_pTexture = nullptr;
+	}
 }
 
 void UIObject::SetTexture(std::string RelativeTexturePathFromTextureFolder)
@@ -81,6 +86,8 @@ void UIObject::Draw()
 		Sprite::SetSize(m_fSize);												// スプライトのサイズを設定
 		Sprite::SetOffset({ m_fSize.x * 0.5f, 0.0f });	// スプライトの原点を変更
 		Sprite::SetTexture(m_pTexture);										// テクスチャを設定
+		Sprite::SetUVPos({ 0.f, 0.f });
+		Sprite::SetUVScale({ 1.0f, 1.f });
 		Sprite::Draw();
 
 	SetRenderTargets(1, &pRTV, pDSV);

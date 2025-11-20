@@ -6,18 +6,19 @@
 #include "Score.h"
 
 SceneGame::SceneGame()
-	: m_pBlock{nullptr}
+	: m_pBlock{ nullptr }
 	, m_menu{}
 	, csv(CsvData::get_instance())
 {
 	//--- モデルの描画
-	RenderTarget *pRTV = GetDefaultRTV(); // デフォルトのRenderTargetViewを取得
-	DepthStencil *pDSV = GetDefaultDSV(); // デフォルトのDepthStencilViewを取得
+	RenderTarget* pRTV = GetDefaultRTV(); // デフォルトのRenderTargetViewを取得
+	DepthStencil* pDSV = GetDefaultDSV(); // デフォルトのDepthStencilViewを取得
 	SetRenderTargets(1, &pRTV, pDSV);			// 第3引数がnullの場合、2D表示となる
 	SetDepthTest(true);
 	m_pModel = new Model();
 	m_pScore = new CScore();
 	m_pTimer = new CTimer();
+	m_pNextItem = new NextItem();
 	if (!m_pModel->Load("Assets/Model/LowPolyNature/Branch_01.fbx", 0.01f, Model::None))
 	{ // 倍率と反転は省略可
 		// if (!m_pModel->Load("Assets/Model/Furina/furina.pmx", 0.5f,Model::ZFlip)) {
@@ -32,7 +33,7 @@ SceneGame::SceneGame()
 	m_pBlock[0]->GetCamera(m_pCamera);
 
 	m_pPlayer->SetCamera(m_pCamera);
-	m_pBlock[0]->SetCollision({m_pPlayer->GetPos().x,m_pPlayer->GetPos().z});
+	m_pBlock[0]->SetCollision({ m_pPlayer->GetPos().x,m_pPlayer->GetPos().z });
 
 	csv.Init();
 
@@ -77,6 +78,7 @@ SceneGame::~SceneGame()
 		delete m_pTimer;
 		m_pTimer = nullptr;
 	}
+	SAFE_DELETE(m_pNextItem);
 }
 
 void SceneGame::Update()
@@ -117,7 +119,7 @@ void SceneGame::Update()
 			m_pBlock[i] = new Block();
 		}
 		if (m_pBlock[i]->GetState() == Block::BlockState::Block_Drop ||
-				m_pBlock[i]->GetState() == Block::BlockState::Block_Catched)
+			m_pBlock[i]->GetState() == Block::BlockState::Block_Catched)
 		{
 			m_pBlock[i]->Update();
 		}
@@ -128,7 +130,7 @@ void SceneGame::Update()
 		{
 			m_pBlock[i] = nullptr;
 		}
-			m_pScore->AddScore(10);
+		m_pScore->AddScore(10);
 		m_pBlock[0] = new Block();
 	}
 	if (m_pTimer)
@@ -173,7 +175,7 @@ void SceneGame::Draw()
 		0.001f,	// NearZ
 		10.0f	// FarZ
 	);
-	
+
 
 	// 　計算用のデータから読み取り用のデータに変換
 	DirectX::XMStoreFloat4x4(&wvp[0], DirectX::XMMatrixTranspose(world));
@@ -219,7 +221,7 @@ void SceneGame::Draw()
 		DirectX::XMVECTOR A = DirectX::XMVectorSet(0.0f, 10.0f, -10.0f, 0.0);
 		DirectX::XMVECTOR P = DirectX::XMVectorSet(m_pPlayer->GetPos().x, m_pPlayer->GetPos().y, m_pPlayer->GetPos().z, 0.0f);
 		A = DirectX::XMVectorAdd(A, P);
-		m_pCamera->SetPos({A.m128_f32[0], A.m128_f32[1], A.m128_f32[2]});
+		m_pCamera->SetPos({ A.m128_f32[0], A.m128_f32[1], A.m128_f32[2] });
 		Collision::Info collisionA = m_pPlayer->GetCollision(); // プレイヤーの当たり判定
 
 		// 地面、または障害物の当たり判定
@@ -288,6 +290,11 @@ void SceneGame::Draw()
 	if (m_pTimer)
 	{
 		m_pTimer->Draw();
+	}
+
+	if (m_pNextItem)
+	{
+		m_pNextItem->Draw();
 	}
 }
 

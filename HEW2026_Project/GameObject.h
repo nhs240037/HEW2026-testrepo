@@ -1,4 +1,4 @@
-#ifndef _GAMEOBJECT_H
+﻿#ifndef _GAMEOBJECT_H
 #define _GAMEOBJECT_H
 
 #include<DirectXMath.h>

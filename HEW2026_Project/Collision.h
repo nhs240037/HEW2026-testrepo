@@ -1,12 +1,12 @@
-/*********************************************************************
+﻿/*********************************************************************
  * \file   Collision.h
  * \brief  �Փ˔��� Collision
- * 
+ *
  * \author AT12C-41 Kotetsu Wakabayashi
  * \date   2025-11-13
  *********************************************************************/
 #pragma once
- //=====| Includes |=====//
+//=====| Includes |=====//
 #include <DirectXMath.h>
 #include <math.h>
 #include <cmath>
@@ -20,11 +20,11 @@ public:
 	enum Type
 	{
 		eNone,
-		eBox,			// �{�b�N�X
-		eSphere,	// ��
-		ePlane,		// ����
-		eRay,			// ���C
-		eLine,		// ��
+		eBox,		 // �{�b�N�X
+		eSphere, // ��
+		ePlane,	 // ����
+		eRay,		 // ���C
+		eLine,	 // ��
 		ePoint,
 		eTriangle,
 	};
@@ -32,13 +32,13 @@ public:
 	//--- �����蔻��̌`�� shape of collision.
 	struct Box
 	{
-		DirectX::XMFLOAT3 center;		// ���S���W
-		DirectX::XMFLOAT3 size;			// �T�C�Y
+		DirectX::XMFLOAT3 center; // ���S���W
+		DirectX::XMFLOAT3 size;		// �T�C�Y
 	};
 	struct Sphere
 	{
-		DirectX::XMFLOAT3 center;		// ���S���W
-		float radius;								// ���a
+		DirectX::XMFLOAT3 center; // ���S���W
+		float radius;							// ���a
 	};
 	struct Plane
 	{
@@ -83,7 +83,7 @@ public:
 	{
 		bool isHit;								// �����������ǂ���
 		DirectX::XMFLOAT3 point;	// �q�b�g�ʒu
-		DirectX::XMFLOAT3 normal;	// �q�b�g����
+		DirectX::XMFLOAT3 normal; // �q�b�g����
 		Info other;								// �����蔻��I�u�W�F�N�g
 	};
 

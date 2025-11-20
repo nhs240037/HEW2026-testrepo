@@ -1,52 +1,37 @@
-/**
- * @file Camera.h
- * @author AT12C192-41 ��ьՓO
- * @brief �J�����̊�{�@�\
- * @date 2025-10-28
- *
- * @version 0.1
- */
-#pragma once
+﻿#ifndef _CAMERA_H
+#define _CAMERA_H
 
-//====| �C���N���[�h |====//
 #include <DirectXMath.h>
-//====| /�C���N���[�h |====//
-
-//====| �萔�E�}�N����` |====//
-
-//====| /�萔�E�}�N����` |====//
-
-//====| �N���X�E�\���̒�` |====//
 class Camera
 {
 public:
-	// �R���X�g���N�^
-  Camera();
-  // �f�X�g���N�^
-  virtual ~Camera() {}
-  // �X�V���� (�p����ŕK������)
-  virtual void Update() = 0;
+	// コンストラクタ
+	Camera();
+	// デストラクタ
+	virtual ~Camera();
+	// 更新処理（継承先のクラスで必ず実装
+	virtual void Update() = 0;
 
-	// �r���[�s��̎擾�i�f�t�H���g�ł͓]�u�ς݂̍s���v�Z����
-  DirectX::XMFLOAT4X4 GetViewMatrix(bool transpose = true);
+	// ビュー行列の取得（デフォルトでは転置済みの行列を計算する
+	DirectX::XMFLOAT4X4 GetViewMatrix(bool transpose = true);
 
-	// �v���W�F�N�V�����s��̎擾�i�f�t�H���g�ł͓]�u�ς݂̍s���v�Z����
-  DirectX::XMFLOAT4X4 GetProjectionMatrix(bool transpose = true);
+	// プロジェクション行列の取得（デフォルトでは転置済みの行列を計算する
+	DirectX::XMFLOAT4X4 GetProjectionMatrix(bool transpose = true);
 
-	// ���W�̎擾
-  DirectX::XMFLOAT3 GetPos();
-	// �����_�̎擾
-  DirectX::XMFLOAT3 GetLook();
+	// 座標の取得
+	DirectX::XMFLOAT3 GetPos();
+	// 注視点の取得
+	DirectX::XMFLOAT3 GetLook();
 
 	virtual void SetPos(const DirectX::XMFLOAT3& pos) = 0;
 
-  void SetLook(DirectX::XMFLOAT3 look);
 protected:
-  DirectX::XMFLOAT3 m_pos;  // ���W
-  DirectX::XMFLOAT3 m_look; // �����_
-  DirectX::XMFLOAT3 m_up;   // ����x�N�g��
-  float m_fovy;             // ��p
-  float m_aspect;           // �A�X�y�N�g��
-  float m_near;             // �j�A�N���b�v
-  float m_far;              // �t�@�[�N���b�v
+	DirectX::XMFLOAT3 m_pos;		// 座標
+	DirectX::XMFLOAT3 m_look;		// 注視点
+	DirectX::XMFLOAT3 m_up;		// 上方ベクトル
+	float	m_fovy;		// 画角
+	float	m_aspect;	//　アスペクト比
+	float	m_near;		// ニアクリップ
+	float	m_far;		// ファークリップ
 };
+#endif//_CAMERA_H

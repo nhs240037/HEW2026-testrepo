@@ -9,6 +9,7 @@
 #include "Defines.h"
 #include "Score.h"
 #include "Timer.h"
+#include "NextItem.h"
 
 class SceneGame : public Scene
 {
@@ -27,6 +28,7 @@ private:
 	CsvData &csv;
 	CScore *m_pScore;
 	CTimer *m_pTimer;
+	NextItem* m_pNextItem;
 };
 
 #endif // __SCENE_GAME_H__

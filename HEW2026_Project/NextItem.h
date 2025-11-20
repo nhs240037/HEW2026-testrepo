@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "Texture.h"
 #include "UIObject.h"
+#include "Block.h"
 
 class Dummy
 {
@@ -24,7 +25,7 @@ class NextItem
 public:
 	NextItem();
 	~NextItem();
-	void Next();
+	Block::Block_Color Next();
 	void Draw();
 
 public:
@@ -42,7 +43,7 @@ public:
 private:
 	void AddLootTable();
 private:
-	std::list<Item> m_Queue;
+	std::vector<Item> m_Queue;
 	UIObject* m_NextItem;
 	UIObject* m_NextFrame;
 	UIObject* m_QueueItem[5];

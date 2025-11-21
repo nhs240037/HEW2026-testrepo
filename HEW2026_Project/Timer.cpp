@@ -1,4 +1,4 @@
-#include "Timer.h"
+ï»¿#include "Timer.h"
 #include "Texture.h"
 #include <Sprite.h>
 #include "Defines.h"
@@ -6,9 +6,9 @@
 #include <iomanip>
 #include <cmath>
 
-constexpr int NUM_COLS = 4; // Number.png ‚Ì”š‚Ì—ñ”
-constexpr float GRID_W = 1.0f / NUM_COLS; // ³‹K‰»UÀ•W‚Ì• 
-constexpr float GRID_H = 1.0f / 3.0f;     // ³‹K‰»VÀ•W‚Ì‚‚³
+constexpr int NUM_COLS = 4; // Number.png ã®æ•°å­—ã®åˆ—æ•°
+constexpr float GRID_W = 1.0f / NUM_COLS; // æ­£è¦åŒ–Uåº§æ¨™ã®å¹… 
+constexpr float GRID_H = 1.0f / 3.0f;     // æ­£è¦åŒ–Våº§æ¨™ã®é«˜ã•
 
 CTimer::CTimer()
 	:m_pTimerTex(nullptr)
@@ -31,9 +31,9 @@ CTimer::~CTimer()
 
 void CTimer::InitializeTimer()
 {
-	//CPU‚Ìü”g”‚ğæ“¾
+	//CPUã®å‘¨æ³¢æ•°ã‚’å–å¾—
 	QueryPerformanceFrequency(&m_cpuFrequency);
-	//Å‰‚Ì‚ğæ“¾
+	//æœ€åˆã®æ™‚åˆ»ã‚’å–å¾—
 	QueryPerformanceCounter(&m_lastTime);
 
 	m_totalTime = START_TIME_SECONDS;
@@ -41,7 +41,7 @@ void CTimer::InitializeTimer()
 
 void CTimer::Update()
 {
-	// ŠÔŒv‘ªƒƒWƒbƒN
+	// æ™‚é–“è¨ˆæ¸¬ãƒ­ã‚¸ãƒƒã‚¯
 	LARGE_INTEGER currentTime;
 	QueryPerformanceCounter(&currentTime);
 
@@ -77,7 +77,7 @@ void CTimer::Draw()
 
 	std::string timerStr = TimeToString(m_totalTime);
 
-	// ƒ^ƒCƒ}[•`‰æ‚ÌŠJnˆÊ’u (—á: ‰æ–Ê¶ã‚É•\¦)
+	// ã‚¿ã‚¤ãƒãƒ¼æç”»ã®é–‹å§‹ä½ç½® (ä¾‹: ç”»é¢å·¦ä¸Šã«è¡¨ç¤º)
 	{
 		const float PADDING_X = 50.0f;
 		const float PADDING_Y = 50.0f;
@@ -96,18 +96,18 @@ void CTimer::Draw()
 			char c = timerStr[i];
 			int number = -1;
 
-			// •¶š‚É‰‚¶‚ÄƒCƒ“ƒfƒbƒNƒX‚ğŒˆ’è
+			// æ–‡å­—ã«å¿œã˜ã¦ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æ±ºå®š
 			if (c >= '0' && c <= '9')
 			{
 				number = c - '0';
 			}
 			else if (c == ':')
 			{
-				number = 11; // ƒRƒƒ“—p‚ÌƒCƒ“ƒfƒbƒNƒX
+				number = 11; // ã‚³ãƒ­ãƒ³ç”¨ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 			}
 			else if (c == '.')
 			{
-				number = 11; // ƒsƒŠƒIƒh—p‚ÌƒCƒ“ƒfƒbƒNƒX
+				number = 11; // ãƒ”ãƒªã‚ªãƒ‰ç”¨ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 			}
 
 			float currentX = startPos.x + i * (digitSize.x + DIGIT_SPACING) + digitSize.x * 0.5f;
@@ -122,8 +122,8 @@ void CTimer::Draw()
 
 void CTimer::DrawDigit(int number, DirectX::XMFLOAT2 centerPos, DirectX::XMFLOAT2 size)
 {
-	// DrawDigit ‚Ì“à—e‚Í CScore ‚Ì‚à‚Ì‚Æ‘S‚­“¯‚¶ƒƒWƒbƒN‚Å‚·B
-	// CalculateUVForNumber ‚ğŒÄ‚Ño‚µASprite::Draw ‚ğÀs‚µ‚Ü‚·B
+	// DrawDigit ã®å†…å®¹ã¯ CScore ã®ã‚‚ã®ã¨å…¨ãåŒã˜ãƒ­ã‚¸ãƒƒã‚¯ã§ã™ã€‚
+	// CalculateUVForNumber ã‚’å‘¼ã³å‡ºã—ã€Sprite::Draw ã‚’å®Ÿè¡Œã—ã¾ã™ã€‚
 	DirectX::XMFLOAT4 uvRect = CalculateUVForNumber(number);
 
 	DirectX::XMFLOAT2 uvPos = { uvRect.x,uvRect.y };
@@ -140,7 +140,7 @@ void CTimer::DrawDigit(int number, DirectX::XMFLOAT2 centerPos, DirectX::XMFLOAT
 	DirectX::XMStoreFloat4x4(&world, DirectX::XMMatrixTranspose(mWorld));
 
 	Sprite::SetWorld(world);
-	Sprite::SetTexture(m_pTimerTex);	// Timer ‚ÌƒeƒNƒXƒ`ƒƒ‚ğİ’è
+	Sprite::SetTexture(m_pTimerTex);	// Timer ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’è¨­å®š
 	Sprite::SetColor({ 1.0f,1.0f,1.0f,1.0f });
 
 	Sprite::SetOffset({ 0.0f,0.0f });
@@ -154,12 +154,12 @@ void CTimer::DrawDigit(int number, DirectX::XMFLOAT2 centerPos, DirectX::XMFLOAT
 
 std::string CTimer::TimeToString(double timeInSeconds)
 {
-	// ŠÔ‚ğ•ª‰ğ
+	// æ™‚é–“ã‚’åˆ†è§£
 	int totalMillis = static_cast<int>(timeInSeconds * 1000);
 
 	int minutes = totalMillis / 60000;
 	int seconds = (totalMillis % 60000) / 1000;
-	int millis = (totalMillis % 1000) / 10; // 10ƒ~ƒŠ•b’PˆÊ (‰º2Œ…)
+	int millis = (totalMillis % 1000) / 10; // 10ãƒŸãƒªç§’å˜ä½ (ä¸‹2æ¡)
 
 	std::stringstream ss;
 
@@ -187,10 +187,10 @@ DirectX::XMFLOAT4 CTimer::CalculateUVForNumber(int number)
 	else if (number == 9) {
 		X = 1; Y = 2;
 	}
-	else if (number == 10) { // ƒRƒƒ“ ':'
+	else if (number == 10) { // ã‚³ãƒ­ãƒ³ ':'
 		X = 2; Y = 2;
 	}
-	else if (number == 11) { // ƒsƒŠƒIƒh '.'
+	else if (number == 11) { // ãƒ”ãƒªã‚ªãƒ‰ '.'
 		X = 3; Y = 2;
 	}
 	else {

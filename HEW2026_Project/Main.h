@@ -1,9 +1,9 @@
-#ifndef __MAIN_H__
+ï»¿#ifndef __MAIN_H__
 #define __MAIN_H__
 
 #include <Windows.h>
-#include <fstream>   // ƒtƒ@ƒCƒ‹‘€ì—p
-#include <sstream>   // •¶š—ñƒXƒgƒŠ[ƒ€—p
+#include <fstream>   // ãƒ•ã‚¡ã‚¤ãƒ«æ“ä½œç”¨
+#include <sstream>   // æ–‡å­—åˆ—ã‚¹ãƒˆãƒªãƒ¼ãƒ ç”¨
 #include <string>
 #include <vector>
 

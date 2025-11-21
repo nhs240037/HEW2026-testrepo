@@ -1,4 +1,4 @@
-#ifndef __SHADER_LIST_H__
+ï»¿#ifndef __SHADER_LIST_H__
 #define __SHADER_LIST_H__
 
 #include "Shader.h"
@@ -7,7 +7,7 @@
 
 class ShaderList
 {
-	// ’è‹`
+	// å®šç¾©
 public:
 	enum VSKind
 	{
@@ -32,11 +32,11 @@ public:
 	static void Init();
 	static void Uninit();
 
-	// ƒVƒF[ƒ_[İ’è
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼è¨­å®š
 	static VertexShader* GetVS(VSKind vs);
 	static PixelShader* GetPS(PSKind ps);
 
-	// ’è”ƒoƒbƒtƒ@‚Ö‚Ìİ’è
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ã®è¨­å®š
 	static void SetWVP(DirectX::XMFLOAT4X4* wvp);
 	static void SetBones(DirectX::XMFLOAT4X4* bones200);
 	static void SetMaterial(const Model::Material& material);

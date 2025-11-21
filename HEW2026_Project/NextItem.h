@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <list>
 #include "Sprite.h"
 #include "Texture.h"

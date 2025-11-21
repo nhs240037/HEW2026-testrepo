@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Texture.h"
 #include "Sprite.h"
 #include <DirectXMath.h>
@@ -21,20 +21,20 @@ private:
 	Texture* m_pScoreTex;
 	Texture* m_pGaugeTex;
 	float m_rate;
-	int m_targetScore;		//–Ú•WƒXƒRƒA
-	int m_currentScore;		//Œ»İ‚ÌƒXƒRƒA
+	int m_targetScore;		//ç›®æ¨™ã‚¹ã‚³ã‚¢
+	int m_currentScore;		//ç¾åœ¨ã®ã‚¹ã‚³ã‚¢
 
 	void DrawDigit(int number, DirectX::XMFLOAT2 centerPos, DirectX::XMFLOAT2 size);
 
 	DirectX::XMFLOAT4 CalculateUVForNumber(int number);
 
-	// ƒeƒNƒXƒ`ƒƒ‚ÌƒŒƒCƒAƒEƒg’è” (ƒeƒNƒXƒ`ƒƒ‘S‘Ì‚ÌƒTƒCƒY‚ğ1.0f‚Æ‚µ‚Ä³‹K‰»)
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆå®šæ•° (ãƒ†ã‚¯ã‚¹ãƒãƒ£å…¨ä½“ã®ã‚µã‚¤ã‚ºã‚’1.0fã¨ã—ã¦æ­£è¦åŒ–)
 	const float TEX_WIDTH_UNITS = 1.0f;
 	const float TEX_HEIGHT_UNITS = 1.0f;
 	const int NUM_COLS = 4; // '0123'
 	const int NUM_ROWS = 3; // '0123' '4567' '89,'
 
-	// 1•¶š‚ ‚½‚è‚Ì•‚Æ‚‚³ (³‹K‰»‚³‚ê‚½’PˆÊ)
+	// 1æ–‡å­—ã‚ãŸã‚Šã®å¹…ã¨é«˜ã• (æ­£è¦åŒ–ã•ã‚ŒãŸå˜ä½)
 	const float GRID_W = TEX_WIDTH_UNITS / (float)NUM_COLS;
 	const float GRID_H = TEX_HEIGHT_UNITS / (float)NUM_ROWS;
 

@@ -1,4 +1,4 @@
-#ifndef __SHADER_H__
+ï»¿#ifndef __SHADER_H__
 #define __SHADER_H__
 
 #include "DirectX.h"
@@ -7,7 +7,7 @@
 #include <map>
 #include <vector>
 
-// ƒVƒF[ƒ_[‚ÌŠî–{ƒNƒ‰ƒX
+// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®åŸºæœ¬ã‚¯ãƒ©ã‚¹
 class Shader
 {
 protected:
@@ -21,23 +21,23 @@ protected:
 public:
 	virtual ~Shader();
 public:
-	// ƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹(*.cso)‚ğ“Ç‚İ‚Şˆ—
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«(*.cso)ã‚’èª­ã¿è¾¼ã‚€å‡¦ç†
 	HRESULT Load(const char* pFileName);
-	// •¶š—ñ‚©‚çƒVƒF[ƒ_‚ğƒRƒ“ƒpƒCƒ‹
+	// æ–‡å­—åˆ—ã‹ã‚‰ã‚·ã‚§ãƒ¼ãƒ€ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«
 	HRESULT Compile(const char* pCode);
 
 
-	// ’è”‚Ì‘‚«‚İ
+	// å®šæ•°ã®æ›¸ãè¾¼ã¿
 	void WriteBuffer(UINT slot, void* pData);
-	// ƒeƒNƒXƒ`ƒƒ‚Ìİ’è
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®è¨­å®š
 	void SetTexture(UINT slot, Texture* tex);
-	// ƒVƒF[ƒ_[‚ğ•`‰æ‚Ég—p
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’æç”»ã«ä½¿ç”¨
 	virtual void Bind(void) = 0;
 
 private:
 	HRESULT Make(void* pData, UINT size);
 protected:
-	// ƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ñ‚¾ŒãAƒVƒF[ƒ_[‚Ìí—Ş•Ê‚Éˆ—‚ğs‚¤
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚“ã å¾Œã€ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ç¨®é¡åˆ¥ã«å‡¦ç†ã‚’è¡Œã†
 	virtual HRESULT MakeShader(void* pData, UINT size) = 0;
 
 private:
@@ -48,7 +48,7 @@ protected:
 };
 
 //----------
-// ’¸“_ƒVƒF[ƒ_
+// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
 class VertexShader : public Shader
 {
 public:
@@ -63,7 +63,7 @@ private:
 	ID3D11InputLayout* m_pInputLayout;
 };
 //----------
-// ƒsƒNƒZƒ‹ƒVƒF[ƒ_
+// ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€
 class PixelShader : public Shader
 {
 public:

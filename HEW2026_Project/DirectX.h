@@ -1,4 +1,4 @@
-#ifndef __DIRECTX_H__
+﻿#ifndef __DIRECTX_H__
 #define __DIRECTX_H__
 
 #include <d3d11.h>

@@ -1,4 +1,4 @@
-#ifndef _PLAYER_H
+ï»¿#ifndef _PLAYER_H
 #define _PLAYER_H
 
 #include"GameObject.h"
@@ -15,13 +15,13 @@ public:
 	Player();
 	~Player();
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	void Update();
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	void Draw();
 
-	// ƒJƒƒ‰‚Ìİ’è
+	// ã‚«ãƒ¡ãƒ©ã®è¨­å®š
 	void SetCamera(Camera* camera);
 
 	void OnCollision(Collision::Result collision)override;
@@ -39,28 +39,28 @@ public:
 		float y;
 	};
 private:
-	// ‹…‚ğ‘Å‚Âˆ—
+	// çƒã‚’æ‰“ã¤å‡¦ç†
 	void UpdateShot();
 
 	void UpdateControl();
 
-	// ˆÚ“®’†‚Ìˆ—
+	// ç§»å‹•ä¸­ã®å‡¦ç†
 	void UpdateMove();
 
 	void UpdateWall();
 
 private:
-	Camera* m_pCamera;	//@ƒJƒƒ‰î•ñ
-	DirectX::XMFLOAT3	m_move;		// ˆÚ“®—Ê
-	bool		m_isStop;	// ƒ{[ƒ‹‚Ì’â~”»’è
+	Camera* m_pCamera;	//ã€€ã‚«ãƒ¡ãƒ©æƒ…å ±
+	DirectX::XMFLOAT3	m_move;		// ç§»å‹•é‡
+	bool		m_isStop;	// ãƒœãƒ¼ãƒ«ã®åœæ­¢åˆ¤å®š
 	int		m_shotStep; // 
-	float	m_power;		// speed‚ÉvLen‚ğŠi”[
+	float	m_power;		// speedã«vLenã‚’æ ¼ç´
 	float2 m_f2pos;
 	Index m_idx;
 	float m_angle;
 
-	Texture* m_pShadowTex;	// ‰e‚ÌŒ©‚½–Ú
-	DirectX::XMFLOAT3	m_shadowPos;	// ‰e‚ÌˆÊ’u
+	Texture* m_pShadowTex;	// å½±ã®è¦‹ãŸç›®
+	DirectX::XMFLOAT3	m_shadowPos;	// å½±ã®ä½ç½®
 
 	// New!
 	CsvData& csv;

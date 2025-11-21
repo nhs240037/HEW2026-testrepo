@@ -1,4 +1,4 @@
-#include "Sprite.h"
+Ôªø#include "Sprite.h"
 
 Sprite::Data Sprite::m_data;
 std::shared_ptr<VertexShader> Sprite::m_defVS;
@@ -65,7 +65,7 @@ float4 main(PS_IN pin) : SV_TARGET {
 		{{ 0.5f,-0.5f, 0.0f}, {1.0f, 1.0f}},
 	};
 
-	// ÉÅÉbÉVÉÖ
+	// „É°„ÉÉ„Ç∑„É•
 	MeshBuffer::Description desc = {};
 	desc.pVtx = vtx;
 	desc.vtxSize = sizeof(Vertex);
@@ -74,7 +74,7 @@ float4 main(PS_IN pin) : SV_TARGET {
 	m_data.mesh = std::make_shared<MeshBuffer>();
 	m_data.mesh->Create(desc);
 
-	// ÉpÉâÉÅÅ[É^Å[
+	// „Éë„É©„É°„Éº„Çø„Éº
 	m_data.param[0] = DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
 	m_data.param[1] = DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
 	m_data.param[2] = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -82,7 +82,7 @@ float4 main(PS_IN pin) : SV_TARGET {
 	DirectX::XMStoreFloat4x4(&m_data.matrix[1], DirectX::XMMatrixIdentity());
 	DirectX::XMStoreFloat4x4(&m_data.matrix[2], DirectX::XMMatrixIdentity());
 
-	// ÉVÉFÅ[É_Å[
+	// „Ç∑„Çß„Éº„ÉÄ„Éº
 	m_defVS = std::make_shared<VertexShader>();
 	m_defVS->Compile(VS);
 	m_data.vs = m_defVS.get();

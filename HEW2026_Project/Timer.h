@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <windows.h>
 #include <string>
 #include "Texture.h"
@@ -14,16 +14,16 @@ public:
 	void Update();
 	void Draw();
 private:
-	//Œo‰ßŠÔŒv‘ª—p
+	//çµŒéæ™‚é–“è¨ˆæ¸¬ç”¨
 	LARGE_INTEGER m_cpuFrequency;
 	LARGE_INTEGER m_lastTime;
-	double m_totalTime = 0.0;	//‡ŒvŒo‰ßŠÔ(•b)
-	const double START_TIME_SECONDS = 3 * 60.0;	//§ŒÀŠÔ
+	double m_totalTime = 0.0;	//åˆè¨ˆçµŒéæ™‚é–“(ç§’)
+	const double START_TIME_SECONDS = 3 * 60.0;	//åˆ¶é™æ™‚é–“
 
-	//ƒeƒNƒXƒ`ƒƒ‚Æ•`‰æİ’è
-	Texture* m_pTimerTex;		//ƒeƒNƒXƒ`ƒƒ
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¨æç”»è¨­å®š
+	Texture* m_pTimerTex;		//ãƒ†ã‚¯ã‚¹ãƒãƒ£
 
-	//ƒwƒ‹ƒp[ŠÖ”
+	//ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°
 	std::string TimeToString(double timeInSeconds);
 	DirectX::XMFLOAT4 CalculateUVForNumber(int number);
 	void DrawDigit(int number, DirectX::XMFLOAT2 centerPos, DirectX::XMFLOAT2 size);

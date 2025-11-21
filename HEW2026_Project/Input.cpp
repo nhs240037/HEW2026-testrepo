@@ -1,12 +1,12 @@
-#include "Input.h"
+ï»¿#include "Input.h"
 
-//--- ƒOƒ[ƒoƒ‹•Ï”
+//--- ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
 BYTE g_keyTable[256];
 BYTE g_oldTable[256];
 
 HRESULT InitInput()
 {
-	// ˆê”ÔÅ‰‚Ì“ü—Í
+	// ä¸€ç•ªæœ€åˆã®å…¥åŠ›
 	GetKeyboardState(g_keyTable);
 	return S_OK;
 }
@@ -15,9 +15,9 @@ void UninitInput()
 }
 void UpdateInput()
 {
-	// ŒÃ‚¢“ü—Í‚ğXV
+	// å¤ã„å…¥åŠ›ã‚’æ›´æ–°
 	memcpy_s(g_oldTable, sizeof(g_oldTable), g_keyTable, sizeof(g_keyTable));
-	// Œ»İ‚Ì“ü—Í‚ğæ“¾
+	// ç¾åœ¨ã®å…¥åŠ›ã‚’å–å¾—
 	GetKeyboardState(g_keyTable);
 }
 

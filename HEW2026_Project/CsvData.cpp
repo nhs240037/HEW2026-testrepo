@@ -1,4 +1,4 @@
-#include "CsvData.h"
+ï»¿#include "CsvData.h"
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -33,9 +33,9 @@ void CsvData::Init()
     std::string line;
     std::string line_h;
 
-    // ƒwƒbƒ_s‚ğƒXƒLƒbƒv (ƒIƒvƒVƒ‡ƒ“)
+    // ãƒ˜ãƒƒãƒ€è¡Œã‚’ã‚¹ã‚­ãƒƒãƒ— (ã‚ªãƒ—ã‚·ãƒ§ãƒ³)
     //std::getline(inputFile, line);
-    // ¡‰ñ‚ÍƒXƒLƒbƒv
+    // ä»Šå›ã¯ã‚¹ã‚­ãƒƒãƒ—
     while (std::getline(inputFile_humb, line_h))
     {
         std::stringstream ss_h(line_h);
@@ -82,35 +82,35 @@ void CsvData::Init()
         }
         s_count_h++;
     }
-    // ƒf[ƒ^s‚Ìˆ—
+    // ãƒ‡ãƒ¼ã‚¿è¡Œã®å‡¦ç†
     while (std::getline(inputFile, line))
     {
         std::stringstream ss(line);
         std::string cell;
 
-        // 1—ñ–Ú (ID) ‚ğƒXƒLƒbƒv
+        // 1åˆ—ç›® (ID) ã‚’ã‚¹ã‚­ãƒƒãƒ—
         if (!std::getline(ss, cell, ',')) continue;
 
-        // 2—ñ–Ú (Name: •¶š—ñ‚Æ‚µ‚Äæ“¾)
+        // 2åˆ—ç›® (Name: æ–‡å­—åˆ—ã¨ã—ã¦å–å¾—)
         std::string name;
         if (!std::getline(ss, name, ',')) continue;
 
-        // 3—ñ–Ú (Price: ”’l‚Æ‚µ‚Äæ“¾)
+        // 3åˆ—ç›® (Price: æ•°å€¤ã¨ã—ã¦å–å¾—)
         std::string price_str;
         if (!std::getline(ss, price_str, ',')) continue;
 
         try 
         {
-            // •¶š—ñ‚ğ float Œ^‚Ì”’l‚É•ÏŠ·
+            // æ–‡å­—åˆ—ã‚’ float å‹ã®æ•°å€¤ã«å¤‰æ›
             float price = std::stod(price_str);
 
-            // ‘ã“ü‚·‚é”’l‚ğ•ÏX‚·‚é‚½‚ß‚ÌƒJƒEƒ“ƒg‚·‚é•Ï”
+            // ä»£å…¥ã™ã‚‹æ•°å€¤ã‚’å¤‰æ›´ã™ã‚‹ãŸã‚ã®ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹å¤‰æ•°
             static int count;
 
-            // ˆ—Eo—Í
+            // å‡¦ç†ãƒ»å‡ºåŠ›
             
 
-            // ‘ã“üˆ—
+            // ä»£å…¥å‡¦ç†
             switch (count)
             {
             case DownloadState::Field_WIDTH:
@@ -164,13 +164,13 @@ void CsvData::Init()
             count++;
         }
         catch (const std::invalid_argument& e) {
-            // •ÏŠ·‘ÎÛ‚Ì•¶š—ñ‚ª”’l‚Æ‚µ‚Ä–³Œø‚¾‚Á‚½ê‡
-            //std::cerr << "Œx: Price‚Ìƒf[ƒ^‚ª”’l‚Å‚Í‚ ‚è‚Ü‚¹‚ñ (\"" << price_str << "\")" << std::endl;
+            // å¤‰æ›å¯¾è±¡ã®æ–‡å­—åˆ—ãŒæ•°å€¤ã¨ã—ã¦ç„¡åŠ¹ã ã£ãŸå ´åˆ
+            //std::cerr << "è­¦å‘Š: Priceã®ãƒ‡ãƒ¼ã‚¿ãŒæ•°å€¤ã§ã¯ã‚ã‚Šã¾ã›ã‚“ (\"" << price_str << "\")" << std::endl;
 
         }
         catch (const std::out_of_range& e) {
-            // •ÏŠ·Œã‚Ì”’l‚ª double Œ^‚Ì”ÍˆÍ‚ğ’´‚¦‚Ä‚¢‚½ê‡
-            //std::cerr << "Œx: Price‚Ì’l‚ª‘å‚«‚·‚¬‚Ü‚· (\"" << price_str << "\")" << std::endl;
+            // å¤‰æ›å¾Œã®æ•°å€¤ãŒ double å‹ã®ç¯„å›²ã‚’è¶…ãˆã¦ã„ãŸå ´åˆ
+            //std::cerr << "è­¦å‘Š: Priceã®å€¤ãŒå¤§ãã™ãã¾ã™ (\"" << price_str << "\")" << std::endl;
 
         }
     }

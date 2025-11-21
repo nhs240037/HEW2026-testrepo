@@ -1,4 +1,4 @@
-#ifndef __SCENE_GAME_H__
+﻿#ifndef __SCENE_GAME_H__
 #define __SCENE_GAME_H__
 
 #include "Scene.h"

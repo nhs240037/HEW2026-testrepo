@@ -11,14 +11,14 @@ public:
 	~CTimer();
 
 	void InitializeTimer();
-	void Update();
-	void Draw();
-private:
+	virtual void Update();
+	virtual void Draw();
+protected:
 	//経過時間計測用
 	LARGE_INTEGER m_cpuFrequency;
 	LARGE_INTEGER m_lastTime;
 	double m_totalTime = 0.0;	//合計経過時間(秒)
-	const double START_TIME_SECONDS = 3 * 60.0;	//制限時間
+	double m_limitTime = 3 * 60.0;	//制限時間
 
 	//テクスチャと描画設定
 	Texture* m_pTimerTex;		//テクスチャ

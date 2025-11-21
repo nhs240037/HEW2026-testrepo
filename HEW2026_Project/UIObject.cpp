@@ -22,6 +22,9 @@ UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder, float Posit
 	m_fPosition = {PositionX, PositionY};
 	m_fSize = {Width, Height};
 	m_fRotation = {RotationX, RotationY, RotationZ};
+	m_fUVPositon = { 0.0f, 0.0f };
+	m_fUVScale = { 1.0f, 1.0f };
+	m_fColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	std::string TexturePath = "Assets/Texture/" + RelativeTexturePathFromTextureFolder;
 	std::string FailedMsg = "Texture load failed.\n"+TexturePath;
@@ -86,8 +89,9 @@ void UIObject::Draw()
 		Sprite::SetSize(m_fSize);												// スプライトのサイズを設定
 		Sprite::SetOffset({ m_fSize.x * 0.5f, 0.0f });	// スプライトの原点を変更
 		Sprite::SetTexture(m_pTexture);										// テクスチャを設定
-		Sprite::SetUVPos({ 0.f, 0.f });
-		Sprite::SetUVScale({ 1.0f, 1.f });
+		Sprite::SetUVPos(m_fUVPositon);
+		Sprite::SetUVScale(m_fUVScale);
+		Sprite::SetColor(m_fColor);
 		Sprite::Draw();
 
 	SetRenderTargets(1, &pRTV, pDSV);
@@ -109,6 +113,21 @@ void UIObject::SetRotation(float X, float Y, float Z)
 	m_fRotation = {X, Y, Z};
 }
 
+void UIObject::SetUVPosition(float X, float Y)
+{
+		m_fUVPositon = { X, Y };
+}
+
+void UIObject::SetUVScale(float X, float Y)
+{
+		m_fUVScale = { X, Y };
+}
+
+void UIObject::SetColor(float R, float G, float B, float A)
+{
+		m_fColor = { R,G,B,A };
+}
+
 DirectX::XMFLOAT2 UIObject::GetPosition(void)
 {
 	return m_fPosition;
@@ -124,3 +143,17 @@ DirectX::XMFLOAT3 UIObject::GetRotation(void)
 	return m_fRotation;
 }
 
+DirectX::XMFLOAT2 UIObject::GetUVPosition(void)
+{
+		return m_fUVPositon;
+}
+
+DirectX::XMFLOAT2 UIObject::GetUVScale(void)
+{
+		return m_fUVScale;
+}
+
+DirectX::XMFLOAT4 UIObject::GetColor(void)
+{
+		return m_fColor;
+}

@@ -36,7 +36,7 @@ void CTimer::InitializeTimer()
 	//最初の時刻を取得
 	QueryPerformanceCounter(&m_lastTime);
 
-	m_totalTime = START_TIME_SECONDS;
+	m_totalTime = m_limitTime;
 }
 
 void CTimer::Update()

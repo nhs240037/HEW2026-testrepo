@@ -30,14 +30,23 @@ public:
 	void SetSize(float W, float H);
 	void SetRotation(float X, float Y, float Z);
 	void SetTexture(std::string RelativeTexturePathFromTextureFolder);
+	void SetUVPosition(float X, float Y);
+	void SetUVScale(float X, float Y);
+	void SetColor(float R, float G, float B, float A);
 
 	DirectX::XMFLOAT2 GetPosition(void);
 	DirectX::XMFLOAT2 GetSize(void);
 	DirectX::XMFLOAT3 GetRotation(void);
+	DirectX::XMFLOAT2 GetUVPosition(void);
+	DirectX::XMFLOAT2 GetUVScale(void);
+	DirectX::XMFLOAT4 GetColor(void);
 
 private:
 	Texture* m_pTexture;
 	DirectX::XMFLOAT2 m_fPosition;
 	DirectX::XMFLOAT2 m_fSize;
 	DirectX::XMFLOAT3 m_fRotation;
+	DirectX::XMFLOAT2 m_fUVPositon;
+	DirectX::XMFLOAT2 m_fUVScale;
+	DirectX::XMFLOAT4 m_fColor;
 };

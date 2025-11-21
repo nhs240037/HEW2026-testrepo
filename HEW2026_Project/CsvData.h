@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #define MAX_HAMBRUGER       (10)
 #define MAX_HAMBRUGER_TYPE  (5)
@@ -23,10 +23,10 @@ private:
     };
     struct Field
     {
-        float width;    // ƒtƒB[ƒ‹ƒh‚Ì‰¡•
-        float height;   // ƒtƒB[ƒ‹ƒh‚Ì‚‚³
-        int column;     // ƒtƒB[ƒ‹ƒh‚Ì‰¡‚ÌƒOƒŠƒbƒh”
-        int row;        // ƒtƒB[ƒ‹ƒh‚Ìc‚ÌƒOƒŠƒbƒh”
+        float width;    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®æ¨ªå¹…
+        float height;   // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®é«˜ã•
+        int column;     // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®æ¨ªã®ã‚°ãƒªãƒƒãƒ‰æ•°
+        int row;        // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®ç¸¦ã®ã‚°ãƒªãƒƒãƒ‰æ•°
     };
 
     struct Object

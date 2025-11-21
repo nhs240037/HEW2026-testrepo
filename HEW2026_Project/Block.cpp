@@ -1,4 +1,4 @@
-#include "Block.h"
+﻿#include "Block.h"
 #include"Geometory.h"
 #include"ShaderList.h"
 #include"Sprite.h"
@@ -24,52 +24,53 @@ Block::Block()
 	int count=0;
 	fileName[count] = "Assets/Model/Prototype/MD_Buns_Bottom.fbx";	count++;
 	fileName[count] = "Assets/Model/Prototype/MD_Buns_Top.fbx";		count++;
-	fileName[count] = "Assets/Model/Prototype/MD_Cheese.fbx";		count++;
-	fileName[count] = "Assets/Model/Prototype/MD_Egg.fbx";			count++;
 	fileName[count] = "Assets/Model/Prototype/MD_Patty.fbx";		count++;
-	fileName[count] = "Assets/Model/Prototype/MD_Tomato.fbx";		count++;
 	fileName[count] = "Assets/Model/Prototype/MD_Lettuce.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Egg.fbx";			count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Bacon.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Cheese.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Tomato.fbx";		count++;
 	m_pModel = new Model();
 	switch (m_bColor)
 	{
 	case Block::Buns_up:
-		if (!m_pModel->Load(fileName[1].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[1].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Top", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Buns_Button:
-		if (!m_pModel->Load(fileName[0].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[0].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Buttom", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Bacon:
-		if (!m_pModel->Load(fileName[4].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[5].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Bacon", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Cheese:
-		if (!m_pModel->Load(fileName[2].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[6].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Cheese", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Fried_egg:
-		if (!m_pModel->Load(fileName[3].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[4].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Egg", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Patty:
-		if (!m_pModel->Load(fileName[4].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[2].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Patty", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Lettuce:
-		if (!m_pModel->Load(fileName[5].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[3].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Lettuce", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Tomato:
-		if (!m_pModel->Load(fileName[6].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[7].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Tomato", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::None:
@@ -121,7 +122,7 @@ void Block::Update()
 	case Block::Block_Drop:
 		m_pos.y -= csv.GetBlockState().blo.posY;
 
-		// �ŐV�̃v���C���[�ʒu�œ����蔻�肷��
+		// 最新のプレイヤー位置で当たり判定する
 		if (m_playerPos.x > m_pos.x - (csv.GetBlockState().blo.size.x / 2.0f) &&
 			m_playerPos.x < m_pos.x + (csv.GetBlockState().blo.size.x / 2.0f))
 		{
@@ -154,8 +155,8 @@ void Block::Update()
 
 void Block::Draw()
 {
-	DirectX::XMMATRIX T; // �V�ʂ��O���b�h�������ɗ���悤�Ɉړ�
-	DirectX::XMMATRIX S; // �n�ʂƂȂ�悤�ɁA�O�㍶�E�ɍL���A�㉺�ɋ�������
+	DirectX::XMMATRIX T; // 天面がグリッドよりも下に来るように移動
+	DirectX::XMMATRIX S; // 地面となるように、前後左右に広く、上下に狭くする
 	DirectX::XMMATRIX mat;
 	DirectX::XMFLOAT4X4 fMat;
 
@@ -166,44 +167,44 @@ void Block::Draw()
 
 	DirectX::XMStoreFloat4x4(&fMat,mat);
 
-	Geometory::SetWorld(fMat); // �{�b�N�X�ɕϊ��s���ݒ�
+	Geometory::SetWorld(fMat); // ボックスに変換行列を設定
 	if(m_pModel == nullptr)
-		Geometory::DrawCylinder();// �e�̑傫�����v�Z
+		Geometory::DrawCylinder();// 影の大きさを計算
 	if(m_pModel != nullptr)
 	{
-		//�@�v�Z�p�̃f�[�^����ǂݎ��p�̃f�[�^�ɕϊ�
+		//　計算用のデータから読み取り用のデータに変換
 		DirectX::XMStoreFloat4x4(&wvp[0], DirectX::XMMatrixTranspose(m_dxpos));
 
-		// ���f���ɕϊ��s���ݒ�
+		// モデルに変換行列を設定
 		wvp[1] = m_pCamera->GetViewMatrix();
 		wvp[2] = m_pCamera->GetProjectionMatrix();
 
-		//�@�V�F�[�_�[�֕ϊ��s���ݒ�
-		ShaderList::SetWVP(wvp);	//�@�����ɂ�XMFLOAT4X4�^�́A�v�f���R�̔z��̃A�h���X��n������
+		//　シェーダーへ変換行列を設定
+		ShaderList::SetWVP(wvp);	//　引数にはXMFLOAT4X4型の、要素数３の配列のアドレスを渡すこと
 
 
 		Geometory::SetView(m_pCamera->GetViewMatrix(true));
 		Geometory::SetProjection(m_pCamera->GetProjectionMatrix(true));
-		// Sprite�ւ̐ݒ�
+		// Spriteへの設定
 		Sprite::SetView(m_pCamera->GetViewMatrix(true));
 		Sprite::SetProjection(m_pCamera->GetProjectionMatrix(true));
 
-		//�@���f���Ɏg�p���钸�_�V�F�[�_�[�A�s�N�Z���V�F�[�_�[��ݒ�
+		//　モデルに使用する頂点シェーダー、ピクセルシェーダーを設定
 		m_pModel->SetVertexShader(ShaderList::GetVS(ShaderList::VS_WORLD));
 		m_pModel->SetPixelShader(ShaderList::GetPS(ShaderList::PS_LAMBERT));
 
-		//�@�����̃��b�V���ō\������Ă���ꍇ�A���镔���͋����I�ȕ\���A���镔���͔�����I�ȕ\����
-		// ������ꍇ������B�O��̕\���͓����}�e���A���ňꊇ�\�����Ă������߁A���b�V�����ƂɃ}�e���A����
-		// �؂�ւ���B
+		//　複数のメッシュで構成されている場合、ある部分は金属的な表現、ある部分は非金属的な表現と
+		// 分ける場合がある。前回の表示は同じマテリアルで一括表示していたため、メッシュごとにマテリアルを
+		// 切り替える。
 		for (int i = 0; i < m_pModel->GetMeshNum(); ++i)
 		{
-			// ���f���̃��b�V�����擾
+			// モデルのメッシュを取得
 			Model::Mesh mesh = *m_pModel->GetMesh(i);
-			// ���b�V���Ɋ��蓖�Ă��Ă���}�e���A�����擾
+			// メッシュに割り当てられているマテリアルを取得
 			Model::Material	material = *m_pModel->GetMaterial(mesh.materialID);
-			// �V�F�[�_�[�փ}�e���A����ݒ�
+			// シェーダーへマテリアルを設定
 			ShaderList::SetMaterial(material);
-			// ���f���̕`��
+			// モデルの描画
 			m_pModel->Draw(i);
 		}
 	}
@@ -211,22 +212,22 @@ void Block::Draw()
 
 void Block::OnCollision(Collision::Result collision)
 {
-	// �v�Z�ɕK�v�ȏ������O�Ɍv�Z
+	// 計算に必要な情報を事前に計算
 	DirectX::XMVECTOR vHitPos = DirectX::XMLoadFloat3(&collision.point);
 	DirectX::XMVECTOR vNormal = DirectX::XMLoadFloat3(&collision.normal);
 	DirectX::XMVECTOR vMove = DirectX::XMLoadFloat3(&m_move);
 	vNormal = DirectX::XMVector3Normalize(vNormal);
 
-	// ���˂̌v�Z
+	// 反射の計算
 	DirectX::XMVECTOR vDot = DirectX::XMVector3Dot(vNormal, vMove);
 	vDot = DirectX::XMVectorScale(vDot, 2.0f);
 	vDot = DirectX::XMVectorMultiply(vNormal, DirectX::XMVectorAbs(vDot));
 	vMove = DirectX::XMVectorAdd(vMove, vDot);
 	DirectX::XMStoreFloat3(&m_move, vMove);
 
-	// ���ˌ�̕␳
+	// 反射後の補正
 	if (collision.other.type == Collision::eBox) {
-		// �{�b�N�X�ɏՓ˂����ꍇ�A�Փˈʒu�̕␳
+		// ボックスに衝突した場合、衝突位置の補正
 		Collision::Box other = collision.other.box;
 		if (collision.normal.x != 0.0f)
 			m_pos.x =
@@ -237,17 +238,17 @@ void Block::OnCollision(Collision::Result collision)
 		else
 			m_pos.z =
 			other.center.z + collision.normal.z * (other.size.z + collision.other.box.size.z) * 0.5f;
-		// ���ˌ�̈ړ����x�̕␳
+		// 反射後の移動速度の補正
 		m_move.x *= 0.8f;
 		m_move.y *= 0.6f;
 		m_move.z *= 0.8f;
 	}
 	else {
-		// �ΖʂɏՓ˂����ꍇ�̈ʒu�̕␳
+		// 斜面に衝突した場合の位置の補正
 		m_pos.x = collision.point.x + collision.normal.x * collision.other.box.size.x * 0.5f;
 		m_pos.y = collision.point.y + collision.normal.y * collision.other.box.size.y * 0.5f;
 		m_pos.z = collision.point.z + collision.normal.z * collision.other.box.size.z * 0.5f;
-		// ���ˌ�̈ړ����x�̕␳
+		// 反射後の移動速度の補正
 		m_move.x *= 0.2f;
 		m_move.y *= 0.5f;
 		m_move.z *= 0.2f;
@@ -310,56 +311,56 @@ Block::Block(Block_Color set)
 	int count = 0;
 	fileName[count] = "Assets/Model/Prototype/MD_Buns_Bottom.fbx";	count++;
 	fileName[count] = "Assets/Model/Prototype/MD_Buns_Top.fbx";		count++;
-	fileName[count] = "Assets/Model/Prototype/MD_Cheese.fbx";		count++;
-	fileName[count] = "Assets/Model/Prototype/MD_Egg.fbx";			count++;
 	fileName[count] = "Assets/Model/Prototype/MD_Patty.fbx";		count++;
-	fileName[count] = "Assets/Model/Prototype/MD_Tomato.fbx";		count++;
 	fileName[count] = "Assets/Model/Prototype/MD_Lettuce.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Egg.fbx";			count++;
 	fileName[count] = "Assets/Model/Prototype/MD_Bacon.fbx";		count++;
-	// �܂��Ȃ��̂�Patty�ł��o��������
+	fileName[count] = "Assets/Model/Prototype/MD_Cheese.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Tomato.fbx";		count++;
+	// まだないのでPattyでも出そうかな
 	//fileName[count] = "Assets/Model/Prototype/MD_Bacon.fbx";		count++;
 
 	m_pModel = new Model();
 	switch (m_bColor)
 	{
 	case Block::Buns_up:
-		if (!m_pModel->Load(fileName[1].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[1].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Top", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Buns_Button:
-		if (!m_pModel->Load(fileName[0].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[0].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Buttom", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Bacon:
-		if (!m_pModel->Load(fileName[4].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[5].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Bacon", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Cheese:
-		if (!m_pModel->Load(fileName[2].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[6].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Cheese", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Fried_egg:
-		if (!m_pModel->Load(fileName[3].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[4].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Egg", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Patty:
-		if (!m_pModel->Load(fileName[4].c_str(), 5.0f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[2].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Patty", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Lettuce:
-		if (!m_pModel->Load(fileName[5].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[3].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Lettuce", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Tomato:
-		if (!m_pModel->Load(fileName[6].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[7].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Tomato","Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::None:
@@ -406,59 +407,60 @@ Block::Block(Block_Color set, float setX, float setY)
 	, m_dxpos{}
 	, wvp{}
 {
-	m_pos.x = setX;
+	m_pos.x = csv.GetBlockState().setX;
 	m_pos.y = csv.GetBlockState().height;
-	m_pos.z = setY;
+	m_pos.z = csv.GetBlockState().setY;
 
 	int count = 0;
-	fileName[count] = "Assets/Model/Prototype/MD_Buns_Bottom.fbx";	count++;
-	fileName[count] = "Assets/Model/Prototype/MD_Buns_Top.fbx";		count++;
-	fileName[count] = "Assets/Model/Prototype/MD_Cheese.fbx";		count++;
-	fileName[count] = "Assets/Model/Prototype/MD_Egg.fbx";			count++;
-	fileName[count] = "Assets/Model/Prototype/MD_Patty.fbx";		count++;
-	fileName[count] = "Assets/Model/Prototype/MD_Tomato.fbx";		count++;
-	fileName[count] = "Assets/Model/Prototype/MD_Lettuce.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Buns_Bottom.fbx";		count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Buns_Top.fbx";				count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Patty.fbx";					count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Lettuce.fbx";				count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Egg.fbx";						count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Bacon.fbx";					count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Cheese.fbx";					count++;
+	fileName[count] = "Assets/Model/Prototype/MD_Tomato.fbx";					count++;
 	m_pModel = new Model();
 	switch (m_bColor)
 	{
 	case Block::Buns_up:
-		if (!m_pModel->Load(fileName[1].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[1].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Branch_01", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Buns_Button:
-		if (!m_pModel->Load(fileName[0].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[0].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Branch_01", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Bacon:
-		if (!m_pModel->Load(fileName[4].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[5].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Branch_01", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Cheese:
-		if (!m_pModel->Load(fileName[2].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[6].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Branch_01", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Fried_egg:
-		if (!m_pModel->Load(fileName[3].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[4].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Branch_01", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Patty:
-		if (!m_pModel->Load(fileName[4].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[2].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Branch_01", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Lettuce:
-		if (!m_pModel->Load(fileName[5].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[3].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Branch_01", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::Tomato:
-		if (!m_pModel->Load(fileName[6].c_str(), 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-			MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+		if (!m_pModel->Load(fileName[7].c_str(), 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+			MessageBox(NULL, "Branch_01", "Error", MB_OK); // エラーメッセージの表示
 		}
 		break;
 	case Block::None:

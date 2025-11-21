@@ -1,4 +1,4 @@
-#ifndef __MESH_BUFFER_H__
+﻿#ifndef __MESH_BUFFER_H__
 #define __MESH_BUFFER_H__
 
 #include "DirectX.h"

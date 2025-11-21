@@ -1,4 +1,4 @@
-#include "Camera.h"
+﻿#include "Camera.h"
 #include"Defines.h"
 
 Camera::Camera()
@@ -18,19 +18,19 @@ Camera::~Camera()
 
 DirectX::XMFLOAT4X4 Camera::GetViewMatrix(bool transpose)
 {
-		DirectX::XMFLOAT4X4 mat;
-		DirectX::XMMATRIX view;
-		view = DirectX::XMMatrixLookAtLH(
-			DirectX::XMVectorSet(m_pos.x, m_pos.y, m_pos.z, 0.0f),
-			DirectX::XMVectorSet(m_look.x, m_look.y, m_look.z, 0.0f),
-			DirectX::XMVectorSet(m_up.x, m_up.y, m_up.z, 0.0f)
-		);
-		if (transpose) {
-			view = DirectX::XMMatrixTranspose(view);
-		}
-		DirectX::XMStoreFloat4x4(&mat, view);
-		return mat;
+	DirectX::XMFLOAT4X4 mat;
+	DirectX::XMMATRIX view;
+	view = DirectX::XMMatrixLookAtLH(
+		DirectX::XMVectorSet(m_pos.x, m_pos.y, m_pos.z, 0.0f),
+		DirectX::XMVectorSet(m_look.x, m_look.y, m_look.z, 0.0f),
+		DirectX::XMVectorSet(m_up.x, m_up.y, m_up.z, 0.0f)
+	);
+	if (transpose) {
+		view = DirectX::XMMatrixTranspose(view);
 	}
+	DirectX::XMStoreFloat4x4(&mat, view);
+	return mat;
+}
 
 DirectX::XMFLOAT4X4 Camera::GetProjectionMatrix(bool transpose)
 {
@@ -53,4 +53,3 @@ DirectX::XMFLOAT3 Camera::GetLook()
 {
 	return m_look;
 }
-

@@ -1,9 +1,9 @@
-#ifndef _CAMERADEBUG_H
+ï»¿#ifndef _CAMERADEBUG_H
 #define _CAMERADEBUG_H
 
 #include "Camera.h"
 #include "Input.h"
-class CameraDebug : public Camera 
+class CameraDebug : public Camera
 {
 public:
 	CameraDebug();
@@ -11,9 +11,9 @@ public:
 	void Update() final;
 	void SetPos(const DirectX::XMFLOAT3& pos)override;
 private:
-	float m_radXZ;		// ƒJƒƒ‰‚Ì‰¡‰ñ“]
-	float m_radY;		// ƒJƒƒ‰‚Ìc‰ñ“]
-	float m_radius;	// ƒJƒƒ‰‚Æ’‹“_‚Ì‹——£
+	float m_radXZ;		// ã‚«ãƒ¡ãƒ©ã®æ¨ªå›è»¢
+	float m_radY;		// ã‚«ãƒ¡ãƒ©ã®ç¸¦å›è»¢
+	float m_radius;	// ã‚«ãƒ¡ãƒ©ã¨æ³¨è¦–ç‚¹ã®è·é›¢
 
 };
 

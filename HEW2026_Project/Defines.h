@@ -1,4 +1,4 @@
-#ifndef __DEFINES_H__
+ï»¿#ifndef __DEFINES_H__
 #define __DEFINES_H__
 
 #include <assert.h>
@@ -11,10 +11,10 @@ static const int FPS = 60;
 static const float fFPS = static_cast<float>(FPS);
 
 
-// ƒŠƒ\[ƒXƒpƒX
+// ï¿½ï¿½ï¿½\ï¿½[ï¿½Xï¿½pï¿½X
 #define ASSET(path)	"Assets/"path
 
-// 3D‹óŠÔ’è‹`
+// 3Dï¿½ï¿½Ô’ï¿½`
 #define CMETER(value) (value * 0.01f)
 #define METER(value) (value * 1.0f)
 #define MSEC(value) (value / fFPS)
@@ -27,11 +27,11 @@ static const float fFPS = static_cast<float>(FPS);
 
 
 
-//CSVƒtƒ@ƒCƒ‹“Ç‚İ‚İŒã
+//CSVï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ç‚İï¿½ï¿½İŒï¿½
 #define CSV_ACCEPT
 
 #ifndef CSV_ACCEPT
-//----- csvƒtƒ@ƒCƒ‹‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚È‚¢ê‡ -----//
+//----- csvï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Ç‚İï¿½ï¿½Ü‚ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½ê‡ -----//
 #define PLAYER_MOVE_SPEED (.1f)
 #define FIELD_COLUMN (0xc)
 #define FIELD_ROW    (0x6)
@@ -41,7 +41,7 @@ static const float fFPS = static_cast<float>(FPS);
 
 #ifdef CSV_ACCEPT
 
-//----- csvƒtƒ@ƒCƒ‹“Ç‚İ‚İ¬Œ÷ -----//
+//----- csvï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ç‚İï¿½ï¿½İï¿½ï¿½ï¿½ -----//
 #define PLAYER_MOVE_SPEED(set)	set.GetSpeed()
 #define FIELD_COLUMN(set)		set.GetWidth()
 #define FIELD_ROW(set)			set.GetHeight()
@@ -68,16 +68,16 @@ static const float fFPS = static_cast<float>(FPS);
 
 static const float GRAVITY = 0.98f;
 
-// ƒ^ƒCƒgƒ‹
+// ï¿½^ï¿½Cï¿½gï¿½ï¿½
 static const char* APP_TITLE = "DX22_Prototype";
 
-// ‰æ–ÊƒTƒCƒY
-static const int SCREEN_WIDTH	= 0x500;
-static const int SCREEN_HEIGHT	= 0x2D0;
+// ï¿½ï¿½ÊƒTï¿½Cï¿½Y
+static const int SCREEN_WIDTH	= 1280;
+static const int SCREEN_HEIGHT	= 720;
 
-// ƒOƒŠƒbƒhƒTƒCƒY(ƒfƒoƒbƒO—p
-static const int	DEBUG_GRID_NUM		= 0xA;			// ƒOƒŠƒbƒh’†S‚©‚ç’[‚Ü‚Å‚Ìü‚Ì–{”
-static const float	DEBUG_GRID_MARGIN	= METER(1.0f);	// ƒOƒŠƒbƒh”z’u•
+// ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½Tï¿½Cï¿½Y(ï¿½fï¿½oï¿½bï¿½Oï¿½p
+static const int	DEBUG_GRID_NUM		= 20;			// ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½[ï¿½Ü‚Å‚Ìï¿½ï¿½Ì–{ï¿½ï¿½
+static const float	DEBUG_GRID_MARGIN	= METER(1.0f);	// ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½zï¿½uï¿½ï¿½
 
 
 #endif // __DEFINES_H__

@@ -1,4 +1,4 @@
-#ifndef __TEXTURE_LOAD_H__
+﻿#ifndef __TEXTURE_LOAD_H__
 #define __TEXTURE_LOAD_H__
 
 #include "DirectXTex/DirectXTex.h"

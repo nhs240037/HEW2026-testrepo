@@ -1,4 +1,4 @@
-#ifndef _GAMEOBJECT_H
+ï»¿#ifndef _GAMEOBJECT_H
 #define _GAMEOBJECT_H
 
 #include<DirectXMath.h>
@@ -17,7 +17,7 @@ public:
 	virtual void OnCollision(Collision::Result collision);
 protected:
 	DirectX::XMFLOAT3 m_pos;
-	Collision::Info m_collision;// “–‚½‚è”»’è‚Ìî•ñ
+	Collision::Info m_collision;// ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½Ìï¿½ï¿½
 };
 
 #endif//_GAMEOBJECT_H

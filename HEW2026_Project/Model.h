@@ -1,6 +1,6 @@
-/*
+ï»¿/*
 * @brief 
-* @ ‡¬ƒAƒjƒ[ƒVƒ‡ƒ“‚Æ‚Í
+* @ åˆæˆã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã¨ã¯
 */
 #ifndef __MODEL_H__
 #define __MODEL_H__
@@ -14,44 +14,44 @@
 class Model
 {
 public:
-	// ƒ‚ƒfƒ‹”½“]İ’è
+	// ãƒ¢ãƒ‡ãƒ«åè»¢è¨­å®š
 	enum Flip
 	{
-		None,			// DirectX€‹’(”½“]‚·‚é
-		XFlip,			// Maya€‹’
-		ZFlip,			// DirectX€‹’(Maya‚©‚ç180‰ñ“]‚µ‚½ó‘Ô
-		ZFlipUseAnime,	// DirecX€‹’(ƒAƒjƒ[ƒVƒ‡ƒ“‚³‚¹‚éê‡
+		None,			// DirectXæº–æ‹ (åè»¢ã™ã‚‹
+		XFlip,			// Mayaæº–æ‹ 
+		ZFlip,			// DirectXæº–æ‹ (Mayaã‹ã‚‰180å›è»¢ã—ãŸçŠ¶æ…‹
+		ZFlipUseAnime,	// DirecXæº–æ‹ (ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã•ã›ã‚‹å ´åˆ
 	};
 
 private:
-	// ƒAƒjƒ[ƒVƒ‡ƒ“ŒvZ—Ìˆæ
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è¨ˆç®—é ˜åŸŸ
 	enum AnimeTransform
 	{
-		MAIN,			// ’ÊíÄ¶
-		BLEND,			// ƒuƒŒƒ“ƒhÄ¶
-		PARAMETRIC0,	// ‡¬A
-		PARAMETRIC1,	// ‡¬B
+		MAIN,			// é€šå¸¸å†ç”Ÿ
+		BLEND,			// ãƒ–ãƒ¬ãƒ³ãƒ‰å†ç”Ÿ
+		PARAMETRIC0,	// åˆæˆA
+		PARAMETRIC1,	// åˆæˆB
 		MAX_TRANSFORM
 	};
 
 public:
-	// Œ^’è‹`
-	using NodeIndex	= int;	// ƒ{[ƒ“(ŠK‘w)”Ô†
-	using AnimeNo	= int;	// ƒAƒjƒ[ƒVƒ‡ƒ“”Ô†
+	// å‹å®šç¾©
+	using NodeIndex	= int;	// ãƒœãƒ¼ãƒ³(éšå±¤)ç•ªå·
+	using AnimeNo	= int;	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç•ªå·
 
-	// ’è”’è‹`
-	static const NodeIndex	INDEX_NONE = -1;		// ŠY“–ƒm[ƒh‚È‚µ
-	static const AnimeNo	ANIME_NONE = -1;		// ŠY“–ƒAƒjƒ[ƒVƒ‡ƒ“‚È‚µ
-	static const AnimeNo	PARAMETRIC_ANIME = -2;	// ‡¬ƒAƒjƒ[ƒVƒ‡ƒ“
+	// å®šæ•°å®šç¾©
+	static const NodeIndex	INDEX_NONE = -1;		// è©²å½“ãƒãƒ¼ãƒ‰ãªã—
+	static const AnimeNo	ANIME_NONE = -1;		// è©²å½“ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãªã—
+	static const AnimeNo	PARAMETRIC_ANIME = -2;	// åˆæˆã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 
 private:
-	// “à•”Œ^’è‹`
-	using Children	= std::vector<NodeIndex>;	// ƒm[ƒhŠK‘wî•ñ
+	// å†…éƒ¨å‹å®šç¾©
+	using Children	= std::vector<NodeIndex>;	// ãƒãƒ¼ãƒ‰éšå±¤æƒ…å ±
 
-	// “à•”’è”’è‹`
-	static const UINT		MAX_BONE			=	200;	// ‚PƒƒbƒVƒ…‚ÌÅ‘åƒ{[ƒ“”(‚±‚±‚ğ•ÏX‚·‚éê‡.hlsl‘¤‚Ì’è‹`‚à•ÏX‚·‚é
+	// å†…éƒ¨å®šæ•°å®šç¾©
+	static const UINT		MAX_BONE			=	200;	// ï¼‘ãƒ¡ãƒƒã‚·ãƒ¥ã®æœ€å¤§ãƒœãƒ¼ãƒ³æ•°(ã“ã“ã‚’å¤‰æ›´ã™ã‚‹å ´åˆ.hlslå´ã®å®šç¾©ã‚‚å¤‰æ›´ã™ã‚‹
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì•ÏŠ·î•ñ
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å¤‰æ›æƒ…å ±
 	struct Transform
 	{
 		DirectX::XMFLOAT3	translate;
@@ -62,7 +62,7 @@ private:
 	using Timeline		= std::map<float, Transform>;
 	using Transforms	= std::vector<Transform>;
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚Æƒ{[ƒ“‚ÌŠÖ˜A•t‚¯î•ñ
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã¨ãƒœãƒ¼ãƒ³ã®é–¢é€£ä»˜ã‘æƒ…å ±
 	struct Channel
 	{
 		NodeIndex	index;
@@ -70,19 +70,19 @@ private:
 	};
 	using Channels = std::vector<Channel>;
 
-	// ƒ{[ƒ“î•ñ
+	// ãƒœãƒ¼ãƒ³æƒ…å ±
 	struct Node
 	{
-		std::string			name;		// ƒ{[ƒ“–¼
-		NodeIndex			parent;		// eƒ{[ƒ“
-		Children			children;	// qƒ{[ƒ“
-		DirectX::XMMATRIX	mat;		// •ÏŠ·s—ñ
+		std::string			name;		// ãƒœãƒ¼ãƒ³å
+		NodeIndex			parent;		// è¦ªãƒœãƒ¼ãƒ³
+		Children			children;	// å­ãƒœãƒ¼ãƒ³
+		DirectX::XMMATRIX	mat;		// å¤‰æ›è¡Œåˆ—
 	};
 	using Nodes = std::vector<Node>;
 
 	
 public:
-	// ’¸“_î•ñ
+	// é ‚ç‚¹æƒ…å ±
 	struct Vertex
 	{
 		DirectX::XMFLOAT3	pos;
@@ -95,7 +95,7 @@ public:
 	using Vertices	= std::vector<Vertex>;
 	using Indices	= std::vector<unsigned long>;
 
-	// ’¸“_‚Ìœ•ÏŒ`î•ñ
+	// é ‚ç‚¹ã®éª¨å¤‰å½¢æƒ…å ±
 	struct Bone
 	{
 		NodeIndex index;
@@ -103,7 +103,7 @@ public:
 	};
 	using Bones = std::vector<Bone>;
 
-	// ƒƒbƒVƒ…
+	// ãƒ¡ãƒƒã‚·ãƒ¥
 	struct Mesh
 	{
 		Vertices		vertices;
@@ -114,24 +114,24 @@ public:
 	};
 	using Meshes = std::vector<Mesh>;
 
-	// ƒ}ƒeƒŠƒAƒ‹î•ñ
+	// ãƒãƒ†ãƒªã‚¢ãƒ«æƒ…å ±
 	struct Material
 	{
-		DirectX::XMFLOAT4	diffuse;	// ŠgUŒõ(ƒƒCƒ“ƒJƒ‰[
-		DirectX::XMFLOAT4	ambient;	// ŠÂ‹«Œõ(‰A‚Ì•”•ª‚ÌƒJƒ‰[
-		DirectX::XMFLOAT4	specular;	// ‹¾–Ê”½ËŒõ(‹­‚­Œõ‚é•”•ª‚ÌƒJƒ‰[
-		Texture* pTexture;	// ƒeƒNƒXƒ`ƒƒ
+		DirectX::XMFLOAT4	diffuse;	// æ‹¡æ•£å…‰(ãƒ¡ã‚¤ãƒ³ã‚«ãƒ©ãƒ¼
+		DirectX::XMFLOAT4	ambient;	// ç’°å¢ƒå…‰(é™°ã®éƒ¨åˆ†ã®ã‚«ãƒ©ãƒ¼
+		DirectX::XMFLOAT4	specular;	// é¡é¢åå°„å…‰(å¼·ãå…‰ã‚‹éƒ¨åˆ†ã®ã‚«ãƒ©ãƒ¼
+		Texture* pTexture;	// ãƒ†ã‚¯ã‚¹ãƒãƒ£
 	};
 	using Materials = std::vector<Material>;
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“î•ñ
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æƒ…å ±
 	struct Animation
 	{
-		float		nowTime;	// Œ»İ‚ÌÄ¶ŠÔ
-		float		totalTime;	// Å‘åÄ¶ŠÔ
-		float		speed;		// Ä¶‘¬“x
-		bool		isLoop;		// ƒ‹[ƒvw’è
-		Channels	channels;	// •ÏŠ·î•ñ
+		float		nowTime;	// ç¾åœ¨ã®å†ç”Ÿæ™‚é–“
+		float		totalTime;	// æœ€å¤§å†ç”Ÿæ™‚é–“
+		float		speed;		// å†ç”Ÿé€Ÿåº¦
+		bool		isLoop;		// ãƒ«ãƒ¼ãƒ—æŒ‡å®š
+		Channels	channels;	// å¤‰æ›æƒ…å ±
 	};
 	using Animations = std::vector<Animation>;
 
@@ -144,7 +144,7 @@ public:
 	bool Load(const char* file, float scale = 1.0f, Flip flip = Flip::None);
 	void Draw(int meshNo = -1);
 
-	//--- Šeíî•ñæ“¾
+	//--- å„ç¨®æƒ…å ±å–å¾—
 	const Mesh* GetMesh(unsigned int index);
 	uint32_t GetMeshNum();
 	const Material* GetMaterial(unsigned int index);
@@ -152,28 +152,28 @@ public:
 	DirectX::XMMATRIX GetBone(NodeIndex index);
 	const Animation* GetAnimation(AnimeNo no);
 
-	//--- ƒAƒjƒ[ƒVƒ‡ƒ“
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì“Ç‚İ‚İ
+	//--- ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®èª­ã¿è¾¼ã¿
 	AnimeNo AddAnimation(const char* file);
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌXV
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æ›´æ–°
 	void Step(float tick);
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿ
 	void Play(AnimeNo no, bool loop, float speed = 1.0f);
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒhÄ¶
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ–ãƒ¬ãƒ³ãƒ‰å†ç”Ÿ
 	void PlayBlend(AnimeNo no, float blendTime, bool loop, float speed = 1.0f);
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‡¬İ’è
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®åˆæˆè¨­å®š
 	void SetParametric(AnimeNo no1, AnimeNo no2);
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‡¬Š„‡İ’è
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®åˆæˆå‰²åˆè¨­å®š
 	void SetParametricBlend(float blendRate);
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŒ»İÄ¶ŠÔ‚ğ•ÏX
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ç¾åœ¨å†ç”Ÿæ™‚é–“ã‚’å¤‰æ›´
 	void SetAnimationTime(AnimeNo no, float time);
 
-	// Ä¶ƒtƒ‰ƒO
+	// å†ç”Ÿãƒ•ãƒ©ã‚°
 	bool IsPlay(AnimeNo no);
-	// Œ»İÄ¶’†‚ÌƒAƒjƒ”Ô†
+	// ç¾åœ¨å†ç”Ÿä¸­ã®ã‚¢ãƒ‹ãƒ¡ç•ªå·
 	AnimeNo GetPlayNo();
-	// ƒuƒŒƒ“ƒh’†‚ÌƒAƒjƒ”Ô†
+	// ãƒ–ãƒ¬ãƒ³ãƒ‰ä¸­ã®ã‚¢ãƒ‹ãƒ¡ç•ªå·
 	AnimeNo GetBlendNo();
 
 #ifdef _DEBUG
@@ -183,13 +183,13 @@ public:
 
 
 private:
-	// Šeí¶¬
+	// å„ç¨®ç”Ÿæˆ
 	void MakeMesh(const void* ptr, float scale, Flip flip);
 	void MakeMaterial(const void* ptr, std::string directory);
 	void MakeBoneNodes(const void* ptr);
 	void MakeWeight(const void* ptr, int meshIdx);
 
-	// “à•”ŒvZ
+	// å†…éƒ¨è¨ˆç®—
 	bool AnimeNoCheck(AnimeNo no);
 	void InitAnime(AnimeNo no);
 	void CalcAnime(AnimeTransform kind, AnimeNo no);
@@ -198,9 +198,9 @@ private:
 	void LerpTransform(Transform* pOut, const Transform& a, const Transform& b, float rate);
 
 private:
-	static VertexShader*	m_pDefVS;		// ƒfƒtƒHƒ‹ƒg’¸“_ƒVƒF[ƒ_[
-	static PixelShader*		m_pDefPS;		// ƒfƒtƒHƒ‹ƒgƒsƒNƒZƒ‹ƒVƒF[ƒ_[
-	static unsigned int		m_shaderRef;	// ƒVƒF[ƒ_[QÆ”
+	static VertexShader*	m_pDefVS;		// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
+	static PixelShader*		m_pDefPS;		// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
+	static unsigned int		m_shaderRef;	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼å‚ç…§æ•°
 #ifdef _DEBUG
 	static std::string m_errorStr;	
 #endif
@@ -209,21 +209,21 @@ private:
 	float			m_loadScale;	// 
 	Flip			m_loadFlip;		// 
 
-	Meshes			m_meshes;		// ƒƒbƒVƒ…”z—ñ
-	Materials		m_materials;	// ƒ}ƒeƒŠƒAƒ‹”z—ñ
-	Nodes			m_nodes;		// ŠK‘wî•ñ
-	Animations		m_animes;		// ƒAƒjƒ”z—ñ
-	VertexShader*	m_pVS;			// İ’è’†‚Ì’¸“_ƒVƒF[ƒ_
-	PixelShader*	m_pPS;			// İ’è’†‚ÌƒsƒNƒZƒ‹ƒVƒF[ƒ_
+	Meshes			m_meshes;		// ãƒ¡ãƒƒã‚·ãƒ¥é…åˆ—
+	Materials		m_materials;	// ãƒãƒ†ãƒªã‚¢ãƒ«é…åˆ—
+	Nodes			m_nodes;		// éšå±¤æƒ…å ±
+	Animations		m_animes;		// ã‚¢ãƒ‹ãƒ¡é…åˆ—
+	VertexShader*	m_pVS;			// è¨­å®šä¸­ã®é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
+	PixelShader*	m_pPS;			// è¨­å®šä¸­ã®ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€
 	
-	AnimeNo			m_playNo;			// Œ»İÄ¶’†‚ÌƒAƒjƒ”Ô†
-	AnimeNo			m_blendNo;			// ƒuƒŒƒ“ƒhÄ¶‚ğs‚¤ƒAƒjƒ”Ô†
-	AnimeNo			m_parametric[2];	// ‡¬Ä¶‚ğs‚¤ƒAƒjƒ”Ô†
-	float			m_blendTime;		// Œ»İ‚Ì‘JˆÚŒo‰ßŠÔ
-	float			m_blendTotalTime;	// ƒAƒjƒ‘JˆÚ‚É‚©‚©‚é‡ŒvŠÔ
-	float			m_parametricBlend;	// ƒpƒ‰ƒƒgƒŠƒbƒN‚ÌÄ¶Š„‡
+	AnimeNo			m_playNo;			// ç¾åœ¨å†ç”Ÿä¸­ã®ã‚¢ãƒ‹ãƒ¡ç•ªå·
+	AnimeNo			m_blendNo;			// ãƒ–ãƒ¬ãƒ³ãƒ‰å†ç”Ÿã‚’è¡Œã†ã‚¢ãƒ‹ãƒ¡ç•ªå·
+	AnimeNo			m_parametric[2];	// åˆæˆå†ç”Ÿã‚’è¡Œã†ã‚¢ãƒ‹ãƒ¡ç•ªå·
+	float			m_blendTime;		// ç¾åœ¨ã®é·ç§»çµŒéæ™‚é–“
+	float			m_blendTotalTime;	// ã‚¢ãƒ‹ãƒ¡é·ç§»ã«ã‹ã‹ã‚‹åˆè¨ˆæ™‚é–“
+	float			m_parametricBlend;	// ãƒ‘ãƒ©ãƒ¡ãƒˆãƒªãƒƒã‚¯ã®å†ç”Ÿå‰²åˆ
 
-	Transforms		m_nodeTransform[MAX_TRANSFORM];	// ƒAƒjƒ[ƒVƒ‡ƒ“•Ê•ÏŒ`î•ñ
+	Transforms		m_nodeTransform[MAX_TRANSFORM];	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åˆ¥å¤‰å½¢æƒ…å ±
 };
 
 

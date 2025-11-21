@@ -1,9 +1,9 @@
-/*********************************************************************
+ï»¿/*********************************************************************
  * \file   CameraDebug.cpp
- * ŠT—vF
- * 
- * §ìÒ R–{ˆè–ç
- * \date@October 2025
+ * æ¦‚è¦ï¼š
+ *
+ * åˆ¶ä½œè€… å±±æœ¬éƒä¹Ÿ
+ * \dateã€€October 2025
  *********************************************************************/
 
 #include "CameraDebug.h"
@@ -12,8 +12,8 @@
 
 CameraDebug::CameraDebug()
 	:m_radXZ(0.0f)
-	,m_radY(0.5f * DEBUG_DISTANCE)
-	,m_radius(10.0f * DEBUG_DISTANCE)
+	, m_radY(0.5f * DEBUG_DISTANCE)
+	, m_radius(10.0f * DEBUG_DISTANCE)
 {
 	m_radius = 115.f;
 }
@@ -24,12 +24,12 @@ CameraDebug::~CameraDebug()
 
 void CameraDebug::Update()
 {
-	// ’‹“_‚ÌˆÚ“®@©(-x)A¨(+x)Aª(+z)A«(-z)AShift(+y)ACtrl(-y)
-		//--- ƒJƒƒ‰ˆÊ’u‚ÌˆÚ“®(Œãq)
+	// æ³¨è¦–ç‚¹ã®ç§»å‹•ã€€â†(-x)ã€â†’(+x)ã€â†‘(+z)ã€â†“(-z)ã€Shift(+y)ã€Ctrl(-y)
+		//--- ã‚«ãƒ¡ãƒ©ä½ç½®ã®ç§»å‹•(å¾Œè¿°)
 
 	static float count;
 
-	//‰ñ‚è‚İ‚Ìˆ—
+	//å›ã‚Šè¾¼ã¿ã®å‡¦ç†
 	if (IsKeyPress('E'))
 	{
 		m_radXZ += IIKANJINOTEISU + (IsKeyPress(VK_SHIFT) * IIKANJINOTEISU2);
@@ -41,7 +41,7 @@ void CameraDebug::Update()
 		count -= IIKANJINOTEISU;
 	}
 
-	// ƒJƒƒ‰‚Ì‹——£‚ğ•Ï‚¦‚éˆ—
+	// ã‚«ãƒ¡ãƒ©ã®è·é›¢ã‚’å¤‰ãˆã‚‹å‡¦ç†
 	if (IsKeyPress(VK_DOWN))
 	{
 		m_radius += (IsKeyPress(VK_SHIFT) * IIKANJINOTEISU2);
@@ -53,7 +53,7 @@ void CameraDebug::Update()
 		m_radY -= IIKANJINOTEISU + (IsKeyPress(VK_CONTROL) * IIKANJINOTEISU * 10.0f);
 	}
 
-	// ƒJƒƒ‰ˆÊ’u‚ÌŒvZ
+	// ã‚«ãƒ¡ãƒ©ä½ç½®ã®è¨ˆç®—
 	m_pos.x = m_radius * cosf(m_radXZ);
 	m_pos.y = m_radius * sinf(m_radY);
 	m_pos.z = m_radius * sinf(m_radXZ);
@@ -68,4 +68,3 @@ void CameraDebug::SetPos(const DirectX::XMFLOAT3& pos)
 {
 	m_pos = pos;
 }
-

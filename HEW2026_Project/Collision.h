@@ -1,53 +1,100 @@
+ï»¿/*********************************************************************
+ * \file   Collision.h
+ * \brief  ï¿½Õ“Ë”ï¿½ï¿½ï¿½ Collision
+ *
+ * \author AT12C-41 Kotetsu Wakabayashi
+ * \date   2025-11-13
+ *********************************************************************/
 #pragma once
-#include<DirectXMath.h>
-#include<math.h>
-#include<cmath>
-#include<algorithm>
+//=====| Includes |=====//
+#include <DirectXMath.h>
+#include <math.h>
+#include <cmath>
+#include <algorithm>
 
-class Collision {
+//=====| Class Definition |=====//
+class Collision
+{
 public:
-	//--- “–‚½‚è”»’èŒ`ó‚Ìí—Ş
-	enum Type {
+	//--- ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½`ï¿½ï¿½Ìï¿½ï¿½ Type of collision shapes.
+	enum Type
+	{
 		eNone,
-		eBox,
-		eSphere,
+		eBox,		 // ï¿½{ï¿½bï¿½Nï¿½X
+		eSphere, // ï¿½ï¿½
+		ePlane,	 // ï¿½ï¿½ï¿½ï¿½
+		eRay,		 // ï¿½ï¿½ï¿½C
+		eLine,	 // ï¿½ï¿½
+		ePoint,
+		eTriangle,
 	};
 
-	//--- “–‚½‚è”»’è‚ÌŒ`ó
-	struct Box {		// lŠp
-		DirectX::XMFLOAT3		center;		// ’†SÀ•W
-		DirectX::XMFLOAT3		size;		// ƒTƒCƒY
+	//--- ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½ÌŒ`ï¿½ï¿½ shape of collision.
+	struct Box
+	{
+		DirectX::XMFLOAT3 center; // ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½W
+		DirectX::XMFLOAT3 size;		// ï¿½Tï¿½Cï¿½Y
 	};
-	struct Sphere {	// ‹…
-		DirectX::XMFLOAT3		center;		// ’†SÀ•W
-		float					radius;		// ”¼Œa
+	struct Sphere
+	{
+		DirectX::XMFLOAT3 center; // ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½W
+		float radius;							// ï¿½ï¿½ï¿½a
+	};
+	struct Plane
+	{
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT3 normal;
+	};
+	struct Ray
+	{
+		DirectX::XMFLOAT3 origin;
+		DirectX::XMFLOAT3 dir;
+	};
+	struct Line
+	{
+		DirectX::XMFLOAT3 start;
+		DirectX::XMFLOAT3 end;
+	};
+	struct Point
+	{
+		DirectX::XMFLOAT3 pos;
+	};
+	struct Triangle
+	{
+		DirectX::XMFLOAT3 point[3];
 	};
 
-
-	//--- “–‚½‚è”»’è‚Ì“‡î•ñ
-	struct Info {
+	struct Info
+	{
 		Type type;
-		union {
+		union
+		{
 			Box box;
 			Sphere sphere;
+			Plane plane;
+			Ray ray;
+			Line line;
+			Point point;
+			Triangle triangle;
 		};
 	};
 
-	//--- “–‚½‚è”»’è‚ÌŒ‹‰Ê
-	struct Result {
-		bool					isHit;		// “–‚½‚Á‚½‚©‚Ç‚¤‚©
-		DirectX::XMFLOAT3		point;		// ƒqƒbƒgˆÊ’u
-		DirectX::XMFLOAT3		normal;		// ƒqƒbƒg•½–Ê
-		Info					other;		// “–‚½‚è”»’èƒIƒuƒWƒFƒNƒg
+	struct Result
+	{
+		bool isHit;								// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½
+		DirectX::XMFLOAT3 point;	// ï¿½qï¿½bï¿½gï¿½Ê’u
+		DirectX::XMFLOAT3 normal; // ï¿½qï¿½bï¿½gï¿½ï¿½ï¿½ï¿½
+		Info other;								// ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½g
 	};
 
 public:
-	// InfoŒ^‚Å‚Ì“–‚½‚è”»’è
+	// Infoï¿½^ï¿½Å‚Ì“ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½
 	static Result Hit(Info a, Info b);
 
-	// lŠp“¯m‚Ì“–‚½‚è”»’è
+	// ï¿½lï¿½pï¿½ï¿½ï¿½mï¿½Ì“ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½
 	static Result Hit(Box a, Box b);
-
-	// ‹…“¯m‚Ì“–‚½‚è”»’è
-	static Result Hit(Sphere a, Sphere b);
+	static Result Hit(Sphere z, Sphere b);
+	static Result Hit(Plane plane, Ray ray, float lenght);
+	static Result Hit(Plane plane, Line line);
+	static Result Hit(Point point, Triangle triangle);
 };

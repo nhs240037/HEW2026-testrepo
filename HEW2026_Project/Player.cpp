@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include"Defines.h"
 #include"Main.h"
 #include"Sprite.h"
@@ -6,13 +6,13 @@
 
 #include"CsvData.h"
 
-Player::Index PosToIndex(Player::float2 f2pos);// �C���f�b�N�X���W����t�B�[���h��̂��Ђ傤�ɕϊ�
-Player::float2 IndexToPos(Player::Index idx);// �t�B�[���h��̍��W���� �C���f�b�N�X���W�ɕϊ�
+Player::Index PosToIndex(Player::float2 f2pos);// インデックス座標からフィールド上のざひょうに変換
+Player::float2 IndexToPos(Player::Index idx);// フィールド上の座標から インデックス座標に変換
 
 enum eGolfBallShotStep {
-	SHOT_WAIT,		// ����ł̂�҂�
-	SHOT_KEEP,		// �L�[���͊J�n
-	SHOT_RELEASE,	// �L�[���͂���߂��i����ł�
+	SHOT_WAIT,		// 球を打つのを待つ
+	SHOT_KEEP,		// キー入力開始
+	SHOT_RELEASE,	// キー入力をやめた（球を打つ
 };
 
 
@@ -40,8 +40,8 @@ Player::Player()
 	}
 
 	m_pModel = new Model();
-	if (!m_pModel->Load("Assets/Model/Prototype/MD_Player.fbx", 0.5f, Model::ZFlip)) { // �{���Ɣ��]�͏ȗ���
-		MessageBox(NULL, "Branch_01", "Error", MB_OK); // �G���[���b�Z�[�W�̕\��
+	if (!m_pModel->Load("Assets/Model/Prototype/MD_Player.fbx", 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+		MessageBox(NULL, "Branch_01", "Error", MB_OK); // エラーメッセージの表示
 	}
 
 	DirectX::XMMATRIX view, proj;
@@ -81,7 +81,7 @@ Player::~Player()
 	}
 }
 
-// �v���C���[�̓������X�V���邽�߂̊֐�
+// プレイヤーの動きを更新するための関数
 Player::float2 PlayerMoveGrid(Player::float2 pos)
 {
 	static bool isPress;
@@ -169,15 +169,15 @@ Player::float2 PlayerMoveSmooth(Player::float2 pos)
 
 void Player::Update()
 {
-	// �J�������ݒ肳��ĂȂ��ꍇ�͏������Ȃ�
+	// カメラが設定されてない場合は処理しない
 	if (!m_pCamera) { return; }
 
-	m_collision.box.center = m_pos;	// �X�V������ɓ����蔻��̈ʒu���X�V
+	m_collision.box.center = m_pos;	// 更新処理後に当たり判定の位置を更新
 
 
 
 #ifdef _DEBUG
-	// ��]����
+	// 回転処理
 	if (IsKeyPress('Q'))
 	{
 		m_angle -= csv.GetSpeed();
@@ -196,90 +196,90 @@ void Player::Update()
 	}
 #endif
 	UpdateControl();
-	UpdateMove();	// ���C�̏���
+	UpdateMove();	// 摩擦の処理
 	UpdateWall();
 }
 
 void Player::Draw()
 {
 	Texture* g_pMyTexture = new Texture();
-	HRESULT hr = g_pMyTexture->Create("Assets/Texture/white.png"); // �� �ǂݍ��݂����摜
+	HRESULT hr = g_pMyTexture->Create("Assets/Texture/white.png"); // ← 読み込みたい画像
 	if (FAILED(hr))
 	{
-		// �G���[����
+		// エラー処理
 	}
 	DirectX::XMFLOAT4 color = { 1.0f,0.0f,0.0f,1.0f };
 	Sprite::SetColor(color);
-	DirectX::XMMATRIX T; // �V�ʂ��O���b�h�������ɗ���悤�Ɉړ�
-	DirectX::XMMATRIX S; // �n�ʂƂȂ�悤�ɁA�O�㍶�E�ɍL���A�㉺�ɋ�������
+	DirectX::XMMATRIX T; // 天面がグリッドよりも下に来るように移動
+	DirectX::XMMATRIX S; // 地面となるように、前後左右に広く、上下に狭くする
 	DirectX::XMMATRIX mat;
 
 
-	T = DirectX::XMMatrixTranslation(m_pos.x, .25f, m_pos.z); // �V�ʂ��O���b�h�������ɗ���悤�Ɉړ�
+	T = DirectX::XMMatrixTranslation(m_pos.x, .25f, m_pos.z); // 天面がグリッドよりも下に来るように移動
 	DirectX::XMMATRIX Ry = DirectX::XMMatrixRotationY(m_angle);
-	S = DirectX::XMMatrixScaling(FIELD_WIDTH, 0.5f, FIELD_WIDTH); // �n�ʂƂȂ�悤�ɁA�O�㍶�E�ɍL���A�㉺�ɋ�������
+	S = DirectX::XMMatrixScaling(FIELD_WIDTH, 0.5f, FIELD_WIDTH); // 地面となるように、前後左右に広く、上下に狭くする
 	mat = S * Ry * T;
 	mat = DirectX::XMMatrixTranspose(mat);
-	DirectX::XMFLOAT4X4 fMat; // �s��̊i�[��
+	DirectX::XMFLOAT4X4 fMat; // 行列の格納先
 	DirectX::XMStoreFloat4x4(&fMat, mat);
 
-	//---------- ��������e�̕`�� ----------//
+	//---------- ここから影の描画 ----------//
 
-	float rate = (m_pos.y - m_shadowPos.y) / METER(4.0f);	// �������߂����0,�������1
-	float scale = (1.0f - rate);								// rate��0�Ȃ�1�A1�Ȃ�0�ɂȂ�悤���]
+	float rate = (m_pos.y - m_shadowPos.y) / METER(4.0f);	// 距離が近ければ0,遠ければ1
+	float scale = (1.0f - rate);								// rateを0なら1、1なら0になるよう反転
 	m_shadowPos.x = m_pos.x;
 	m_shadowPos.z = m_pos.z;
 	Sprite::SetSize(DirectX::XMFLOAT2{ scale,0.0f});
-	// �e��\�����邽�߂̍s��v�Z
-	DirectX::XMMATRIX Sprite_S = DirectX::XMMatrixScaling(scale, scale, scale);	// scale�����Ɋg�k
-	DirectX::XMMATRIX Sprite_Rx = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(-90.0f)); 	// �X�v���C�g�����ɓ|��
-	DirectX::XMMATRIX Sprite_T = DirectX::XMMatrixTranslation(		// Z�t�@�C�e�B���O����ŏ���������
+	// 影を表示するための行列計算
+	DirectX::XMMATRIX Sprite_S = DirectX::XMMatrixScaling(scale, scale, scale);	// scaleを元に拡縮
+	DirectX::XMMATRIX Sprite_Rx = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(-90.0f)); 	// スプライトを横に倒す
+	DirectX::XMMATRIX Sprite_T = DirectX::XMMatrixTranslation(		// Zファイティング回避で少し浮かす
 		m_pos.x, 0.0f, m_pos.z);
-	DirectX::XMMATRIX Sprite_mat = Sprite_S * Sprite_Rx * Sprite_T;	// ���ꂼ��̐��l���}�[�W
-	Sprite_mat = DirectX::XMMatrixTranspose(mat);// �s��ϊ����s��
-	DirectX::XMFLOAT4X4 Sprite_fMat; // �`���p�ϐ����`
-	DirectX::XMStoreFloat4x4(&Sprite_fMat, Sprite_mat);//mWorld��]�u����mat�Ɋi�[
+	DirectX::XMMATRIX Sprite_mat = Sprite_S * Sprite_Rx * Sprite_T;	// それぞれの数値をマージ
+	Sprite_mat = DirectX::XMMatrixTranspose(mat);// 行列変換を行う
+	DirectX::XMFLOAT4X4 Sprite_fMat; // 描画専用変数を定義
+	DirectX::XMStoreFloat4x4(&Sprite_fMat, Sprite_mat);//mWorldを転置してmatに格納
 
-	// �ꏊ���w��
+	// 場所を指定
 	m_dxpos = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(
 			(IsKeyPress('D') * -90.0f) + (IsKeyPress('A') * 90.0f) + 
 			(IsKeyPress('W') * 180.0f) + (IsKeyPress('S') * 0.0f)
 		))
 		* DirectX::XMMatrixTranslation(m_pos.x, 0.5f, m_pos.z);
 
-	//�@�v�Z�p�̃f�[�^����ǂݎ��p�̃f�[�^�ɕϊ�
+	//　計算用のデータから読み取り用のデータに変換
 	DirectX::XMStoreFloat4x4(&wvp[0], DirectX::XMMatrixTranspose(m_dxpos));
 
-	// ���f���ɕϊ��s���ݒ�
+	// モデルに変換行列を設定
 	wvp[1] = m_pCamera->GetViewMatrix();
 	wvp[2] = m_pCamera->GetProjectionMatrix();
 
-	//�@�V�F�[�_�[�֕ϊ��s���ݒ�
-	ShaderList::SetWVP(wvp);	//�@�����ɂ�XMFLOAT4X4�^�́A�v�f���R�̔z��̃A�h���X��n������
+	//　シェーダーへ変換行列を設定
+	ShaderList::SetWVP(wvp);	//　引数にはXMFLOAT4X4型の、要素数３の配列のアドレスを渡すこと
 
 
 	Geometory::SetView(m_pCamera->GetViewMatrix(true));
 	Geometory::SetProjection(m_pCamera->GetProjectionMatrix(true));
-	// Sprite�ւ̐ݒ�
+	// Spriteへの設定
 	Sprite::SetView(m_pCamera->GetViewMatrix(true));
 	Sprite::SetProjection(m_pCamera->GetProjectionMatrix(true));
 
-	//�@���f���Ɏg�p���钸�_�V�F�[�_�[�A�s�N�Z���V�F�[�_�[��ݒ�
+	//　モデルに使用する頂点シェーダー、ピクセルシェーダーを設定
 	m_pModel->SetVertexShader(ShaderList::GetVS(ShaderList::VS_WORLD));
 	m_pModel->SetPixelShader(ShaderList::GetPS(ShaderList::PS_LAMBERT));
 
-	//�@�����̃��b�V���ō\������Ă���ꍇ�A���镔���͋����I�ȕ\���A���镔���͔�����I�ȕ\����
-	// ������ꍇ������B�O��̕\���͓����}�e���A���ňꊇ�\�����Ă������߁A���b�V�����ƂɃ}�e���A����
-	// �؂�ւ���B
+	//　複数のメッシュで構成されている場合、ある部分は金属的な表現、ある部分は非金属的な表現と
+	// 分ける場合がある。前回の表示は同じマテリアルで一括表示していたため、メッシュごとにマテリアルを
+	// 切り替える。
 	for (int i = 0; i < m_pModel->GetMeshNum(); ++i) 
 	{
-		// ���f���̃��b�V�����擾
+		// モデルのメッシュを取得
 		Model::Mesh mesh = *m_pModel->GetMesh(i);
-		// ���b�V���Ɋ��蓖�Ă��Ă���}�e���A�����擾
+		// メッシュに割り当てられているマテリアルを取得
 		Model::Material	material = *m_pModel->GetMaterial(mesh.materialID);
-		// �V�F�[�_�[�փ}�e���A����ݒ�
+		// シェーダーへマテリアルを設定
 		ShaderList::SetMaterial(material);
-		// ���f���̕`��
+		// モデルの描画
 		m_pModel->Draw(i);
 	}
 }
@@ -293,7 +293,7 @@ void Player::SetCamera(Camera *camera)
 void Player::UpdateShot()
 {
 	switch (m_shotStep) {
-		// ���̑ł��͂���
+		// 球の打ちはじめ
 	case SHOT_WAIT:
 		if (IsKeyTrigger('Z')) {
 			m_power = 0.0f;
@@ -302,29 +302,29 @@ void Player::UpdateShot()
 		break;
 
 
-		// �L�[���͌p����
+		// キー入力継続中
 	case SHOT_KEEP:
-		m_power += 0.1f;	 // ����ł��o���͂𗭂߂�
+		m_power += 0.1f;	 // 球を打ち出す力を溜める
 		if (IsKeyRelease('Z')) {
 			m_shotStep = SHOT_RELEASE;
 		}
 		break;
 
-		// ����ł�
+		// 球を打つ
 	case SHOT_RELEASE:
 	{
-		// �ł��o���v�Z
-		DirectX::XMFLOAT3 camPos = m_pCamera->GetPos();						//�J�����̈ʒu���擾
-		DirectX::XMVECTOR vCamPos = DirectX::XMLoadFloat3(&camPos);			//�J�����̈ʒu���v�Z�p�̌^�ɕϊ�
-		DirectX::XMVECTOR vPos = DirectX::XMLoadFloat3(&m_pos);				//�����̈ʒu���v�Z�p�̌^�ɕϊ�
-		DirectX::XMVECTOR vec = DirectX::XMVectorSubtract(vPos, vCamPos);	//�J�������玩���̈ʒu�Ɍ������x�N�g�����v�Z
-		vec = DirectX::XMVector3Normalize(vec);		//�x�N�g���̐��K��
-		vec = DirectX::XMVectorScale(vec, m_power);		//���K�������x�N�g�����A���߂��͂ɉ����ĐL�΂�
-		DirectX::XMStoreFloat3(&m_move, vec);//�ړ��̃f�[�^m_move�Ɍv�Z����vec��ݒ肷��i�v�Z�p�̌^����ۑ��p�̌^�ɕϊ�;
+		// 打ち出す計算
+		DirectX::XMFLOAT3 camPos = m_pCamera->GetPos();						//カメラの位置を取得
+		DirectX::XMVECTOR vCamPos = DirectX::XMLoadFloat3(&camPos);			//カメラの位置を計算用の型に変換
+		DirectX::XMVECTOR vPos = DirectX::XMLoadFloat3(&m_pos);				//自分の位置を計算用の型に変換
+		DirectX::XMVECTOR vec = DirectX::XMVectorSubtract(vPos, vCamPos);	//カメラから自分の位置に向かうベクトルを計算
+		vec = DirectX::XMVector3Normalize(vec);		//ベクトルの正規化
+		vec = DirectX::XMVectorScale(vec, m_power);		//正規化したベクトルを、溜めた力に応じて伸ばす
+		DirectX::XMStoreFloat3(&m_move, vec);//移動のデータm_moveに計算したvecを設定する（計算用の型から保存用の型に変換;
 		
-		// �ł��o����̏���ݒ�
-		m_isStop = false;			// �ړ����Ă���I
-		m_shotStep = SHOT_WAIT;		// �܂��Ăёł�
+		// 打ち出し後の情報を設定
+		m_isStop = false;			// 移動している！
+		m_shotStep = SHOT_WAIT;		// また再び打つ
 		break;
 	}
 	}
@@ -352,44 +352,44 @@ void Player::UpdateControl()
 
 void Player::UpdateMove()
 {
-	// �ړ�����
+	// 移動処理
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
 	m_pos.z += m_move.z;
 
-	// ��������(��C��R
+	// 減速処理(空気抵抗
 	m_move.x *= 0.95f;
 	m_move.y *= 0.95f;
 	m_move.z *= 0.95f;
 
-	// �d��
+	// 重力
 	m_move.y -= MSEC(GRAVITY);
 
-	// �n�ʐڐG����
+	// 地面接触判定
 	if (m_pos.y < 0.0f) {
-		// �ڐG���̌�������
+		// 接触時の減速処理
 		m_move.x *= 0.95f;
 		m_move.y *= 0.5f;
 		m_move.z *= 0.95f;
 
-		// �o�E���h����
-		m_move.y = -m_move.y; // Y�̈ړ������𔽓]
-		if (m_move.y < CMETER(5.0f)) {	// �o�E���h��������������
+		// バウンド処理
+		m_move.y = -m_move.y; // Yの移動方向を反転
+		if (m_move.y < CMETER(5.0f)) {	// バウンドが小さいか判定
 			m_move.y = 0.0f;
 			m_pos.y = 0.0f;
 		}
 		else {
-			// �n�ʂɂ߂荞��ł���̂ŁA�o�E���h�����ꍇ�̈ʒu�ɕύX
+			// 地面にめり込んでいるので、バウンドした場合の位置に変更
 			m_pos.y = -m_pos.y;
 		}
 	}
-	// ��~����
+	// 停止判定
 	float speed;
-	DirectX::XMVECTOR vMove = DirectX::XMLoadFloat3(&m_move);//�ړ������v�Z�p�̌^�ɕϊ�
-	DirectX::XMVECTOR vLen = DirectX::XMVector3Length(vMove);//vMove����ړ��ʂ��v�Z
-	DirectX::XMStoreFloat(&speed, vLen);		// speed��vLen���i�[
+	DirectX::XMVECTOR vMove = DirectX::XMLoadFloat3(&m_move);//移動情報を計算用の型に変換
+	DirectX::XMVECTOR vLen = DirectX::XMVector3Length(vMove);//vMoveから移動量を計算
+	DirectX::XMStoreFloat(&speed, vLen);		// speedにvLenを格納
 	if (speed < CMSEC(30.0f)) 
-	{	// 1�b�Ԃ�30cm���炢�i�ރX�s�[�h�ł���Β�~
+	{	// 1秒間に30cmぐらい進むスピードであれば停止
 		m_isStop = true;
 		m_shotStep = SHOT_WAIT;
 	}
@@ -438,22 +438,22 @@ Player::Index PosToIndex(Player::float2 pos)
 
 void Player::OnCollision(Collision::Result collision)
 {
-	// �v�Z�ɕK�v�ȏ������O�Ɍv�Z
+	// 計算に必要な情報を事前に計算
 	DirectX::XMVECTOR vHitPos = DirectX::XMLoadFloat3(&collision.point);
 	DirectX::XMVECTOR vNormal = DirectX::XMLoadFloat3(&collision.normal);
 	DirectX::XMVECTOR vMove = DirectX::XMLoadFloat3(&m_move);
 	vNormal = DirectX::XMVector3Normalize(vNormal);
 
-	// ���˂̌v�Z
+	// 反射の計算
 	DirectX::XMVECTOR vDot = DirectX::XMVector3Dot(vNormal, vMove);
 	vDot = DirectX::XMVectorScale(vDot, 2.0f);
 	vDot = DirectX::XMVectorMultiply(vNormal, DirectX::XMVectorAbs(vDot));
 	vMove = DirectX::XMVectorAdd(vMove, vDot);
 	DirectX::XMStoreFloat3(&m_move, vMove);
 
-	// ���ˌ�̕␳
+	// 反射後の補正
 	if (collision.other.type == Collision::eBox) {
-		// �{�b�N�X�ɏՓ˂����ꍇ�A�Փˈʒu�̕␳
+		// ボックスに衝突した場合、衝突位置の補正
 		Collision::Box other = collision.other.box;
 		if (collision.normal.x != 0.0f)
 			m_pos.x =
@@ -464,17 +464,17 @@ void Player::OnCollision(Collision::Result collision)
 		else
 			m_pos.z =
 			other.center.z + collision.normal.z * (other.size.z + collision.other.box.size.z) * 0.5f;
-		// ���ˌ�̈ړ����x�̕␳
+		// 反射後の移動速度の補正
 		m_move.x *= 0.8f;
 		m_move.y *= 0.6f;
 		m_move.z *= 0.8f;
 	}
 	else {
-		// �ΖʂɏՓ˂����ꍇ�̈ʒu�̕␳
+		// 斜面に衝突した場合の位置の補正
 		m_pos.x = collision.point.x + collision.normal.x * collision.other.box.size.x * 0.5f;
 		m_pos.y = collision.point.y + collision.normal.y * collision.other.box.size.y * 0.5f;
 		m_pos.z = collision.point.z + collision.normal.z * collision.other.box.size.z * 0.5f;
-		// ���ˌ�̈ړ����x�̕␳
+		// 反射後の移動速度の補正
 		m_move.x *= 0.2f;
 		m_move.y *= 0.5f;
 		m_move.z *= 0.2f;

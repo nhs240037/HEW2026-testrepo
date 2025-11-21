@@ -1,4 +1,4 @@
-#include "MeshBuffer.h"
+ï»¿#include "MeshBuffer.h"
 
 MeshBuffer::MeshBuffer()
 	: m_pVtxBuffer(NULL), m_pIdxBuffer(NULL), m_desc{}
@@ -16,20 +16,20 @@ HRESULT MeshBuffer::Create(const Description& desc)
 {
 	HRESULT hr = E_FAIL;
 
-	// ’¸“_ƒoƒbƒtƒ@ì¬
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ä½œæˆ
 	hr = CreateVertexBuffer(desc.pVtx, desc.vtxSize, desc.vtxCount, desc.isWrite);
 	if (FAILED(hr)) { return hr; }
 
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ì¬
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ä½œæˆ
 	if (desc.pIdx) {
 		hr = CreateIndexBuffer(desc.pIdx, desc.idxSize, desc.idxCount);
 		if (FAILED(hr)) { return hr; }
 	}
 
-	// ƒoƒbƒtƒ@î•ñ‚ÌƒRƒs[
+	// ãƒãƒƒãƒ•ã‚¡æƒ…å ±ã®ã‚³ãƒ”ãƒ¼
 	m_desc = desc;
 
-	// ’¸“_AƒCƒ“ƒfƒbƒNƒX‚Ìî•ñ‚ðƒRƒs[
+	// é ‚ç‚¹ã€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æƒ…å ±ã‚’ã‚³ãƒ”ãƒ¼
 	rsize_t vtxMemSize = desc.vtxSize * desc.vtxCount;
 	void* pVtx = new char[vtxMemSize];
 	memcpy_s(pVtx, vtxMemSize, desc.pVtx, vtxMemSize);
@@ -54,7 +54,7 @@ void MeshBuffer::Draw(int count)
 	pContext->IASetPrimitiveTopology(m_desc.topology);
 	pContext->IASetVertexBuffers(0, 1, &m_pVtxBuffer, &stride, &offset);
 
-	// •`‰æ
+	// æç”»
 	if (m_desc.idxCount > 0)
 	{
 		DXGI_FORMAT format;
@@ -68,7 +68,7 @@ void MeshBuffer::Draw(int count)
 	}
 	else
 	{
-		// ’¸“_ƒoƒbƒtƒ@‚Ì‚Ý‚Å•`‰æ
+		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ã¿ã§æç”»
 		pContext->Draw(count ? count : m_desc.vtxCount, 0);
 	}
 
@@ -83,7 +83,7 @@ HRESULT MeshBuffer::Write(void* pVtx)
 	ID3D11DeviceContext* pContext = GetContext();
 	D3D11_MAPPED_SUBRESOURCE mapResource;
 
-	// ƒf[ƒ^ƒRƒs[
+	// ãƒ‡ãƒ¼ã‚¿ã‚³ãƒ”ãƒ¼
 	hr = pContext->Map(m_pVtxBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapResource);
 	if (SUCCEEDED(hr))
 	{
@@ -101,7 +101,7 @@ MeshBuffer::Description MeshBuffer::GetDesc()
 
 HRESULT MeshBuffer::CreateVertexBuffer(const void* pVtx, UINT size, UINT count, bool isWrite)
 {
-	//--- ì¬‚·‚éƒoƒbƒtƒ@‚Ìî•ñ
+	//--- ä½œæˆã™ã‚‹ãƒãƒƒãƒ•ã‚¡ã®æƒ…å ±
 	D3D11_BUFFER_DESC bufDesc = {};
 	bufDesc.ByteWidth = size * count;
 	bufDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -112,11 +112,11 @@ HRESULT MeshBuffer::CreateVertexBuffer(const void* pVtx, UINT size, UINT count, 
 		bufDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	}
 
-	//--- ƒoƒbƒtƒ@‚Ì‰Šú’l‚ðÝ’è
+	//--- ãƒãƒƒãƒ•ã‚¡ã®åˆæœŸå€¤ã‚’è¨­å®š
 	D3D11_SUBRESOURCE_DATA subResource = {};
 	subResource.pSysMem = pVtx;
 
-	//--- ’¸“_ƒoƒbƒtƒ@‚Ìì¬
+	//--- é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 	HRESULT hr;
 	ID3D11Device* pDevice = GetDevice();
 	hr = pDevice->CreateBuffer(&bufDesc, &subResource, &m_pVtxBuffer);
@@ -126,7 +126,7 @@ HRESULT MeshBuffer::CreateVertexBuffer(const void* pVtx, UINT size, UINT count, 
 
 HRESULT MeshBuffer::CreateIndexBuffer(const void* pIdx, UINT size, UINT count)
 {
-	// ƒCƒ“ƒfƒbƒNƒXƒTƒCƒY‚ÌŠm”F
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚µã‚¤ã‚ºã®ç¢ºèª
 	switch (size)
 	{
 	default:
@@ -136,16 +136,16 @@ HRESULT MeshBuffer::CreateIndexBuffer(const void* pIdx, UINT size, UINT count)
 		break;
 	}
 
-	// ƒoƒbƒtƒ@‚Ìî•ñ‚ðÝ’è
+	// ãƒãƒƒãƒ•ã‚¡ã®æƒ…å ±ã‚’è¨­å®š
 	D3D11_BUFFER_DESC bufDesc = {};
 	bufDesc.ByteWidth = size * count;
 	bufDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	// ƒoƒbƒtƒ@‚Ì‰Šúƒf[ƒ^
+	// ãƒãƒƒãƒ•ã‚¡ã®åˆæœŸãƒ‡ãƒ¼ã‚¿
 	D3D11_SUBRESOURCE_DATA subResource = {};
 	subResource.pSysMem = pIdx;
 
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@¶¬
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	ID3D11Device* pDevice = GetDevice();
 	HRESULT hr;
 	hr = pDevice->CreateBuffer(&bufDesc, &subResource, &m_pIdxBuffer);

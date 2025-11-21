@@ -1,4 +1,4 @@
-#include "Main.h"
+ï»¿#include "Main.h"
 #include <memory>
 #include "DirectX.h"
 #include "Geometory.h"
@@ -9,48 +9,48 @@
 #include "ShaderList.h"
 #include"CsvData.h"
 
-#include <fstream>   // ƒtƒ@ƒCƒ‹‘€ì—p
-#include <sstream>   // •¶š—ñƒXƒgƒŠ[ƒ€—p
+#include <fstream>   // ãƒ•ã‚¡ã‚¤ãƒ«æ“ä½œç”¨
+#include <sstream>   // æ–‡å­—åˆ—ã‚¹ãƒˆãƒªãƒ¼ãƒ ç”¨
 #include <string>
 #include <vector>
 #include<DirectXMath.h>
 
-//--- ƒOƒ[ƒoƒ‹•Ï”
+//--- ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
 Scene* g_pScene; HWND g_hWnd = nullptr;
 
-// DirectX ƒfƒoƒCƒXŠÖ˜A
+// DirectX ãƒ‡ãƒã‚¤ã‚¹é–¢é€£
 ID3D11Device* g_pd3dDevice = nullptr;
 ID3D11DeviceContext* g_pImmediateContext = nullptr;
 IDXGISwapChain* g_pTexSwapChain = nullptr;
 ID3D11RenderTargetView* g_pRenderTargetView = nullptr;
 
-// --- ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌƒŠƒ\[ƒX ---
-// (‚±‚ê‚Ü‚Å‚Éà–¾‚µ‚½—v‘f)
+// --- ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒªã‚½ãƒ¼ã‚¹ ---
+// (ã“ã‚Œã¾ã§ã«èª¬æ˜ã—ãŸè¦ç´ )
 
-// 1. ƒVƒF[ƒ_[
+// 1. ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
 ID3D11VertexShader* g_pVertexShader = nullptr;
 ID3D11PixelShader* g_pPixelShader = nullptr;
 ID3D11InputLayout* g_pInputLayout = nullptr;
 
-// 2. ƒ|ƒŠƒSƒ“ (’¸“_ƒoƒbƒtƒ@)
+// 2. ãƒãƒªã‚´ãƒ³ (é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡)
 ID3D11Buffer* g_pVertexBuffer = nullptr;
 
-// 3. ƒeƒNƒXƒ`ƒƒ (‚ ‚È‚½‚ÌTextureƒNƒ‰ƒX)
+// 3. ãƒ†ã‚¯ã‚¹ãƒãƒ£ (ã‚ãªãŸã®Textureã‚¯ãƒ©ã‚¹)
 Texture* g_pMyTexture = nullptr;
 ID3D11SamplerState* g_pSamplerState = nullptr;
 
-// 4. F•ÏX—p (’è”ƒoƒbƒtƒ@)
+// 4. è‰²å¤‰æ›´ç”¨ (å®šæ•°ãƒãƒƒãƒ•ã‚¡)
 ID3D11Buffer* g_pConstantBufferColor = nullptr;
-DirectX::XMFLOAT4     g_vTintColor(1.0f, 1.0f, 1.0f, 1.0f); // XVˆ—‚Å•ÏX‚·‚éF
+DirectX::XMFLOAT4     g_vTintColor(1.0f, 1.0f, 1.0f, 1.0f); // æ›´æ–°å‡¦ç†ã§å¤‰æ›´ã™ã‚‹è‰²
 
-// ’¸“_\‘¢‘Ì
+// é ‚ç‚¹æ§‹é€ ä½“
 struct MyVertex
 {
-	DirectX::XMFLOAT3 pos; // À•W
-	DirectX::XMFLOAT2 uv;  // UVÀ•W
+	DirectX::XMFLOAT3 pos; // åº§æ¨™
+	DirectX::XMFLOAT2 uv;  // UVåº§æ¨™
 };
 
-// ’è”ƒoƒbƒtƒ@\‘¢‘Ì (HLSL‘¤‚É‡‚í‚¹‚é)
+// å®šæ•°ãƒãƒƒãƒ•ã‚¡æ§‹é€ ä½“ (HLSLå´ã«åˆã‚ã›ã‚‹)
 struct ConstantBufferMatrix
 {
 	DirectX::XMMATRIX worldViewProjection;
@@ -61,11 +61,11 @@ struct ConstantBufferColor
 	DirectX::XMFLOAT4 tintColor;
 };
 
-// --- ŠÖ”‚Ìƒvƒƒgƒ^ƒCƒv ---
-HRESULT InitDevice(); // ‰Šú‰»
-void    TexUpdate();     // XV
-void    Render();     // •`‰æ
-void    Cleanup();    // I—¹
+// --- é–¢æ•°ã®ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— ---
+HRESULT InitDevice(); // åˆæœŸåŒ–
+void    TexUpdate();     // æ›´æ–°
+void    Render();     // æç”»
+void    Cleanup();    // çµ‚äº†
 void    SetTextureColor(const DirectX::XMFLOAT4& color);
 
 
@@ -73,17 +73,17 @@ void    SetTextureColor(const DirectX::XMFLOAT4& color);
 HRESULT Init(HWND hWnd, UINT width, UINT height)
 {
 	HRESULT hr;
-	// DirectX‰Šú‰»
+	// DirectXåˆæœŸåŒ–
 	hr = InitDirectX(hWnd, width, height, false);
 	if (FAILED(hr)) { return hr; }
 
-	// ‘¼‹@”\‰Šú‰»
+	// ä»–æ©Ÿèƒ½åˆæœŸåŒ–
 	Geometory::Init();
 	Sprite::Init();
 	InitInput();
 	ShaderList::Init();
 
-	// ƒV[ƒ“
+	// ã‚·ãƒ¼ãƒ³
 	g_pScene = new SceneGame();
 
 	CsvData& csv = CsvData::get_instance();
@@ -113,9 +113,9 @@ void Draw()
 {
 	BeginDrawDirectX();
 
-	// ²ü‚Ì•\¦
+	// è»¸ç·šã®è¡¨ç¤º
 #ifdef _DEBUG
-	// ƒOƒŠƒbƒh
+	// ã‚°ãƒªãƒƒãƒ‰
 	DirectX::XMFLOAT4 lineColor(0.5f, 0.5f, 0.5f, 1.0f);
 	float size = DEBUG_GRID_NUM * DEBUG_GRID_MARGIN;
 	for (int i = 1; i <= DEBUG_GRID_NUM; ++i)
@@ -135,7 +135,7 @@ void Draw()
 		pos[0].z = pos[1].z = -grid;
 		Geometory::AddLine(pos[0], pos[1], lineColor);
 	}
-	// ²
+	// è»¸
 	Geometory::AddLine(DirectX::XMFLOAT3(0,0,0), DirectX::XMFLOAT3(size,0,0), DirectX::XMFLOAT4(1,0,0,1));
 	Geometory::AddLine(DirectX::XMFLOAT3(0,0,0), DirectX::XMFLOAT3(0,size,0), DirectX::XMFLOAT4(0,1,0,1));
 	Geometory::AddLine(DirectX::XMFLOAT3(0,0,0), DirectX::XMFLOAT3(0,0,size), DirectX::XMFLOAT4(0,0,1,1));
@@ -144,7 +144,7 @@ void Draw()
 
 	Geometory::DrawLines();
 
-	// ƒJƒƒ‰‚Ì’l
+	// ã‚«ãƒ¡ãƒ©ã®å€¤
 	static bool camAutoSwitch = false;
 	static bool camUpDownSwitch = true;
 	static float camAutoRotate = 1.0f;
@@ -165,7 +165,7 @@ void Draw()
 		sinf(camAutoRotate) * 5.0f,
 		0.0f);
 
-	// ƒWƒIƒƒgƒŠ—pƒJƒƒ‰‰Šú‰»
+	// ã‚¸ã‚ªãƒ¡ãƒˆãƒªç”¨ã‚«ãƒ¡ãƒ©åˆæœŸåŒ–
 	DirectX::XMFLOAT4X4 mat[2];
 	DirectX::XMStoreFloat4x4(&mat[0], DirectX::XMMatrixTranspose(
 		DirectX::XMMatrixLookAtLH(
@@ -187,36 +187,36 @@ void Draw()
 
 HRESULT InitDevice()
 {
-	// 1. ƒfƒoƒCƒXAƒXƒƒbƒvƒ`ƒF[ƒ“AƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[‚Ìì¬
+	// 1. ãƒ‡ãƒã‚¤ã‚¹ã€ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã€ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 	// (D3D11CreateDeviceAndSwapChain, GetBuffer, CreateRenderTargetView ...)
 	// ...
 
-	// 2. ƒrƒ…[ƒ|[ƒg‚Ìİ’è
+	// 2. ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã®è¨­å®š
 	// (RSSetViewports ...)
 	// ...
 
-	// 3. ƒVƒF[ƒ_[‚ÌƒRƒ“ƒpƒCƒ‹‚Æì¬
+	// 3. ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã¨ä½œæˆ
 	// (D3DCompileFromFile, CreateVertexShader, CreatePixelShader ...)
 	// ...
 
-	// 4. “ü—ÍƒŒƒCƒAƒEƒg‚Ìì¬
+	// 4. å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®ä½œæˆ
 	// (CreateInputLayout ...)
 	// ...
 
-	// 5. ’¸“_ƒoƒbƒtƒ@‚Ìì¬
-	// (CreateBuffer ‚Å g_pVertexBuffer ‚ğì¬)
+	// 5. é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
+	// (CreateBuffer ã§ g_pVertexBuffer ã‚’ä½œæˆ)
 	// ...
 
-	// 6. ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ (‚ ‚È‚½‚ÌƒNƒ‰ƒX‚ğg—p)
+	// 6. ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿ (ã‚ãªãŸã®ã‚¯ãƒ©ã‚¹ã‚’ä½¿ç”¨)
 	g_pMyTexture = new Texture();
-	g_pMyTexture->Create("Assets/Texture/Fade.png"); // ‚Ü‚½‚Í .tga
+	g_pMyTexture->Create("Assets/Texture/Fade.png"); // ã¾ãŸã¯ .tga
 
-	// 7. ƒTƒ“ƒvƒ‰[ƒXƒe[ƒg‚Ìì¬
-	// (CreateSamplerState ‚Å g_pSamplerState ‚ğì¬)
+	// 7. ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆã®ä½œæˆ
+	// (CreateSamplerState ã§ g_pSamplerState ã‚’ä½œæˆ)
 	// ...
 
-	// 8. ’è”ƒoƒbƒtƒ@‚Ìì¬ (F•ÏX—p)
-	// (CreateBuffer ‚Å g_pConstantBufferColor ‚ğì¬)
+	// 8. å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ (è‰²å¤‰æ›´ç”¨)
+	// (CreateBuffer ã§ g_pConstantBufferColor ã‚’ä½œæˆ)
 	// ...
 
 	return S_OK;
@@ -224,55 +224,55 @@ HRESULT InitDevice()
 
 void TexUpdate()
 {
-	// •`‰æˆ—‚Åg‚¤‚½‚ß‚ÉAFî•ñ‚ğXV‚µ‚Ä‚¨‚­
+	// æç”»å‡¦ç†ã§ä½¿ã†ãŸã‚ã«ã€è‰²æƒ…å ±ã‚’æ›´æ–°ã—ã¦ãŠã
 	g_vTintColor = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	// (‚±‚±‚ÅƒIƒuƒWƒFƒNƒg‚ÌÀ•WŒvZ‚È‚Ç‚às‚¤)
+	// (ã“ã“ã§ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åº§æ¨™è¨ˆç®—ãªã©ã‚‚è¡Œã†)
 }
 
 void Render()
 {
-	// 1. ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg‚ğƒNƒŠƒA
-	float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f }; // (”wŒiF)
+	// 1. ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚¯ãƒªã‚¢
+	float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f }; // (èƒŒæ™¯è‰²)
 	g_pImmediateContext->ClearRenderTargetView(g_pRenderTargetView, ClearColor);
 
-	// 2. ’è”ƒoƒbƒtƒ@‚ÌXV (Update‚ÌŒ‹‰Ê‚ğGPU‚Ö“]‘—)
+	// 2. å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®æ›´æ–° (Updateã®çµæœã‚’GPUã¸è»¢é€)
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	if (SUCCEEDED(g_pImmediateContext->Map(g_pConstantBufferColor, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
 	{
 		ConstantBufferColor* pCB = (ConstantBufferColor*)mappedResource.pData;
-		pCB->tintColor = g_vTintColor; // Update() ‚ÅŒvZ‚µ‚½F
+		pCB->tintColor = g_vTintColor; // Update() ã§è¨ˆç®—ã—ãŸè‰²
 		g_pImmediateContext->Unmap(g_pConstantBufferColor, 0);
 	}
 
-	// 3. IA (Input Assembler) ƒXƒe[ƒW‚Ìİ’è
+	// 3. IA (Input Assembler) ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
 	// (IASetInputLayout, IASetVertexBuffers, IASetPrimitiveTopology ...)
 	// ...
 
-	// 4. VS (Vertex Shader) ƒXƒe[ƒW‚Ìİ’è
+	// 4. VS (Vertex Shader) ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
 	g_pImmediateContext->VSSetShader(g_pVertexShader, nullptr, 0);
 
-	// 5. PS (Pixel Shader) ƒXƒe[ƒW‚Ìİ’è
+	// 5. PS (Pixel Shader) ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
 	g_pImmediateContext->PSSetShader(g_pPixelShader, nullptr, 0);
 
-	// yƒeƒNƒXƒ`ƒƒ“\‚è‚ÆF•ÏXz
-	// ƒVƒF[ƒ_[‚É•K—v‚ÈƒŠƒ\[ƒX‚ğ‚·‚×‚ÄƒZƒbƒg
+	// ã€ãƒ†ã‚¯ã‚¹ãƒãƒ£è²¼ã‚Šã¨è‰²å¤‰æ›´ã€‘
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã«å¿…è¦ãªãƒªã‚½ãƒ¼ã‚¹ã‚’ã™ã¹ã¦ã‚»ãƒƒãƒˆ
 	ID3D11ShaderResourceView* pSRV = g_pMyTexture->GetResource();
-	g_pImmediateContext->PSSetShaderResources(0, 1, &pSRV);           // t0: ƒeƒNƒXƒ`ƒƒ
-	g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerState);        // s0: ƒTƒ“ƒvƒ‰[
-	g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pConstantBufferColor); // b0: Fî•ñ
+	g_pImmediateContext->PSSetShaderResources(0, 1, &pSRV);           // t0: ãƒ†ã‚¯ã‚¹ãƒãƒ£
+	g_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerState);        // s0: ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
+	g_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pConstantBufferColor); // b0: è‰²æƒ…å ±
 
-	// 6. •`‰æƒRƒ}ƒ“ƒh‚Ì”­s
-	g_pImmediateContext->Draw(4, 0); // (—á: ’¸“_4‚Â‚ÅlŠpŒ`‚ğ•`‰æ)
+	// 6. æç”»ã‚³ãƒãƒ³ãƒ‰ã®ç™ºè¡Œ
+	g_pImmediateContext->Draw(4, 0); // (ä¾‹: é ‚ç‚¹4ã¤ã§å››è§’å½¢ã‚’æç”»)
 
-	// 7. ƒoƒbƒNƒoƒbƒtƒ@‚Æƒtƒƒ“ƒgƒoƒbƒtƒ@‚ğŒğŠ· (‰æ–Ê‚É•\¦)
+	// 7. ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã¨ãƒ•ãƒ­ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã‚’äº¤æ› (ç”»é¢ã«è¡¨ç¤º)
 	g_pTexSwapChain->Present(0, 0);
 }
 
 void Cleanup()
 {
-	// ‰ğ•ú˜R‚ê (ƒƒ‚ƒŠƒŠ[ƒN) ‚ğ–h‚®‚½‚ßA
-	// ì¬‚µ‚½‚à‚Ì‚ğ‚·‚×‚Ä SAFE_RELEASE (‚Ü‚½‚Í delete) ‚·‚é
+	// è§£æ”¾æ¼ã‚Œ (ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ã‚¯) ã‚’é˜²ããŸã‚ã€
+	// ä½œæˆã—ãŸã‚‚ã®ã‚’ã™ã¹ã¦ SAFE_RELEASE (ã¾ãŸã¯ delete) ã™ã‚‹
 
 	SAFE_RELEASE(g_pConstantBufferColor);
 	SAFE_RELEASE(g_pSamplerState);
@@ -293,11 +293,11 @@ void Cleanup()
 	SAFE_RELEASE(g_pImmediateContext);
 	SAFE_RELEASE(g_pd3dDevice);
 
-	// (ƒEƒBƒ“ƒhƒE‚Ì”jŠü)
+	// (ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç ´æ£„)
 }
 
 void SetTextureColor(const DirectX::XMFLOAT4& color)
 {
-	// ƒOƒ[ƒoƒ‹•Ï”‚Ì’l‚ğXV‚·‚é‚¾‚¯
+	// ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®å€¤ã‚’æ›´æ–°ã™ã‚‹ã ã‘
 	g_vTintColor = color;
 }

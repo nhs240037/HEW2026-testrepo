@@ -1,4 +1,4 @@
-#ifndef __GEOMETORY_H__
+﻿#ifndef __GEOMETORY_H__
 #define __GEOMETORY_H__
 
 #include <DirectXMath.h>

@@ -1,10 +1,10 @@
-#ifndef __TEXTURE_H__
+ï»¿#ifndef __TEXTURE_H__
 #define __TEXTURE_H__
 
 #include "DirectX.h"
 
 /// <summary>
-/// ƒeƒNƒXƒ`ƒƒ
+/// ãƒ†ã‚¯ã‚¹ãƒãƒ£
 /// </summary>
 class Texture
 {
@@ -23,14 +23,14 @@ protected:
 	virtual HRESULT CreateResource(D3D11_TEXTURE2D_DESC &desc, const void* pData);
 
 protected:
-	UINT m_width;	///< ‰¡•
-	UINT m_height;	///< c•
+	UINT m_width;	///< æ¨ªå¹…
+	UINT m_height;	///< ç¸¦å¹…
 	ID3D11ShaderResourceView *m_pSRV;
 	ID3D11Texture2D* m_pTex;
 };
 
 /// <summary>
-/// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒg
+/// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 /// </summary>
 class RenderTarget : public Texture
 {
@@ -51,7 +51,7 @@ private:
 };
 
 /// <summary>
-/// [“xƒeƒNƒXƒ`ƒƒ
+/// æ·±åº¦ãƒ†ã‚¯ã‚¹ãƒãƒ£
 /// </summary>
 class DepthStencil : public Texture
 {

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include"GameObject.h"
 #include"Camera.h"
@@ -10,8 +10,8 @@
 #include"Model.h"
 #include<string>
 
-#define MAX_SHOKUZAI_LIST (7)
-#define MAX_INGREDIENTS_LIST (7)
+#define MAX_SHOKUZAI_LIST (8)
+#define MAX_INGREDIENTS_LIST (8)
 
 class Block :
     public GameObject
@@ -39,11 +39,11 @@ public:
 	{
 		Buns_up,
 		Buns_Button,
-		Bacon,
-		Cheese,
-		Fried_egg,
 		Patty,
 		Lettuce,
+		Fried_egg,
+		Bacon,
+		Cheese,
 		Tomato,
 		None,
 	};
@@ -69,18 +69,18 @@ public:
 	int GetStep();
 
 private:
-	Camera* m_pCamera;	//@ƒJƒƒ‰î•ñ
-	DirectX::XMFLOAT3	m_move;		// ˆÚ“®—Ê
-	DirectX::XMFLOAT3	m_playerPos;		// ˆÚ“®—Ê
+	Camera* m_pCamera;	//ã€€ã‚«ãƒ¡ãƒ©æƒ…å ±
+	DirectX::XMFLOAT3	m_move;		// ç§»å‹•é‡
+	DirectX::XMFLOAT3	m_playerPos;		// ç§»å‹•é‡
 	CsvData& csv;
 	f2col m_CollisionSize;
 	BlockState m_state;
-	int m_nStep;// ‰½’i–Ú‚É‚ ‚é‚Ì‚©
+	int m_nStep;// ä½•æ®µç›®ã«ã‚ã‚‹ã®ã‹
 	float m_fStepSizeY;
 	Block_Color m_bColor;
 	std::string fileName[MAX_SHOKUZAI_LIST];
 
-	// NewI
+	// Newï¼
 	Model* m_pModel;
 	DirectX::XMMATRIX m_dxpos;
 	DirectX::XMFLOAT4X4 wvp[3];

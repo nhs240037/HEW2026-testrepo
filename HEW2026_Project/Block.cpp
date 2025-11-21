@@ -207,6 +207,35 @@ void Block::Draw()
 			// モデルの描画
 			m_pModel->Draw(i);
 		}
+		//=====================影=============================
+
+		{
+				DirectX::XMMATRIX T_shadow;
+				DirectX::XMMATRIX S_shadow;
+
+				float shadowHeight = 0.05f; // avoid z-fighting
+				T_shadow = DirectX::XMMatrixTranslation(m_pos.x, 0.0f + shadowHeight, m_pos.z);
+
+				float shadowScaleX = csv.GetBlockState().blo.size.x * 1.2f;
+				float shadowScaleZ = csv.GetBlockState().blo.size.y * 1.2f;
+
+				S_shadow = DirectX::XMMatrixScaling(shadowScaleX, 0.01f, shadowScaleZ);
+
+				DirectX::XMMATRIX shadowMat = S_shadow * T_shadow;
+				shadowMat = DirectX::XMMatrixTranspose(shadowMat);
+
+				DirectX::XMFLOAT4X4 fShadow;
+				DirectX::XMStoreFloat4x4(&fShadow, shadowMat);
+
+				// shadow color
+				Model::Material shadowMaterial = {};
+				shadowMaterial.diffuse = DirectX::XMFLOAT4(0, 0, 0, 0.5f);
+
+				ShaderList::SetMaterial(shadowMaterial);
+				Geometory::SetWorld(fShadow);
+
+				Geometory::DrawCylinder();
+		}
 	}
 }
 

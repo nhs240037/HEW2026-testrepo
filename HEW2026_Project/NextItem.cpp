@@ -61,7 +61,7 @@ void NextItem::AddLootTable()
 	vector<Item*> ItemList;
 	for (Block::Block_Color color :
 	{
-		Block::Block_Color::Buns_Button,
+		//Block::Block_Color::Buns_Button,
 			Block::Block_Color::Bacon,
 			Block::Block_Color::Cheese,
 			Block::Block_Color::Fried_egg,

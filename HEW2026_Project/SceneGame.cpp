@@ -29,8 +29,13 @@ SceneGame::SceneGame()
 	float z = RandomFloat(-5.0f, 5.0f);
 	int randIndex = rand() % Block::None; // or correct enum size
 	Block::Block_Color randColor = static_cast<Block::Block_Color>(randIndex);
-	m_pBlock[0] = new Block(m_pNextItem->Next(), x, z);
+
+	m_pBlock[0] = new Block(Block::Block_Color::Buns_Button);
 	m_pBlock[0]->GetCamera(m_pCamera);
+	m_pBlock[0]->SetState(Block::BlockState::Block_Catched);
+
+	m_pBlock[1] = new Block(m_pNextItem->Next(), x, z);
+	m_pBlock[1]->GetCamera(m_pCamera);
 
 	m_pPlayer->SetCamera(m_pCamera);
 	m_pBlock[0]->SetCollision({m_pPlayer->GetPos().x, m_pPlayer->GetPos().z});
@@ -110,7 +115,7 @@ void SceneGame::Update()
 				float z = RandomFloat(-5.0f, 5.0f);
 				int randIndex = rand() % Block::None; // or correct enum size
 				Block::Block_Color randColor = static_cast<Block::Block_Color>(randIndex);
-				m_pBlock[j] = new Block(m_pNextItem->Next());
+				m_pBlock[j] = new Block(m_pNextItem->Next(), x, z);
 				m_pBlock[j]->GetCamera(m_pCamera);
 				m_pBlock[j]->SetStep(m_pBlock[i]->GetStep() + 1);
 				break;
@@ -138,12 +143,17 @@ void SceneGame::Update()
 		{
 			m_pBlock[i] = nullptr;
 		}
+
+		m_pBlock[0] = new Block(Block::Block_Color::Buns_Button);
+		m_pBlock[0]->GetCamera(m_pCamera);
+		m_pBlock[0]->SetState(Block::BlockState::Block_Catched);
+
 		float x = RandomFloat(-5.0f, 5.0f);
 		float z = RandomFloat(-5.0f, 5.0f);
 		int randIndex = rand() % Block::None; // or correct enum size
 		Block::Block_Color randColor = static_cast<Block::Block_Color>(randIndex);
-		m_pBlock[0] = new Block(m_pNextItem->Next(), x, z);
-		m_pBlock[0]->GetCamera(m_pCamera);
+		m_pBlock[1] = new Block(m_pNextItem->Next(), x, z);
+		m_pBlock[1]->GetCamera(m_pCamera);
 		m_pScore->AddScore(10);
 	}
 	if (m_pTimer)

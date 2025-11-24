@@ -165,7 +165,8 @@ void SceneGame::Update()
 			}
 		}
 
-		m_pOrderManager->Check(submittedBurger);
+
+		m_pOrderManager->Check(submittedBurger, m_pScore);
 		//// Add score for submitted blocks
 		//for (auto block : submittedBurger)
 		//{
@@ -193,6 +194,20 @@ void SceneGame::Update()
 		bunBlock->SetState(Block::BlockState::Block_Catched);
 		m_pBlock.push_front(bunBlock);
 
+	}
+
+	if (IsKeyTrigger('O'))
+	{
+
+		switch (rand() % 2)
+		{
+		case 0:
+			m_pOrderManager->Order({ Block::Lettuce, Block::Patty }, 30 + (rand() % 10), 20 + (rand() % 15));
+			break;
+		case 1:
+			m_pOrderManager->Order({ Block::Lettuce, Block::Patty	, Block::Fried_egg }, 50 + (rand() % 20), 25 + (rand() % 20));
+			break;
+		}
 	}
 
 	if (m_pTimer)

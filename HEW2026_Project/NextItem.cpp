@@ -3,7 +3,9 @@
 #include <random>
 #include "Defines.h"
 
+
 using namespace std;
+
 
 NextItem::NextItem()
 	:m_QueueItem{nullptr}, m_NextItem(nullptr), m_NextFrame(nullptr), m_QueueFrame{nullptr}
@@ -62,7 +64,7 @@ void NextItem::AddLootTable()
 	for (Block::Block_Color color :
 	{
 		//Block::Block_Color::Buns_Button,
-			Block::Block_Color::Bacon,
+		Block::Block_Color::Bacon,
 			Block::Block_Color::Cheese,
 			Block::Block_Color::Fried_egg,
 			Block::Block_Color::Patty,
@@ -70,8 +72,8 @@ void NextItem::AddLootTable()
 			Block::Block_Color::Tomato,
 	})
 		ItemList.push_back(new Item(color));
-	random_device rd;
-	mt19937 gen(rd());
+
+	mt19937 gen(rand());
 	shuffle(ItemList.begin(), ItemList.end(), gen);
 	m_Queue.insert(m_Queue.end(), ItemList.begin(), ItemList.end());
 }

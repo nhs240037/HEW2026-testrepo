@@ -109,21 +109,42 @@ void OrderTimer::Draw()
 		m_pUILineDanger->Draw();
 }
 
+OrderTimer::State OrderTimer::GetState()
+{
+	float progressRatio = GetProgressRatio();
+	if (progressRatio < m_fWarnRatio && progressRatio > m_fDangerRatio)
+		return State::Warn;
+	else if (progressRatio < m_fDangerRatio)
+		return State::Danger;
+	else
+		return State::Safe;
+}
+
 COrder::COrder() 
 		: COrder({ Block::Lettuce, Block::Patty })
 {
 }
-COrder::COrder(std::vector<Block::Block_Color> Recipe)
+COrder::COrder(std::list<Block::Block_Color> Recipe)
 		: COrder(Recipe, 20.f)
 {
 }
-COrder::COrder(std::vector<Block::Block_Color> Recipe, float limit)
+COrder::COrder(std::list<Block::Block_Color> Recipe, float limit)
+	: COrder(Recipe, limit, 10)
 {
+
+}
+COrder::COrder(std::list<Block::Block_Color> Recipe, float limit, int price)
+{
+	m_nBaseScore = price;
 		m_Order = Recipe;
 		m_pos = { 300.f, 100.f };
 		double _scale = 0.7;
 		m_pUIOrderBubble = new UIObject("OrderBubble.png", 0.f, 0.f, 256.f*_scale, 256.f*_scale);
 		std::string filename = "Burger_";
+		m_Order.sort([](Block::Block_Color a, Block::Block_Color b)
+		{
+				return (int)a < (int)b;
+		});
 		for (auto it = m_Order.begin(); it != m_Order.end(); ++it)
 		{
 				if (it != m_Order.begin())
@@ -187,10 +208,48 @@ void COrder::SetOrderIndex(int num)
 
 int COrder::SellScore()
 {
-		return int(m_nBaseScore * m_pOrderTimer->GetProgressRatio());
+	OrderTimer::State timerState = m_pOrderTimer->GetState();
+	switch (timerState)
+	{
+	case (OrderTimer::State::Safe):
+		return int(m_nBaseScore);
+		break;
+	case (OrderTimer::State::Warn):
+		return int(m_nBaseScore * .6f);
+		break;
+	case (OrderTimer::State::Danger):
+		return int(m_nBaseScore * .25f);
+		break;
+	default: 
+		OutputDebugString("みえちゃいけない\n");
+		break;
+	}
+
+
 }
 
 bool COrder::GetIsFailure()
 {
 		return m_bFailure;
+}
+
+bool COrder::IsCorrect(std::list<Block::Block_Color> burger)
+{
+	m_Order.sort([](Block::Block_Color a, Block::Block_Color b)
+		{
+			return (int)a < (int)b;
+		});
+
+	burger.sort([](Block::Block_Color a, Block::Block_Color b)
+		{
+			return (int)a < (int)b;
+		});
+
+	return (m_Order == burger);
+}
+
+
+float COrder::GetProgress()
+{
+	return m_pOrderTimer->GetProgressRatio();
 }

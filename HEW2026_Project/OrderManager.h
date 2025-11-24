@@ -9,7 +9,7 @@ public:
 		~OrderManager();
 		void Update();
 		void Draw();
-		void Check();
+		void Check(std::list<Block *> submit);
 private:
 		std::list<COrder*> m_orderList;
 };

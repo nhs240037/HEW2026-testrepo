@@ -147,6 +147,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraDebug.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Field.cpp" />
     <ClCompile Include="Order.cpp" />
     <ClCompile Include="CsvData.cpp" />
     <ClCompile Include="DirectX.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraDebug.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="Field.h" />
     <ClInclude Include="Order.h" />
     <ClInclude Include="CsvData.h" />
     <ClInclude Include="Defines.h" />

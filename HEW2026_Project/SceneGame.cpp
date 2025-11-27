@@ -43,8 +43,6 @@ SceneGame::SceneGame()
 	m_pExampleUI = new UIObject("UIGauge.png", 960.f, 540.f, 100.f, 400.f);
 }
 
-}
-
 SceneGame::~SceneGame()
 {
 	if (m_pModel) {

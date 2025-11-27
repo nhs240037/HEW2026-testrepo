@@ -40,8 +40,8 @@ Player::Player()
 	}
 
 	m_pModel = new Model();
-	if (!m_pModel->Load("Assets/Model/Prototype/MD_Player.fbx", 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
-		MessageBox(NULL, "Branch_01", "Error", MB_OK); // エラーメッセージの表示
+	if (!m_pModel->Load("Assets/Model/Player/MD/MD_Player_wheel.fbx", 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+		MessageBox(NULL, "Player Model Data Not Found", "Error", MB_OK); // エラーメッセージの表示
 	}
 
 	DirectX::XMMATRIX view, proj;

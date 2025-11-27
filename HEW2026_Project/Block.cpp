@@ -213,6 +213,35 @@ void Block::Draw()
 			material.ambient.x = 1.0f; // xは赤(r)を示す
 			material.ambient.y = 1.0f; // yは緑(g)を示す
 			material.ambient.z = 1.0f; // zは青(b)を示す
+			switch (m_bColor)
+			{
+			case Block::Buns_up:
+				break;
+			case Block::Buns_Button:
+				break;
+			case Block::Patty:
+				material.ambient.x = 0.65f; // xは赤(r)を示す
+				material.ambient.y = 0.65f; // yは緑(g)を示す
+				material.ambient.z = 0.65f; // zは青(b)を示す
+				break;
+			case Block::Lettuce:
+				break;
+			case Block::Fried_egg:
+				break;
+			case Block::Bacon:
+				material.ambient.x = 0.8f; // xは赤(r)を示す
+				material.ambient.y = 0.8f; // yは緑(g)を示す
+				material.ambient.z = 0.8f; // zは青(b)を示す
+				break;
+			case Block::Cheese:
+				break;
+			case Block::Tomato:
+				break;
+			case Block::None:
+				break;
+			default:
+				break;
+			}
 			// シェーダーへマテリアルを設定
 			ShaderList::SetMaterial(material);
 			// モデルの描画

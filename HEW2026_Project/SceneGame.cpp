@@ -104,6 +104,24 @@ void SceneGame::Update()
 			block->GetCamera(m_pCamera);
 		}
 	}
+	static int snCount; snCount++;//フレーをカウントする変数
+	// 指定フレーム数ごとにBlockを生成する
+	if (snCount % (60 * 2) == 0)
+	{
+		for (auto it = m_pBlock.begin(); it != m_pBlock.end(); ++it)
+		{
+			Block* block = *it;
+			if (block != nullptr) continue;
+			float randX = RandomFloat(-5.0f, 5.0f);
+			float randZ = RandomFloat(-5.0f, 5.0f);
+			Block* newBlock = new Block(m_pNextItem->Next(), randX, randZ);
+			newBlock->GetCamera(m_pCamera);
+			m_pBlock.push_back(newBlock);
+			snCount = 0;
+			break;
+		}
+	}
+
 	for (auto it = m_pBlock.begin(); it != m_pBlock.end(); ++it)
 	{
 		Block* block = *it;
@@ -120,6 +138,7 @@ void SceneGame::Update()
 			newBlock->GetCamera(m_pCamera);
 			newBlock->SetStep(block->GetStep() + 1);
 			m_pBlock.push_back(newBlock);
+			//snCount = 0;
 
 			block->SetState(Block::BlockState::Block_Catched);
 			break;
@@ -127,12 +146,13 @@ void SceneGame::Update()
 
 		case Block::BlockState::Block_Idle:
 		{
-			// Replace idle block with a new one
-			float x = RandomFloat(-5.0f, 5.0f);
-			float z = RandomFloat(-5.0f, 5.0f);
-			Block* newBlock = new Block(m_pNextItem->Next(), x, z);
-			newBlock->GetCamera(m_pCamera);
-			*it = newBlock; // replace the idle block
+			//// Replace idle block with a new one
+			//float x = RandomFloat(-5.0f, 5.0f);
+			//float z = RandomFloat(-5.0f, 5.0f);
+			//Block* newBlock = new Block(m_pNextItem->Next(), x, z);
+			//newBlock->GetCamera(m_pCamera);
+			//*it = newBlock; // replace the idle block
+			*it = nullptr;
 			break;
 		}
 

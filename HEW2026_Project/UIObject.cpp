@@ -24,7 +24,10 @@ UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder, float Posit
 	m_fRotation = {RotationX, RotationY, RotationZ};
 	m_fUVPositon = { 0.0f, 0.0f };
 	m_fUVScale = { 1.0f, 1.0f };
-	m_fColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+	m_fColor[0] = {1.0f, 1.0f, 1.0f, 1.0f};
+	m_fColor[1] = {1.0f, 1.0f, 1.0f, 1.0f};
+	m_fColor[2] = {1.0f, 1.0f, 1.0f, 1.0f};
+	m_fColor[3] = {1.0f, 1.0f, 1.0f, 1.0f};
 
 	std::string TexturePath = "Assets/Texture/" + RelativeTexturePathFromTextureFolder;
 	std::string FailedMsg = "Texture load failed.\n"+TexturePath;
@@ -91,7 +94,8 @@ void UIObject::Draw()
 		Sprite::SetTexture(m_pTexture);										// テクスチャを設定
 		Sprite::SetUVPos(m_fUVPositon);
 		Sprite::SetUVScale(m_fUVScale);
-		Sprite::SetColor(m_fColor);
+		for (int i = 0; i < 4; ++i)
+			Sprite::SetColor(m_fColor[i], i);
 		Sprite::Draw();
 
 	SetRenderTargets(1, &pRTV, pDSV);
@@ -135,7 +139,10 @@ void UIObject::SetUVScale(float X, float Y)
 
 void UIObject::SetColor(float R, float G, float B, float A)
 {
-		m_fColor = { R,G,B,A };
+	for (auto color : m_fColor)
+	{
+		color = { R,G,B,A };
+	}
 }
 
 DirectX::XMFLOAT2 UIObject::GetPosition(void)
@@ -163,7 +170,12 @@ DirectX::XMFLOAT2 UIObject::GetUVScale(void)
 		return m_fUVScale;
 }
 
-DirectX::XMFLOAT4 UIObject::GetColor(void)
+DirectX::XMFLOAT4 UIObject::GetColor(int index)
 {
-		return m_fColor;
+		return m_fColor[index];
+}
+
+void UIObject::GenerateGradient(DirectX::XMFLOAT4 colorFrom, DirectX::XMFLOAT4 colorTo, int degree)
+{
+
 }

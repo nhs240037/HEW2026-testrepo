@@ -35,13 +35,14 @@ public:
 	void SetUVPosition(float X, float Y);
 	void SetUVScale(float X, float Y);
 	void SetColor(float R, float G, float B, float A);
+	void GenerateGradient(DirectX::XMFLOAT4 colorFrom, DirectX::XMFLOAT4 colorTo, int degree);
 
 	DirectX::XMFLOAT2 GetPosition(void);
 	DirectX::XMFLOAT2 GetSize(void);
 	DirectX::XMFLOAT3 GetRotation(void);
 	DirectX::XMFLOAT2 GetUVPosition(void);
 	DirectX::XMFLOAT2 GetUVScale(void);
-	DirectX::XMFLOAT4 GetColor(void);
+	DirectX::XMFLOAT4 GetColor(int index);
 
 private:
 	Texture* m_pTexture;
@@ -50,5 +51,5 @@ private:
 	DirectX::XMFLOAT3 m_fRotation;
 	DirectX::XMFLOAT2 m_fUVPositon;
 	DirectX::XMFLOAT2 m_fUVScale;
-	DirectX::XMFLOAT4 m_fColor;
+	DirectX::XMFLOAT4 m_fColor[4];
 };

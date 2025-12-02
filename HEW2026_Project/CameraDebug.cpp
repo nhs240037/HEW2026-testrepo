@@ -68,7 +68,7 @@ void CameraDebug::Update()
 	m_pos.z = m_radius * sinf(m_radXZ);
 
 	m_pos.x = 0.0f;
-	m_pos.y = m_radius;
+	m_pos.y = m_radius * 1.1f;
 	m_pos.z = m_radius_Z;
 	//m_look.x = count;
 }

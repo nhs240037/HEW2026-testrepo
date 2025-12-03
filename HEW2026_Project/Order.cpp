@@ -202,7 +202,9 @@ void COrder::Draw()
 void COrder::SetOrderIndex(int num)
 {
 		m_nOrderIndex = num;
-		m_pos.x = 350.f + m_nOrderIndex * 300.f;
+		//m_pos.x = 350.f + m_nOrderIndex * 300.f;
+		m_pos.x = 120.f;
+		m_pos.y = 620.f - m_nOrderIndex * 180.f;
 
 }
 

@@ -4,12 +4,14 @@
  *
  * \author AT12C-41 Kotetsu Wakabayashi
  * \date   2025-11-18
- *********************************************************************/
+*********************************************************************/
+
 #pragma once
 #include <string>
-#include "Sprite.h"
-#include "Texture.h"
 #include <DirectXMath.h>
+#include "Sprite.h"
+#include "Texture.h";
+
 
 class UIObject
 {
@@ -27,9 +29,7 @@ public:
 	void Draw();
 
 	void SetPosition(float X, float Y);
-	void SetPosition(DirectX::XMFLOAT2 pos);
 	void SetSize(float W, float H);
-	void SetSize(DirectX::XMFLOAT2 size);
 	void SetRotation(float X, float Y, float Z);
 	void SetTexture(std::string RelativeTexturePathFromTextureFolder);
 	void SetUVPosition(float X, float Y);
@@ -42,6 +42,13 @@ public:
 	DirectX::XMFLOAT2 GetUVPosition(void);
 	DirectX::XMFLOAT2 GetUVScale(void);
 	DirectX::XMFLOAT4 GetColor(void);
+
+	void SetPosition(DirectX::XMFLOAT2 pos);
+	void SetSize(DirectX::XMFLOAT2 size);
+	void SetRotation(DirectX::XMFLOAT3 rotation);
+	void SetUVPosition(DirectX::XMFLOAT2 uvPos);
+	void SetUVScale(DirectX::XMFLOAT2 uvScale);
+	void SetColor(DirectX::XMFLOAT4 color);
 
 private:
 	Texture* m_pTexture;

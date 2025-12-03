@@ -6,6 +6,9 @@
 #include "Score.h"
 #include <ctime>
 
+#define ___UITEST //UIのテスト用
+
+
 SceneGame::SceneGame()
 		: m_pBlock{nullptr}, m_menu{}, csv(CsvData::get_instance())
 {

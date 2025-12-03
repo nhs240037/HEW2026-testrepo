@@ -5,7 +5,7 @@
  * \author AT12C-41 Kotetsu Wakabayashi
  * \date   2025-11-18
  *********************************************************************/
-//=====| Includes |=====//
+ //=====| Includes |=====//
 #include "UIObject.h"
 #include "Defines.h"
 
@@ -17,20 +17,20 @@ UIObject::UIObject(float PositionX, float PositionY, float Width, float Height, 
 UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY) : UIObject(RelativeTexturePathFromTextureFolder, PositionX, PositionY, 100.f, 100.f) {};
 UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY, float Width, float Height) : UIObject(RelativeTexturePathFromTextureFolder, PositionX, PositionY, Width, Height, 0.f, 0.f, 0.f) {};
 
-UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY, float Width, float Height, float RotationX, float RotationY, float RotationZ): m_pTexture(nullptr)
+UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder, float PositionX, float PositionY, float Width, float Height, float RotationX, float RotationY, float RotationZ) : m_pTexture(nullptr)
 {
-	m_fPosition = {PositionX, PositionY};
-	m_fSize = {Width, Height};
-	m_fRotation = {RotationX, RotationY, RotationZ};
+	m_fPosition = { PositionX, PositionY };
+	m_fSize = { Width, Height };
+	m_fRotation = { RotationX, RotationY, RotationZ };
 	m_fUVPositon = { 0.0f, 0.0f };
 	m_fUVScale = { 1.0f, 1.0f };
 	m_fColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	std::string TexturePath = "Assets/Texture/" + RelativeTexturePathFromTextureFolder;
-	std::string FailedMsg = "Texture load failed.\n"+TexturePath;
+	std::string FailedMsg = "Texture load failed.\n" + TexturePath;
 
 	m_pTexture = new Texture();
-	if(FAILED(m_pTexture->Create(TexturePath.c_str())))
+	if (FAILED(m_pTexture->Create(TexturePath.c_str())))
 		MessageBox(NULL, FailedMsg.c_str(), "Error", MB_OK);
 };
 
@@ -57,8 +57,8 @@ void UIObject::SetTexture(std::string RelativeTexturePathFromTextureFolder)
 
 void UIObject::Draw()
 {
-	RenderTarget *pRTV = GetDefaultRTV();
-	DepthStencil *pDSV = GetDefaultDSV();
+	RenderTarget* pRTV = GetDefaultRTV();
+	DepthStencil* pDSV = GetDefaultDSV();
 	SetRenderTargets(1, &pRTV, nullptr);
 
 	DirectX::XMFLOAT4X4 world, view, proj;
@@ -75,24 +75,24 @@ void UIObject::Draw()
 
 	Sprite::SetView(view);
 	Sprite::SetProjection(proj);
-	
-		//--- 中心に合わせる
-		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(1.0f, -1.f, 1.0f);
-		DirectX::XMMATRIX Rx = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(m_fRotation.x));
-		DirectX::XMMATRIX Ry = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(m_fRotation.y));
-		DirectX::XMMATRIX Rz = DirectX::XMMatrixRotationZ(DirectX::XMConvertToRadians(m_fRotation.z));
-		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(m_fPosition.x - m_fSize.x * 0.5f, m_fPosition.y, 0.0f);
-		DirectX::XMMATRIX mWorld = S * Rx * Ry * Rz * T;
-		DirectX::XMStoreFloat4x4(&world, DirectX::XMMatrixTranspose(mWorld));
 
-		Sprite::SetWorld(world);												// スプライトのワールド行列を設定
-		Sprite::SetSize(m_fSize);												// スプライトのサイズを設定
-		Sprite::SetOffset({ m_fSize.x * 0.5f, 0.0f });	// スプライトの原点を変更
-		Sprite::SetTexture(m_pTexture);										// テクスチャを設定
-		Sprite::SetUVPos(m_fUVPositon);
-		Sprite::SetUVScale(m_fUVScale);
-		Sprite::SetColor(m_fColor);
-		Sprite::Draw();
+	//--- 中心に合わせる
+	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(1.0f, -1.f, 1.0f);
+	DirectX::XMMATRIX Rx = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(m_fRotation.x));
+	DirectX::XMMATRIX Ry = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(m_fRotation.y));
+	DirectX::XMMATRIX Rz = DirectX::XMMatrixRotationZ(DirectX::XMConvertToRadians(m_fRotation.z));
+	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(m_fPosition.x - m_fSize.x * 0.5f, m_fPosition.y, 0.0f);
+	DirectX::XMMATRIX mWorld = S * Rx * Ry * Rz * T;
+	DirectX::XMStoreFloat4x4(&world, DirectX::XMMatrixTranspose(mWorld));
+
+	Sprite::SetWorld(world);												// スプライトのワールド行列を設定
+	Sprite::SetSize(m_fSize);												// スプライトのサイズを設定
+	Sprite::SetOffset({ m_fSize.x * 0.5f, 0.0f });	// スプライトの原点を変更
+	Sprite::SetTexture(m_pTexture);										// テクスチャを設定
+	Sprite::SetUVPos(m_fUVPositon);
+	Sprite::SetUVScale(m_fUVScale);
+	Sprite::SetColor(m_fColor);
+	Sprite::Draw();
 
 	SetRenderTargets(1, &pRTV, pDSV);
 	SetDepthTest(true);
@@ -100,42 +100,35 @@ void UIObject::Draw()
 
 void UIObject::SetPosition(float X, float Y)
 {
-	m_fPosition = {X, Y};
+	m_fPosition = { X, Y };
 }
 
-void UIObject::SetPosition(DirectX::XMFLOAT2 pos)
-{
-		m_fPosition = pos;
-}
 
 void UIObject::SetSize(float W, float H)
 {
-	m_fSize = {W, H};
+	m_fSize = { W, H };
 }
 
-void UIObject::SetSize(DirectX::XMFLOAT2 size)
-{
-	m_fSize = size;
-}
+
 
 void UIObject::SetRotation(float X, float Y, float Z)
 {
-	m_fRotation = {X, Y, Z};
+	m_fRotation = { X, Y, Z };
 }
 
 void UIObject::SetUVPosition(float X, float Y)
 {
-		m_fUVPositon = { X, Y };
+	m_fUVPositon = { X, Y };
 }
 
 void UIObject::SetUVScale(float X, float Y)
 {
-		m_fUVScale = { X, Y };
+	m_fUVScale = { X, Y };
 }
 
 void UIObject::SetColor(float R, float G, float B, float A)
 {
-		m_fColor = { R,G,B,A };
+	m_fColor = { R,G,B,A };
 }
 
 DirectX::XMFLOAT2 UIObject::GetPosition(void)
@@ -155,15 +148,45 @@ DirectX::XMFLOAT3 UIObject::GetRotation(void)
 
 DirectX::XMFLOAT2 UIObject::GetUVPosition(void)
 {
-		return m_fUVPositon;
+	return m_fUVPositon;
 }
 
 DirectX::XMFLOAT2 UIObject::GetUVScale(void)
 {
-		return m_fUVScale;
+	return m_fUVScale;
 }
 
 DirectX::XMFLOAT4 UIObject::GetColor(void)
 {
-		return m_fColor;
+	return m_fColor;
+}
+
+void UIObject::SetPosition(DirectX::XMFLOAT2 pos)
+{
+	m_fPosition = pos;
+}
+
+void UIObject::SetSize(DirectX::XMFLOAT2 size)
+{
+	m_fSize = size;
+}
+
+void UIObject::SetRotation(DirectX::XMFLOAT3 rotation)
+{
+	m_fRotation = rotation;
+}
+
+void UIObject::SetUVPosition(DirectX::XMFLOAT2 uvPos)
+{
+	m_fUVPositon = uvPos;
+}
+
+void UIObject::SetUVScale(DirectX::XMFLOAT2 uvScale)
+{
+	m_fUVScale = uvScale;
+}
+
+void UIObject::SetColor(DirectX::XMFLOAT4 color)
+{
+	m_fColor = color;
 }

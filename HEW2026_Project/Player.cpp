@@ -5,6 +5,10 @@
 #include "ShaderList.h"
 
 #include"CsvData.h"
+#include"Sound.h"
+
+#define PRE(in) IsKeyPress(in)
+
 
 Player::Index PosToIndex(Player::float2 f2pos);// インデックス座標からフィールド上のざひょうに変換
 Player::float2 IndexToPos(Player::Index idx);// フィールド上の座標から インデックス座標に変換
@@ -175,7 +179,9 @@ void Player::Update()
 
 	m_collision.box.center = m_pos;	// 更新処理後に当たり判定の位置を更新
 
-
+	TRAN_INS;
+	m_pos.x = tran.player.pos.x;
+	m_pos.z = tran.player.pos.y;
 
 #ifdef _DEBUG
 	// 回転処理
@@ -195,10 +201,16 @@ void Player::Update()
 	{
 		m_move.y += csv.GetSpeed();
 	}
+
 #endif
 	UpdateControl();
 	UpdateMove();	// 摩擦の処理
 	UpdateWall();
+
+#ifdef _DEBUG
+	tran.player.pos.x = m_pos.x;
+	tran.player.pos.y = m_pos.z;
+#endif
 }
 
 void Player::Draw()
@@ -349,6 +361,19 @@ void Player::UpdateControl()
 	{
 		m_move.z -= tran.player.velocity;
 	}
+
+	// Pressなので連続入力時に特定フレーム毎(20)にのみ反応する処理
+	static int pressCount;
+	if ((PRE('W') || PRE('A') || PRE('S') || PRE('D')) && pressCount <= 0)
+	{
+		pressCount = 20;
+		SE_INS_So.PlaySE(4);
+	}
+	if (pressCount > 0)
+	{
+		pressCount--;
+	}
+
 }
 
 void Player::UpdateMove()

@@ -2,6 +2,7 @@
 #include"Geometory.h"
 #include"ShaderList.h"
 #include"Sprite.h"
+#include "Sound.h"
 
 Block::Block()
 	: m_move{}
@@ -520,6 +521,10 @@ Block::Block(Block_Color set, float setX, float setY)
 	DirectX::XMStoreFloat4x4(&wvp[0], DirectX::XMMatrixTranspose(m_dxpos));
 	DirectX::XMStoreFloat4x4(&wvp[1], DirectX::XMMatrixTranspose(view));
 	DirectX::XMStoreFloat4x4(&wvp[2], DirectX::XMMatrixTranspose(proj));
+
+	// 食材が生成されたときの音を鳴らす
+	SE_INS;
+	sound.PlaySE(5);
 }
 
 	Block::Block_Color Block::GetColor()

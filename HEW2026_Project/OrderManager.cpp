@@ -1,4 +1,5 @@
 ﻿#include "OrderManager.h"
+#include"Sound.h"
 using namespace std;
 
 OrderManager::OrderManager()
@@ -106,6 +107,9 @@ void OrderManager::Check(list<Block *> submit, CScore* pScore)
 	pScore->AddScore((*TargetOrder)->SellScore());
 	m_orderList.erase(TargetOrder);
 
+	// 成功音声再生
+	SE_INS_So.PlaySE(0);
+	
 
 		//submit.sort()
 		//OutputDebugString()

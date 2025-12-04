@@ -3,6 +3,7 @@
 #include <Sprite.h>
 #include "Defines.h"
 #include <Input.h>
+#include "Sound.h"
 
 CScore::CScore()
 	:m_pScoreTex(nullptr)
@@ -112,7 +113,10 @@ void CScore::Draw()
 void CScore::AddScore(int amount)
 {
 	if (m_currentScore >= m_targetScore)
+	{
+		SE_INS_So.PlaySE(3);
 		MessageBox(NULL, "おめでとう！", "目標達成", MB_OK);
+	}
 		m_currentScore += amount;
 }
 

@@ -10,6 +10,7 @@
 
 // インスタンスを取得するマクロ : sound でアクセス
 #define SE_INS SoundManager& sound = SoundManager::GetInstance();
+#define SE_INS_So SoundManager& sound = SoundManager::GetInstance();sound
 
 // ================================
 // WAV 読み込み（PCM専用の超簡易版）

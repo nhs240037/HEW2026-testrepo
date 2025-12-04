@@ -36,7 +36,7 @@ public:
 		// プレイヤー
 		player.pos = { 0.0f,0.0f };
 		player.maxSpeed = { 5.0f ,5.0f};
-		player.velocity = 1.0f;
+		player.velocity = 0.01f;
 		player.speedDown = 0.99f;
 		// カメラ
 		camera.eyePos = { 0.0f,110.0f,-110.0f };

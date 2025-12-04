@@ -5,6 +5,7 @@
 #include "CameraDebug.h"
 #include "Score.h"
 #include <ctime>
+#include "Sound.h"
 
 SceneGame::SceneGame()
 		: m_pBlock{nullptr}, m_menu{}, csv(CsvData::get_instance())
@@ -141,6 +142,9 @@ void SceneGame::Update()
 			//snCount = 0;
 
 			block->SetState(Block::BlockState::Block_Catched);
+
+			// キャッチ音を再生
+			SE_INS_So.PlaySE(1);
 			break;
 		}
 
@@ -214,10 +218,13 @@ void SceneGame::Update()
 		bunBlock->SetState(Block::BlockState::Block_Catched);
 		m_pBlock.push_front(bunBlock);
 
+		// 
 	}
 
 	if (IsKeyTrigger('O'))
 	{
+		// とりあえず音再生
+		SE_INS_So.PlaySE(2);
 
 		switch (rand() % 2)
 		{

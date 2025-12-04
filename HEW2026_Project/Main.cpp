@@ -148,11 +148,13 @@ void Draw()
 	// ImGui 複数ウィンドウ
 	// ───────────────────────
 #ifdef _DEBUG
-	static bool show_main_window = true;
-	static bool show_second_window = true;
-	static bool show_player_window = true;
-	static bool show_camera_window = true;
-	static bool show_stage_window = true;
+	static bool show_main_window	= true;
+	static bool show_player_window	= false;
+	static bool show_camera_window	= false;
+	static bool show_stage_window	= false;
+	static bool show_item_window	= false;
+	static bool show_order_window	= false;
+	static bool show_ui_window		= false;
 
 	CAMERA_INS
 		TRAN_INS
@@ -161,7 +163,7 @@ void Draw()
 	if (IsKeyPress('U') && IsKeyPress('I') && IsKeyPress('O') && IsKeyPress('P'))
 		show_main_window = true;
 
-	if (true)
+	if (show_main_window)
 	{
 		ImGui::Begin("Setting", &show_main_window);
 		// カメラの位置情報の表示と変更に伴った更新
@@ -171,6 +173,10 @@ void Draw()
 
 		ImGui::Checkbox("Player Setting",&show_player_window);
 		ImGui::Checkbox("Camera Setting", &show_camera_window);
+		ImGui::Checkbox("Stage Setting", &show_stage_window);
+		ImGui::Checkbox("Item Setting", &show_item_window);
+		ImGui::Checkbox("Order Setting", &show_order_window);
+		ImGui::Checkbox("UI Setting", &show_ui_window);
 
 		// -----------Sound Debug-----------//
 		if (ImGui::Button("UpMoney"))
@@ -250,6 +256,38 @@ void Draw()
 		tran.camera.lookPos.x = camera_lookPos[0];
 		tran.camera.lookPos.y = camera_lookPos[1];
 		tran.camera.lookPos.z = camera_lookPos[2];
+		ImGui::End();
+	}
+
+	// -----------ステージ-----------
+	if (show_stage_window)
+	{
+		ImGui::Begin("Stage", &show_stage_window);
+
+		ImGui::End();
+	}
+
+	// -----------食材-----------
+	if (show_item_window)
+	{
+		ImGui::Begin("Item", &show_stage_window);
+
+		ImGui::End();
+	}
+
+	// -----------オーダー-----------
+	if (show_order_window)
+	{
+		ImGui::Begin("Order", &show_stage_window);
+
+		ImGui::End();
+	}
+
+	// -----------UI-----------
+	if (show_ui_window)
+	{
+		ImGui::Begin("UI", &show_stage_window);
+
 		ImGui::End();
 	}
 

@@ -6,6 +6,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include"CsvData.h"
+#include "Transfer.h"
 
 static const int FPS = 60;
 static const float fFPS = static_cast<float>(FPS);
@@ -41,6 +42,16 @@ static const float fFPS = static_cast<float>(FPS);
 
 #ifdef CSV_ACCEPT
 
+#ifdef _TRANSFER
+
+
+#define PLAYER_MOVE_SPEED	tran.player.velocity
+#define FIELD_COLUMN		tran.stage.column
+#define FIELD_ROW			tran.stage.row
+#define MAX_FIELD_WIDTH		(FIELD_COLUMN / PLAYER_WIDTH * PLAYER_WIDTH)
+#define MAX_FIELD_HEIGHT	(FIELD_ROW / PLAYER_HEIGHT * PLAYER_HEIGHT)
+
+#else
 //----- csv�t�@�C���ǂݍ��ݐ��� -----//
 #define PLAYER_MOVE_SPEED(set)	set.GetSpeed()
 #define FIELD_COLUMN(set)		set.GetWidth()
@@ -48,7 +59,7 @@ static const float fFPS = static_cast<float>(FPS);
 #define MAX_FIELD_WIDTH(set)  (FIELD_COLUMN(set) / PLAYER_WIDTH * PLAYER_WIDTH)
 #define MAX_FIELD_HEIGHT(set) (FIELD_ROW(set) / PLAYER_HEIGHT * PLAYER_HEIGHT)
 #endif
-
+#endif
 #define MAX_BLOCK	(0x1e)
 
 #define PLAYER_WIDTH	(2.0f)

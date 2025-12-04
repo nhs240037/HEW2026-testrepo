@@ -12,6 +12,7 @@
 
 // インスタンス取得マクロ:tranでアクセス
 #define TRAN_INS Transfer& tran = Transfer::GetInstance();
+#define _TRANSFER
 
 #include <vector>
 
@@ -45,9 +46,9 @@ public:
 		stage.column = 12;
 		stage.row = 6;
 		// 食材
-		item.downSpeed = 0.0f;
+		item.downSpeed = 0.1f;
 		item.size = { 1.0f,1.0f,1.0f };
-		item.repopTime = 60.0f;
+		item.repopTime = 2.0f;
 		// オーダー
 		order.size = { 1.0f,1.0f };
 		order.TimeLimit = 180.0f;	//三分

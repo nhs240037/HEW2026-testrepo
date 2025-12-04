@@ -220,7 +220,7 @@ void Draw()
 		// プレイヤーの減速度
 		float p_speedDown = tran.player.speedDown;
 
-		ImGui::SliderFloat("Player Speed Down", &p_speedDown, 0.25f, 1.0);
+		ImGui::SliderFloat("Player Speed Down", &p_speedDown, 0.25f, 1.10);
 
 		tran.player.speedDown = p_speedDown;
 
@@ -263,6 +263,13 @@ void Draw()
 	if (show_stage_window)
 	{
 		ImGui::Begin("Stage", &show_stage_window);
+		int column = tran.stage.column;
+		int row = tran.stage.row;
+		ImGui::SliderInt("Stage Width", &column, 0, 20);
+		ImGui::SliderInt("Stage Height", &row, 0, 20);
+
+		tran.stage.column = column;
+		tran.stage.row = row;
 
 		ImGui::End();
 	}
@@ -272,6 +279,33 @@ void Draw()
 	{
 		ImGui::Begin("Item", &show_stage_window);
 
+		float downSpeed = tran.item.downSpeed;
+		ImGui::SliderFloat("Item DownSpeed", &downSpeed, 0.0f, 1.0f);
+		tran.item.downSpeed = downSpeed;
+
+		static bool size_lock;
+		ImGui::Checkbox("Item Size Interlocking", &size_lock);
+		if (!size_lock)
+		{
+			float size[3] = { tran.item.size.x,tran.item.size.y,tran.item.size.z };
+			ImGui::SliderFloat3("Item Size", size, 0.0f, 10.0f);
+			tran.item.size.x = size[0];
+			tran.item.size.y = size[1];
+			tran.item.size.z = size[2];
+		}
+		else
+		{
+			float size = tran.item.size.x;
+			ImGui::SliderFloat("Item Size", &size, 0.0f, 10.0f);
+			tran.item.size.x = size;
+			tran.item.size.y = size;
+			tran.item.size.z = size;
+		}
+
+		float repopTime = tran.item.repopTime;
+		ImGui::SliderFloat("Item RepopTime", &repopTime, 0.017f, 5.0f);
+		tran.item.repopTime = repopTime;
+
 		ImGui::End();
 	}
 
@@ -280,6 +314,19 @@ void Draw()
 	{
 		ImGui::Begin("Order", &show_stage_window);
 
+		float size[2] = { tran.order.size.x,tran.order.size.y };
+		ImGui::SliderFloat2("Order size", size, 0.0f, 10.0f);
+		tran.order.size.x = size[0];
+		tran.order.size.y = size[1];
+
+		float TimeLimit = tran.order.TimeLimit;
+		ImGui::SliderFloat("Order TimeLimit", &TimeLimit, 5, 3600);
+		if (ImGui::Button("Apply"));// 多分誰かがタイマーを設定した数値にリセットしてくれるはず
+		tran.order.TimeLimit = TimeLimit;
+		float repopTime = tran.order.repopTime;
+		ImGui::SliderFloat("Order RepopTime",&repopTime,0.017f,20.0f);
+		tran.order.repopTime = repopTime;
+
 		ImGui::End();
 	}
 
@@ -287,7 +334,7 @@ void Draw()
 	if (show_ui_window)
 	{
 		ImGui::Begin("UI", &show_stage_window);
-
+		ImGui::Text("Nothing");
 		ImGui::End();
 	}
 

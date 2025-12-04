@@ -392,6 +392,8 @@ void Player::UpdateMove()
 	m_move.y *= tran.player.speedDown;
 	m_move.z *= tran.player.speedDown;
 
+	//この作品の場合はこれより下の処理は不要なのでスキップ
+	return;
 	// 重力
 	m_move.y -= MSEC(GRAVITY);
 
@@ -427,24 +429,24 @@ void Player::UpdateMove()
 
 void Player::UpdateWall()
 {
-	if (m_pos.x > MAX_FIELD_WIDTH(csv) - HALF(PLAYER_WIDTH))
+	if (m_pos.x > MAX_FIELD_WIDTH - HALF(PLAYER_WIDTH))
 	{
-		m_pos.x = MAX_FIELD_WIDTH(csv) - HALF(PLAYER_WIDTH);
+		m_pos.x = MAX_FIELD_WIDTH - HALF(PLAYER_WIDTH);
 		m_move.x = 0.0f;
 	}
-	if (m_pos.x < -MAX_FIELD_WIDTH(csv) + HALF(PLAYER_WIDTH))		
+	if (m_pos.x < -MAX_FIELD_WIDTH + HALF(PLAYER_WIDTH))		
 	{
-		m_pos.x = -MAX_FIELD_WIDTH(csv) + HALF(PLAYER_WIDTH);
+		m_pos.x = -MAX_FIELD_WIDTH + HALF(PLAYER_WIDTH);
 		m_move.x = 0.0f;
 	}
-	if (m_pos.z > MAX_FIELD_HEIGHT(csv) - HALF(PLAYER_WIDTH))		
+	if (m_pos.z > MAX_FIELD_HEIGHT - HALF(PLAYER_WIDTH))		
 	{
-		m_pos.z = MAX_FIELD_HEIGHT(csv) - HALF(PLAYER_WIDTH);
+		m_pos.z = MAX_FIELD_HEIGHT - HALF(PLAYER_WIDTH);
 		m_move.z = 0.0f;
 	}
-	if (m_pos.z < -MAX_FIELD_HEIGHT(csv) + HALF(PLAYER_WIDTH))	
+	if (m_pos.z < -MAX_FIELD_HEIGHT + HALF(PLAYER_WIDTH))	
 	{
-		m_pos.z = -MAX_FIELD_HEIGHT(csv) + HALF(PLAYER_WIDTH);
+		m_pos.z = -MAX_FIELD_HEIGHT + HALF(PLAYER_WIDTH);
 		m_move.z = 0.0f;
 	}
 

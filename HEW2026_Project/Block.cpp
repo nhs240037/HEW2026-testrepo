@@ -2,6 +2,8 @@
 #include"Geometory.h"
 #include"ShaderList.h"
 #include"Sprite.h"
+#include "Sound.h"
+#include"Transfer.h"
 
 Block::Block()
 	: m_move{}
@@ -115,12 +117,15 @@ Block::~Block()
 
 void Block::Update()
 {
+	TRAN_INS;
 	switch (m_state)
 	{
 	case Block::Block_Idle:
 		break;
 	case Block::Block_Drop:
-		m_pos.y -= csv.GetBlockState().blo.posY;
+
+		m_pos.y -= tran.item.downSpeed;
+		//m_pos.y -= csv.GetBlockState().blo.posY;
 
 		// 最新のプレイヤー位置で当たり判定する
 		if (m_playerPos.x > m_pos.x - (csv.GetBlockState().blo.size.x / 2.0f) &&
@@ -149,8 +154,10 @@ void Block::Update()
 	default:
 		break;
 	}
-
-	m_dxpos = DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z);
+	
+	m_dxpos = 
+		DirectX::XMMatrixScaling(tran.item.size.x,tran.item.size.y,tran.item.size.z) * 
+		DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z);
 }
 
 void Block::Draw()
@@ -520,6 +527,10 @@ Block::Block(Block_Color set, float setX, float setY)
 	DirectX::XMStoreFloat4x4(&wvp[0], DirectX::XMMatrixTranspose(m_dxpos));
 	DirectX::XMStoreFloat4x4(&wvp[1], DirectX::XMMatrixTranspose(view));
 	DirectX::XMStoreFloat4x4(&wvp[2], DirectX::XMMatrixTranspose(proj));
+
+	// 食材が生成されたときの音を鳴らす
+	SE_INS;
+	sound.PlaySE(5);
 }
 
 	Block::Block_Color Block::GetColor()

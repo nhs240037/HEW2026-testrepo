@@ -41,10 +41,19 @@ void UninitDirectX();
 void BeginDrawDirectX();
 void EndDrawDirectX();
 
+// リサイズ用
+void OnResizeDirectX(UINT width, UINT height);
+
 void SetRenderTargets(UINT num, RenderTarget** ppViews, DepthStencil* pView);
 void SetCullingMode(D3D11_CULL_MODE cull);
 void SetDepthTest(bool enable);
 void SetBlendMode(BlendMode blend);
 void SetSamplerState(SamplerState state);
+
+// ImGui関連
+void InitImGui(HWND hWnd);
+void ShutdownImGui();
+void BeginImGuiFrame();
+void RenderImGuiDrawData();
 
 #endif

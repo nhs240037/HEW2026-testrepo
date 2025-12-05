@@ -9,6 +9,7 @@
 #include<DirectXMath.h>
 #include"Sprite.h"
 #include"Model.h"
+#include "Transfer.h"
 
 class Player : public GameObject {
 public:
@@ -50,23 +51,24 @@ private:
 	void UpdateWall();
 
 private:
-	Camera* m_pCamera;	//　カメラ情報
-	DirectX::XMFLOAT3	m_move;		// 移動量
-	bool		m_isStop;	// ボールの停止判定
-	int		m_shotStep; // 
-	float	m_power;		// speedにvLenを格納
-	float2 m_f2pos;
+	Camera* m_pCamera;			//　カメラ情報
+	DirectX::XMFLOAT3	m_move;	// 移動量
+	bool m_isStop;				// ボールの停止判定
+	int m_shotStep;				// 
+	float m_power;				// speedにvLenを格納
+	float2 m_f2Velocity;
 	Index m_idx;
 	float m_angle;
 
 	Texture* m_pShadowTex;	// 影の見た目
 	DirectX::XMFLOAT3	m_shadowPos;	// 影の位置
 
-	// New!
 	CsvData& csv;
 	Model* m_pModel;
 	DirectX::XMMATRIX m_dxpos;
 	DirectX::XMFLOAT4X4 wvp[3];
+	// New!
+	Transfer& tran;
 };
 
 #endif//_PLAYER_H

@@ -3,6 +3,10 @@
 #include "Main.h"
 #include <stdio.h>
 #include <crtdbg.h>
+#include"imgui_impl_win32.h"
+#include"DirectX.h"
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(
+HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 // timeGetTime周りの使用
 #pragma comment(lib, "winmm.lib")
@@ -111,8 +115,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 // ウィンドウプロシージャ
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+		return true;
+
 	switch (message)
 	{
+	case WM_SIZE:
+		// 最小化中は何もしない
+		if (wParam != SIZE_MINIMIZED)
+		{
+			UINT width = LOWORD(lParam);
+			UINT height = HIWORD(lParam);
+			OnResizeDirectX(width, height);
+		}
+		return 0;
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;

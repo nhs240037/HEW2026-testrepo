@@ -147,6 +147,12 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraDebug.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="imgui_draw.cpp" />
+    <ClCompile Include="imgui_impl_dx11.cpp" />
+    <ClCompile Include="imgui_impl_win32.cpp" />
+    <ClCompile Include="imgui_tables.cpp" />
+    <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="Order.cpp" />
     <ClCompile Include="CsvData.cpp" />
     <ClCompile Include="DirectX.cpp" />
@@ -164,6 +170,7 @@
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderList.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Startup.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -177,6 +184,11 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraDebug.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="imconfig.h" />
+    <ClInclude Include="imgui.h" />
+    <ClInclude Include="imgui_impl_dx11.h" />
+    <ClInclude Include="imgui_impl_win32.h" />
+    <ClInclude Include="imgui_internal.h" />
     <ClInclude Include="Order.h" />
     <ClInclude Include="CsvData.h" />
     <ClInclude Include="Defines.h" />
@@ -196,8 +208,10 @@
     <ClInclude Include="Score.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderList.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Transfer.h" />
     <ClInclude Include="UIObject.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>

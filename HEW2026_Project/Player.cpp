@@ -5,6 +5,10 @@
 #include "ShaderList.h"
 
 #include"CsvData.h"
+#include"Sound.h"
+
+#define PRE(in) IsKeyPress(in)
+
 
 Player::Index PosToIndex(Player::float2 f2pos);// インデックス座標からフィールド上のざひょうに変換
 Player::float2 IndexToPos(Player::Index idx);// フィールド上の座標から インデックス座標に変換
@@ -22,12 +26,13 @@ Player::Player()
 	, m_shotStep(SHOT_WAIT)
 	, m_power(0.0f)
 	, m_move()
-	, m_f2pos{ 0.0f,0.0f }
+	, m_f2Velocity{ 0.0f,0.0f }
 	, m_idx{}
 	, m_angle(0.0f)
 	, m_shadowPos{ 0.0f,0.0f,0.0f }
 	, csv(CsvData::get_instance())
 	, m_pModel(nullptr)
+	, tran(Transfer::GetInstance())
 {
 	m_collision.type = Collision::eBox;
 	m_collision.box = {
@@ -126,7 +131,7 @@ Player::float2 PlayerMoveGrid(Player::float2 pos)
 Player::float2 PlayerMoveSmooth(Player::float2 pos)
 {
 	CsvData& csv = CsvData::get_instance();
-
+	TRAN_INS
 
 	static bool isPress;
 	static int nPressCount;
@@ -150,19 +155,19 @@ Player::float2 PlayerMoveSmooth(Player::float2 pos)
 	}
 	if (IsKeyPress('A'))
 	{
-		pos.x -= csv.GetSpeed() + (IsKeyPress(VK_SHIFT) * csv.GetSpeed());
+		pos.x -= tran.player.velocity;
 	}
 	if (IsKeyPress('D'))
 	{
-		pos.x += csv.GetSpeed() + (IsKeyPress(VK_SHIFT) * csv.GetSpeed());
+		pos.x += tran.player.velocity;
 	}
 	if (IsKeyPress('W'))
 	{
-		pos.y += csv.GetSpeed() + (IsKeyPress(VK_SHIFT) * csv.GetSpeed());
+		pos.y += tran.player.velocity;
 	}
 	if (IsKeyPress('S'))
 	{
-		pos.y -= csv.GetSpeed() + (IsKeyPress(VK_SHIFT) * csv.GetSpeed());
+		pos.y -= tran.player.velocity;
 	}
 	return pos;
 }
@@ -174,7 +179,9 @@ void Player::Update()
 
 	m_collision.box.center = m_pos;	// 更新処理後に当たり判定の位置を更新
 
-
+	TRAN_INS;
+	m_pos.x = tran.player.pos.x;
+	m_pos.z = tran.player.pos.y;
 
 #ifdef _DEBUG
 	// 回転処理
@@ -194,10 +201,16 @@ void Player::Update()
 	{
 		m_move.y += csv.GetSpeed();
 	}
+
 #endif
 	UpdateControl();
 	UpdateMove();	// 摩擦の処理
 	UpdateWall();
+
+#ifdef _DEBUG
+	tran.player.pos.x = m_pos.x;
+	tran.player.pos.y = m_pos.z;
+#endif
 }
 
 void Player::Draw()
@@ -334,34 +347,53 @@ void Player::UpdateControl()
 {
 	if (IsKeyPress('A'))
 	{
-		m_move.x -= csv.GetSpeed() + (IsKeyPress(VK_SHIFT) * csv.GetSpeed());
+		m_move.x -= tran.player.velocity;
 	}
 	if (IsKeyPress('D'))
 	{
-		m_move.x += csv.GetSpeed() + (IsKeyPress(VK_SHIFT) * csv.GetSpeed());
+		m_move.x += tran.player.velocity;
 	}
 	if (IsKeyPress('W'))
 	{
-		m_move.z += csv.GetSpeed() + (IsKeyPress(VK_SHIFT) * csv.GetSpeed());
+		m_move.z += tran.player.velocity;
 	}
 	if (IsKeyPress('S'))
 	{
-		m_move.z -= csv.GetSpeed() + (IsKeyPress(VK_SHIFT) * csv.GetSpeed());
+		m_move.z -= tran.player.velocity;
 	}
+
+	// Pressなので連続入力時に特定フレーム毎(20)にのみ反応する処理
+	static int pressCount;
+	if ((PRE('W') || PRE('A') || PRE('S') || PRE('D')) && pressCount <= 0)
+	{
+		pressCount = 20;
+		SE_INS_So.PlaySE(4);
+	}
+	if (pressCount > 0)
+	{
+		pressCount--;
+	}
+
 }
 
 void Player::UpdateMove()
 {
+	// Transferのインスタンスを取得
+	TRAN_INS
+
+
 	// 移動処理
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
 	m_pos.z += m_move.z;
 
 	// 減速処理(空気抵抗
-	m_move.x *= 0.95f;
-	m_move.y *= 0.95f;
-	m_move.z *= 0.95f;
+	m_move.x *= tran.player.speedDown;
+	m_move.y *= tran.player.speedDown;
+	m_move.z *= tran.player.speedDown;
 
+	//この作品の場合はこれより下の処理は不要なのでスキップ
+	return;
 	// 重力
 	m_move.y -= MSEC(GRAVITY);
 
@@ -397,24 +429,24 @@ void Player::UpdateMove()
 
 void Player::UpdateWall()
 {
-	if (m_pos.x > MAX_FIELD_WIDTH(csv) - HALF(PLAYER_WIDTH))
+	if (m_pos.x > MAX_FIELD_WIDTH - HALF(PLAYER_WIDTH))
 	{
-		m_pos.x = MAX_FIELD_WIDTH(csv) - HALF(PLAYER_WIDTH);
+		m_pos.x = MAX_FIELD_WIDTH - HALF(PLAYER_WIDTH);
 		m_move.x = 0.0f;
 	}
-	if (m_pos.x < -MAX_FIELD_WIDTH(csv) + HALF(PLAYER_WIDTH))		
+	if (m_pos.x < -MAX_FIELD_WIDTH + HALF(PLAYER_WIDTH))		
 	{
-		m_pos.x = -MAX_FIELD_WIDTH(csv) + HALF(PLAYER_WIDTH);
+		m_pos.x = -MAX_FIELD_WIDTH + HALF(PLAYER_WIDTH);
 		m_move.x = 0.0f;
 	}
-	if (m_pos.z > MAX_FIELD_HEIGHT(csv) - HALF(PLAYER_WIDTH))		
+	if (m_pos.z > MAX_FIELD_HEIGHT - HALF(PLAYER_WIDTH))		
 	{
-		m_pos.z = MAX_FIELD_HEIGHT(csv) - HALF(PLAYER_WIDTH);
+		m_pos.z = MAX_FIELD_HEIGHT - HALF(PLAYER_WIDTH);
 		m_move.z = 0.0f;
 	}
-	if (m_pos.z < -MAX_FIELD_HEIGHT(csv) + HALF(PLAYER_WIDTH))	
+	if (m_pos.z < -MAX_FIELD_HEIGHT + HALF(PLAYER_WIDTH))	
 	{
-		m_pos.z = -MAX_FIELD_HEIGHT(csv) + HALF(PLAYER_WIDTH);
+		m_pos.z = -MAX_FIELD_HEIGHT + HALF(PLAYER_WIDTH);
 		m_move.z = 0.0f;
 	}
 

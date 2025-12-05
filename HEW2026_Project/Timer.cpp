@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iomanip>
 #include <cmath>
+#include"Sound.h"
 
 constexpr int NUM_COLS = 4; // Number.png の数字の列数
 constexpr float GRID_W = 1.0f / NUM_COLS; // 正規化U座標の幅 
@@ -51,6 +52,7 @@ void CTimer::Update()
 	m_totalTime -= deltaTime;
 	if (m_totalTime < 0.0f)
 	{
+		SE_INS_So.PlaySE(6);//タイムリミット再生
 		m_totalTime = 0.0;
 		MessageBox(NULL, "GAMEOVER", "Gameover", MB_OK);
 	}

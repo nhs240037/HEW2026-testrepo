@@ -1,5 +1,9 @@
 ﻿#include "DirectX.h"
 #include "Texture.h"
+// ImGui
+#include "imgui.h"
+#include "imgui_impl_win32.h"
+#include "imgui_impl_dx11.h"
 
 //--- グローバル変数
 ID3D11Device*				g_pDevice;
@@ -11,6 +15,9 @@ ID3D11RasterizerState*		g_pRasterizerState[3];
 ID3D11DepthStencilState*	g_pDepthStencilState[2];
 ID3D11BlendState*			g_pBlendState[BLEND_MAX];
 ID3D11SamplerState*			g_pSamplerState[SAMPLER_MAX];
+
+// ImGui初期化フラグ
+static bool g_ImGuiInitialized = false;
 
 
 ID3D11Device* GetDevice()
@@ -199,11 +206,17 @@ HRESULT InitDirectX(HWND hWnd, UINT width, UINT height, bool fullscreen)
 	}
 	SetSamplerState(SAMPLER_LINEAR);
 
+	// ImGui 初期化
+	InitImGui(hWnd);
+
 	return S_OK;
 }
 
 void UninitDirectX()
 {
+	// 先に ImGui を終了させる（D3Dリソース解放の前）
+	ShutdownImGui();
+
 	SAFE_DELETE(g_pDSV);
 	SAFE_DELETE(g_pRTV);
 
@@ -226,16 +239,69 @@ void UninitDirectX()
 
 void BeginDrawDirectX()
 {
+	// ImGui フレーム開始
+	BeginImGuiFrame();
+
 	float color[4] = { 0.8f, 0.9f, 1.0f, 1.0f };
 	g_pRTV->Clear(color);
 	g_pDSV->Clear();
 }
 void EndDrawDirectX()
 {
+	// ImGui 描画
+	RenderImGuiDrawData();
+
 	g_pSwapChain->Present(0, 0);
 }
 
 
+// ウィンドウサイズ更新時の処理
+void OnResizeDirectX(UINT width, UINT height)
+{
+	if (!g_pDevice || !g_pSwapChain || width == 0 || height == 0)
+		return;
+
+	// いったん現在のレンダーターゲットのバインドを外す
+	ID3D11RenderTargetView* nullRTV[1] = { nullptr };
+	g_pContext->OMSetRenderTargets(1, nullRTV, nullptr);
+
+	// 既存のRTV/DSVを破棄
+	SAFE_DELETE(g_pDSV);
+	SAFE_DELETE(g_pRTV);
+
+	// スワップチェインのバッファサイズ変更
+	HRESULT hr = g_pSwapChain->ResizeBuffers(
+		0,                      // バッファ数そのまま
+		width,
+		height,
+		DXGI_FORMAT_UNKNOWN,    // 既存のフォーマットを維持
+		0
+	);
+	if (FAILED(hr))
+	{
+		// 必要ならログ出力など
+		return;
+	}
+
+	// 新しいバックバッファからRTV再作成
+	g_pRTV = new RenderTarget();
+	if (FAILED(g_pRTV->CreateFromScreen()))
+	{
+		SAFE_DELETE(g_pRTV);
+		return;
+	}
+
+	// 新しいサイズでDSV再作成
+	g_pDSV = new DepthStencil();
+	if (FAILED(g_pDSV->Create(g_pRTV->GetWidth(), g_pRTV->GetHeight(), false)))
+	{
+		SAFE_DELETE(g_pDSV);
+		return;
+	}
+
+	// OMとビューポートを設定し直す
+	SetRenderTargets(1, &g_pRTV, g_pDSV);
+}
 
 void SetRenderTargets(UINT num, RenderTarget** ppViews, DepthStencil* pView)
 {
@@ -282,3 +348,50 @@ void SetSamplerState(SamplerState state)
 	if (state < 0 || state >= SAMPLER_MAX) return;
 	g_pContext->PSSetSamplers(0, 1, &g_pSamplerState[state]);
 }
+
+
+// ここからImGui関連処理
+void InitImGui(HWND hWnd)
+{
+	if (g_ImGuiInitialized) return;
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+	ImGui::StyleColorsDark();
+
+	ImGui_ImplWin32_Init(hWnd);
+	ImGui_ImplDX11_Init(g_pDevice, g_pContext);
+
+	g_ImGuiInitialized = true;
+}
+
+void ShutdownImGui()
+{
+	if (!g_ImGuiInitialized) return;
+
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+
+	g_ImGuiInitialized = false;
+}
+
+void BeginImGuiFrame()
+{
+	if (!g_ImGuiInitialized) return;
+
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+}
+
+void RenderImGuiDrawData()
+{
+	if (!g_ImGuiInitialized) return;
+
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+}
+

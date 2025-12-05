@@ -7,7 +7,17 @@
 #include "SceneGame.h"
 #include "Defines.h"
 #include "ShaderList.h"
-#include"CsvData.h"
+#include "CsvData.h"
+#include "CameraDebug.h"
+#include "Sound.h"
+
+//ImGuiの必要ファイルをインクルード
+#include "imgui.h"
+#include "imgui_impl_win32.h"
+#include "imgui_impl_dx11.h"
+// 情報を伝えるためのヘッダーファイル
+#include "Transfer.h"
+
 
 #include <fstream>   // ファイル操作用
 #include <sstream>   // 文字列ストリーム用
@@ -86,8 +96,25 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	// シーン
 	g_pScene = new SceneGame();
 
+
+	// csvのデータを取得
 	CsvData& csv = CsvData::get_instance();
 	csv.Init();
+	
+	// カメラのインスタンス取得
+	CAMERA_INS
+	c_pos.m_posY = 10.0f * DEBUG_DISTANCE;
+	c_pos.m_posZ = -10.0f * DEBUG_DISTANCE;
+	// 値を入れるためのインスタンスを取得
+	Transfer& tran = Transfer::GetInstance();
+	tran.Init();
+	tran.camera.eyePos.x = 0.0f;
+	tran.camera.eyePos.y = 10.0f * DEBUG_DISTANCE;
+	tran.camera.eyePos.z = -10.0f * DEBUG_DISTANCE;
+
+	// サウンドマネージャを取得
+	SoundManager& sound = SoundManager::GetInstance();
+	sound.Init();
 
 	return hr;
 }
@@ -100,6 +127,9 @@ void Uninit()
 	UninitInput();
 	Sprite::Uninit();
 	Geometory::Uninit();
+
+	SE_INS;
+	sound.Uninit();
 	UninitDirectX();
 }
 
@@ -113,6 +143,203 @@ void Draw()
 {
 	BeginDrawDirectX();
 
+
+	// ───────────────────────
+	// ImGui 複数ウィンドウ
+	// ───────────────────────
+#ifdef _DEBUG
+	static bool show_main_window	= true;
+	static bool show_player_window	= false;
+	static bool show_camera_window	= false;
+	static bool show_stage_window	= false;
+	static bool show_item_window	= false;
+	static bool show_order_window	= false;
+	static bool show_ui_window		= false;
+
+	CAMERA_INS
+		TRAN_INS
+		SoundManager& sound = SoundManager::GetInstance();
+
+	if (IsKeyPress('U') && IsKeyPress('I') && IsKeyPress('O') && IsKeyPress('P'))
+		show_main_window = true;
+
+	if (show_main_window)
+	{
+		ImGui::Begin("Setting", &show_main_window);
+		// カメラの位置情報の表示と変更に伴った更新
+
+		if (ImGui::Button("Init"))
+			tran.Init();
+
+		ImGui::Checkbox("Player Setting",&show_player_window);
+		ImGui::Checkbox("Camera Setting", &show_camera_window);
+		ImGui::Checkbox("Stage Setting", &show_stage_window);
+		ImGui::Checkbox("Item Setting", &show_item_window);
+		ImGui::Checkbox("Order Setting", &show_order_window);
+		ImGui::Checkbox("UI Setting", &show_ui_window);
+
+		// -----------Sound Debug-----------//
+		if (ImGui::Button("UpMoney"))
+			sound.PlaySE(0);
+		if (ImGui::Button("ride"))
+			sound.PlaySE(1);
+		if (ImGui::Button("show order"))
+			sound.PlaySE(2);
+		if (ImGui::Button("order success"))
+			sound.PlaySE(3);
+		if (ImGui::Button("walk"))
+			sound.PlaySE(4);
+		if (ImGui::Button("drop"))
+			sound.PlaySE(5);
+
+		ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+		ImGui::End();
+	}
+	// -----------プレイヤー-----------
+	if (show_player_window)
+	{
+		ImGui::Begin("Player Setting", &show_player_window);
+		//-----------プレイヤー-----------//
+		// プレイヤーの位置情報
+		float p_pos[2] = { tran.player.pos.x ,tran.player.pos.y };
+
+		ImGui::SliderFloat2("Pos", p_pos, -12.0f, 12.0f);
+
+		tran.player.pos.x = p_pos[0];
+		tran.player.pos.y = p_pos[1];
+
+		// プレイヤーの最大速度
+		float p_speed[2];
+		p_speed[0] = tran.player.maxSpeed.x;
+		p_speed[1] = tran.player.maxSpeed.y;
+		// プレイヤーの加速度
+		float p_velocity = tran.player.velocity;
+		ImGui::SliderFloat("Player Speed Up", &p_velocity, 0.0f, 0.50f);
+		tran.player.velocity = p_velocity;
+
+		// プレイヤーの減速度
+		float p_speedDown = tran.player.speedDown;
+
+		ImGui::SliderFloat("Player Speed Down", &p_speedDown, 0.25f, 1.10);
+
+		tran.player.speedDown = p_speedDown;
+
+		ImGui::SliderFloat2("Player Max Speed", p_speed, 0.0f, 10.0f);
+		tran.player.maxSpeed.x = p_speed[0];
+		tran.player.maxSpeed.y = p_speed[1];
+
+		ImGui::End();
+	}
+
+	// -----------カメラ-----------
+	if (show_camera_window)
+	{
+		ImGui::Begin("Camera Setting",&show_camera_window);
+		ImGui::Text("Camera EyePosition");
+		// カメラの位置情報
+		float camera_pos[3] = { tran.camera.eyePos.x,tran.camera.eyePos.y,tran.camera.eyePos.z };
+
+		ImGui::SliderFloat3("Camera Pos", camera_pos, -1000.0f, 1000.0f);
+
+		if (camera_pos[0] == 0.0f && camera_pos[2] == 0.0f && camera_pos[1] == 0.0f)
+		{
+			camera_pos[0] = 0.01f;
+			camera_pos[1] = 0.01f;
+			camera_pos[2] = 0.01f;
+		}
+		// 注視点
+		tran.camera.eyePos.x = camera_pos[0];
+		tran.camera.eyePos.y = camera_pos[1];
+		tran.camera.eyePos.z = camera_pos[2];
+		float camera_lookPos[3] = {tran.camera.lookPos.x,tran.camera.lookPos.y,tran.camera.lookPos.z};
+		ImGui::SliderFloat3("Camera Look",camera_lookPos,-500.0f,500.0f);
+		tran.camera.lookPos.x = camera_lookPos[0];
+		tran.camera.lookPos.y = camera_lookPos[1];
+		tran.camera.lookPos.z = camera_lookPos[2];
+		ImGui::End();
+	}
+
+	// -----------ステージ-----------
+	if (show_stage_window)
+	{
+		ImGui::Begin("Stage", &show_stage_window);
+		int column = tran.stage.column;
+		int row = tran.stage.row;
+		ImGui::SliderInt("Stage Width", &column, 0, 20);
+		ImGui::SliderInt("Stage Height", &row, 0, 20);
+
+		tran.stage.column = column;
+		tran.stage.row = row;
+
+		ImGui::End();
+	}
+
+	// -----------食材-----------
+	if (show_item_window)
+	{
+		ImGui::Begin("Item", &show_stage_window);
+
+		float downSpeed = tran.item.downSpeed;
+		ImGui::SliderFloat("Item DownSpeed", &downSpeed, 0.0f, 1.0f);
+		tran.item.downSpeed = downSpeed;
+
+		static bool size_lock;
+		ImGui::Checkbox("Item Size Interlocking", &size_lock);
+		if (!size_lock)
+		{
+			float size[3] = { tran.item.size.x,tran.item.size.y,tran.item.size.z };
+			ImGui::SliderFloat3("Item Size", size, 0.0f, 10.0f);
+			tran.item.size.x = size[0];
+			tran.item.size.y = size[1];
+			tran.item.size.z = size[2];
+		}
+		else
+		{
+			float size = tran.item.size.x;
+			ImGui::SliderFloat("Item Size", &size, 0.0f, 10.0f);
+			tran.item.size.x = size;
+			tran.item.size.y = size;
+			tran.item.size.z = size;
+		}
+
+		float repopTime = tran.item.repopTime;
+		ImGui::SliderFloat("Item RepopTime", &repopTime, 0.017f, 5.0f);
+		tran.item.repopTime = repopTime;
+
+		ImGui::End();
+	}
+
+	// -----------オーダー-----------
+	if (show_order_window)
+	{
+		ImGui::Begin("Order", &show_stage_window);
+
+		float size[2] = { tran.order.size.x,tran.order.size.y };
+		ImGui::SliderFloat2("Order size", size, 0.0f, 10.0f);
+		tran.order.size.x = size[0];
+		tran.order.size.y = size[1];
+
+		float TimeLimit = tran.order.TimeLimit;
+		ImGui::SliderFloat("Order TimeLimit", &TimeLimit, 5, 3600);
+		if (ImGui::Button("Apply"));// 多分誰かがタイマーを設定した数値にリセットしてくれるはず
+		tran.order.TimeLimit = TimeLimit;
+		float repopTime = tran.order.repopTime;
+		ImGui::SliderFloat("Order RepopTime",&repopTime,0.017f,20.0f);
+		tran.order.repopTime = repopTime;
+
+		ImGui::End();
+	}
+
+	// -----------UI-----------
+	if (show_ui_window)
+	{
+		ImGui::Begin("UI", &show_stage_window);
+		ImGui::Text("Nothing");
+		ImGui::End();
+	}
+
+
+#endif
 	// 軸線の表示
 #ifdef _DEBUG
 	// グリッド
@@ -180,7 +407,6 @@ void Draw()
 	Geometory::SetView(mat[0]);
 	Geometory::SetProjection(mat[1]);
 #endif
-
 	g_pScene->RootDraw();
 	EndDrawDirectX();
 }

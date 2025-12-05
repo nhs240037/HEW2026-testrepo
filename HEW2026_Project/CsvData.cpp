@@ -76,10 +76,7 @@ void CsvData::Init()
                 break;
             }
         }
-        catch(const std::invalid_argument& e)
-        {
-
-        }
+        catch (const std::invalid_argument& e) {}
         s_count_h++;
     }
     // データ行の処理

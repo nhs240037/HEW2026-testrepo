@@ -147,6 +147,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraDebug.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Field.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
     <ClCompile Include="imgui_impl_dx11.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraDebug.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="Field.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_impl_dx11.h" />

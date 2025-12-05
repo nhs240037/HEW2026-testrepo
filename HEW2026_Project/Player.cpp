@@ -45,8 +45,8 @@ Player::Player()
 	}
 
 	m_pModel = new Model();
-	if (!m_pModel->Load("Assets/Model/Prototype/MD_Player.fbx", 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
-		MessageBox(NULL, "Branch_01", "Error", MB_OK); // エラーメッセージの表示
+	if (!m_pModel->Load("Assets/Model/Player/MD/MD_Player_wheel.fbx", 0.5f, Model::ZFlip)) { // 倍率と反転は省略可
+		MessageBox(NULL, "Player Model Data Not Found", "Error", MB_OK); // エラーメッセージの表示
 	}
 
 	DirectX::XMMATRIX view, proj;
@@ -290,6 +290,10 @@ void Player::Draw()
 		Model::Mesh mesh = *m_pModel->GetMesh(i);
 		// メッシュに割り当てられているマテリアルを取得
 		Model::Material	material = *m_pModel->GetMaterial(mesh.materialID);
+		// マテリアルを編集する場合、SetMaterial関数へ設定する前に変更 
+		material.ambient.x = 0.8f; // xは赤(r)を示す
+		material.ambient.y = 0.8f; // yは緑(g)を示す
+		material.ambient.z = 0.8f; // zは青(b)を示す
 		// シェーダーへマテリアルを設定
 		ShaderList::SetMaterial(material);
 		// モデルの描画

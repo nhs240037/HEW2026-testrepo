@@ -18,6 +18,7 @@ Block::Block()
 	, m_pModel(nullptr)
 	, m_dxpos{}
 	, wvp{}
+	, m_absoluteY(0.0f)
 {
 	m_pos.x = csv.GetBlockState().blo.pos.x;
 	m_pos.y = csv.GetBlockState().height;
@@ -143,6 +144,12 @@ void Block::Update()
 		}
 		else if (m_pos.y <= 0.0f)
 			m_state = BlockState::Block_Idle;
+
+		// 消えるといいな～
+		if (m_absoluteY < csv.GetBlockState().height)
+		{
+			m_state = BlockState::Block_Idle;
+		}
 		break;
 	case Block::Block_Catch:
 	case BlockState::Block_Catched:
@@ -209,6 +216,39 @@ void Block::Draw()
 			Model::Mesh mesh = *m_pModel->GetMesh(i);
 			// メッシュに割り当てられているマテリアルを取得
 			Model::Material	material = *m_pModel->GetMaterial(mesh.materialID);
+			// マテリアルを編集する場合、SetMaterial関数へ設定する前に変更 
+			material.ambient.x = 1.0f; // xは赤(r)を示す
+			material.ambient.y = 1.0f; // yは緑(g)を示す
+			material.ambient.z = 1.0f; // zは青(b)を示す
+			switch (m_bColor)
+			{
+			case Block::Buns_up:
+				break;
+			case Block::Buns_Button:
+				break;
+			case Block::Patty:
+				material.ambient.x = 0.65f; // xは赤(r)を示す
+				material.ambient.y = 0.65f; // yは緑(g)を示す
+				material.ambient.z = 0.65f; // zは青(b)を示す
+				break;
+			case Block::Lettuce:
+				break;
+			case Block::Fried_egg:
+				break;
+			case Block::Bacon:
+				material.ambient.x = 0.8f; // xは赤(r)を示す
+				material.ambient.y = 0.8f; // yは緑(g)を示す
+				material.ambient.z = 0.8f; // zは青(b)を示す
+				break;
+			case Block::Cheese:
+				break;
+			case Block::Tomato:
+				break;
+			case Block::None:
+				break;
+			default:
+				break;
+			}
 			// シェーダーへマテリアルを設定
 			ShaderList::SetMaterial(material);
 			// モデルの描画
@@ -217,31 +257,31 @@ void Block::Draw()
 		//=====================影=============================
 
 		{
-				DirectX::XMMATRIX T_shadow;
-				DirectX::XMMATRIX S_shadow;
+			DirectX::XMMATRIX T_shadow;
+			DirectX::XMMATRIX S_shadow;
 
-				float shadowHeight = 0.05f; // avoid z-fighting
-				T_shadow = DirectX::XMMatrixTranslation(m_pos.x, 0.0f + shadowHeight, m_pos.z);
+			float shadowHeight = 0.05f; // avoid z-fighting
+			T_shadow = DirectX::XMMatrixTranslation(m_pos.x, 0.0f + shadowHeight, m_pos.z);
 
-				float shadowScaleX = csv.GetBlockState().blo.size.x * 1.2f;
-				float shadowScaleZ = csv.GetBlockState().blo.size.y * 1.2f;
+			float shadowScaleX = csv.GetBlockState().blo.size.x * 1.2f;
+			float shadowScaleZ = csv.GetBlockState().blo.size.y * 1.2f;
 
-				S_shadow = DirectX::XMMatrixScaling(shadowScaleX, 0.01f, shadowScaleZ);
+			S_shadow = DirectX::XMMatrixScaling(shadowScaleX, 0.01f, shadowScaleZ);
 
-				DirectX::XMMATRIX shadowMat = S_shadow * T_shadow;
-				shadowMat = DirectX::XMMatrixTranspose(shadowMat);
+			DirectX::XMMATRIX shadowMat = S_shadow * T_shadow;
+			shadowMat = DirectX::XMMatrixTranspose(shadowMat);
 
-				DirectX::XMFLOAT4X4 fShadow;
-				DirectX::XMStoreFloat4x4(&fShadow, shadowMat);
+			DirectX::XMFLOAT4X4 fShadow;
+			DirectX::XMStoreFloat4x4(&fShadow, shadowMat);
 
-				// shadow color
-				Model::Material shadowMaterial = {};
-				shadowMaterial.diffuse = DirectX::XMFLOAT4(0, 0, 0, 0.5f);
+			// shadow color
+			Model::Material shadowMaterial = {};
+			shadowMaterial.diffuse = DirectX::XMFLOAT4(0, 0, 0, 0.5f);
 
-				ShaderList::SetMaterial(shadowMaterial);
-				Geometory::SetWorld(fShadow);
+			ShaderList::SetMaterial(shadowMaterial);
+			Geometory::SetWorld(fShadow);
 
-				Geometory::DrawCylinder();
+			Geometory::DrawCylinder();
 		}
 	}
 }

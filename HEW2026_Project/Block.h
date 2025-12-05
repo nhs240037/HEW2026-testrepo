@@ -85,6 +85,8 @@ private:
 	Model* m_pModel;
 	DirectX::XMMATRIX m_dxpos;
 	DirectX::XMFLOAT4X4 wvp[3];
+	// New!
+	float m_absoluteY; // リスポーン地点からの絶対値座標Y
 public:
 	Block(Block_Color set);
 	Block(Block_Color set, float setX, float setY);

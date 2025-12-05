@@ -29,9 +29,7 @@ public:
 	//===== Setter =====//
 
 	void SetPosition(float X, float Y);
-	void SetPosition(DirectX::XMFLOAT2 pos);
 	void SetSize(float W, float H);
-	void SetSize(DirectX::XMFLOAT2 size);
 	void SetRotation(float X, float Y, float Z);
 	void SetTexture(std::string RelativeTexturePathFromTextureFolder);
 	void SetUVPosition(float X, float Y);
@@ -50,6 +48,8 @@ public:
 
 	//===== Setter as XMFLOATx =====//
 
+	void SetPosition(DirectX::XMFLOAT2 pos);
+	void SetSize(DirectX::XMFLOAT2 size);
 	void GenerateGradient(DirectX::XMFLOAT4 colorFrom, DirectX::XMFLOAT4 colorTo, int degree);
 private:
 	Texture* m_pTexture;

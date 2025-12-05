@@ -90,24 +90,24 @@ void UIObject::Draw()
 	Sprite::SetView(view);
 	Sprite::SetProjection(proj);
 	
-		//--- 中心に合わせる
-		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(1.0f, -1.f, 1.0f);
-		DirectX::XMMATRIX Rx = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(m_fRotation.x));
-		DirectX::XMMATRIX Ry = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(m_fRotation.y));
-		DirectX::XMMATRIX Rz = DirectX::XMMatrixRotationZ(DirectX::XMConvertToRadians(m_fRotation.z));
-		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(m_fPosition.x - m_fSize.x * 0.5f, m_fPosition.y, 0.0f);
-		DirectX::XMMATRIX mWorld = S * Rx * Ry * Rz * T;
-		DirectX::XMStoreFloat4x4(&world, DirectX::XMMatrixTranspose(mWorld));
+	//--- 中心に合わせる
+	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(1.0f, -1.f, 1.0f);
+	DirectX::XMMATRIX Rx = DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(m_fRotation.x));
+	DirectX::XMMATRIX Ry = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(m_fRotation.y));
+	DirectX::XMMATRIX Rz = DirectX::XMMatrixRotationZ(DirectX::XMConvertToRadians(m_fRotation.z));
+	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(m_fPosition.x - m_fSize.x * 0.5f, m_fPosition.y, 0.0f);
+	DirectX::XMMATRIX mWorld = S * Rx * Ry * Rz * T;
+	DirectX::XMStoreFloat4x4(&world, DirectX::XMMatrixTranspose(mWorld));
 
-		Sprite::SetWorld(world);												// スプライトのワールド行列を設定
-		Sprite::SetSize(m_fSize);												// スプライトのサイズを設定
-		Sprite::SetOffset({ m_fSize.x * 0.5f, 0.0f });	// スプライトの原点を変更
-		Sprite::SetTexture(m_pTexture);										// テクスチャを設定
-		Sprite::SetUVPos(m_fUVPositon);
-		Sprite::SetUVScale(m_fUVScale);
-		for (int i = 0; i < 4; ++i)
-			Sprite::SetColor(m_fColor[i], i);
-		Sprite::Draw();
+	Sprite::SetWorld(world);												// スプライトのワールド行列を設定
+	Sprite::SetSize(m_fSize);												// スプライトのサイズを設定
+	Sprite::SetOffset({ m_fSize.x * 0.5f, 0.0f });	// スプライトの原点を変更
+	Sprite::SetTexture(m_pTexture);										// テクスチャを設定
+	Sprite::SetUVPos(m_fUVPositon);
+	Sprite::SetUVScale(m_fUVScale);
+	for (int i = 0; i < 4; ++i)
+		Sprite::SetColor(m_fColor[i], i);
+	Sprite::Draw();
 
 	SetRenderTargets(1, &pRTV, pDSV);
 	SetDepthTest(true);
@@ -120,19 +120,9 @@ void UIObject::SetPosition(float X, float Y)
 	m_fPosition = {X, Y};
 }
 
-void UIObject::SetPosition(DirectX::XMFLOAT2 pos)
-{
-		m_fPosition = pos;
-}
-
 void UIObject::SetSize(float W, float H)
 {
 	m_fSize = {W, H};
-}
-
-void UIObject::SetSize(DirectX::XMFLOAT2 size)
-{
-	m_fSize = size;
 }
 
 void UIObject::SetRotation(float X, float Y, float Z)
@@ -209,6 +199,17 @@ DirectX::XMFLOAT4 UIObject::GetColor(int index)
 }
 
 //=====| Setter as XMFLOATx |=====//
+
+void UIObject::SetPosition(DirectX::XMFLOAT2 pos)
+{
+	m_fPosition = pos;
+}
+
+void UIObject::SetSize(DirectX::XMFLOAT2 size)
+{
+	m_fSize = size;
+}
+
 
 
 /**

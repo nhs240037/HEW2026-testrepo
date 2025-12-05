@@ -109,8 +109,6 @@ void UIObject::SetSize(float W, float H)
 	m_fSize = { W, H };
 }
 
-
-
 void UIObject::SetRotation(float X, float Y, float Z)
 {
 	m_fRotation = { X, Y, Z };
@@ -128,8 +126,10 @@ void UIObject::SetUVScale(float X, float Y)
 
 void UIObject::SetColor(float R, float G, float B, float A)
 {
-	m_fColor = { R,G,B,A };
+	m_fColor = { R, G, B, A };
 }
+
+//=====| Getter |=====//
 
 DirectX::XMFLOAT2 UIObject::GetPosition(void)
 {
@@ -160,6 +160,8 @@ DirectX::XMFLOAT4 UIObject::GetColor(void)
 {
 	return m_fColor;
 }
+
+//=====| Setter as XMFLOATx |=====//
 
 void UIObject::SetPosition(DirectX::XMFLOAT2 pos)
 {

@@ -8,6 +8,17 @@
 //=====| Includes |=====//
 #include "UIObject.h"
 #include "Defines.h"
+#include <cmath>
+#include <algorithm>
+
+namespace std
+{
+template <typename T>
+T clamp(const T& v, const T& lo, const T& hi)
+{
+	return (v < lo) ? lo : (v > hi) ? hi : v;
+}
+}
 
 UIObject::UIObject() : UIObject("Placeholder.png") {};
 UIObject::UIObject(std::string RelativeTexturePathFromTextureFolder) : UIObject(RelativeTexturePathFromTextureFolder, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f) {};
@@ -139,9 +150,9 @@ void UIObject::SetUVScale(float X, float Y)
 
 void UIObject::SetColor(float R, float G, float B, float A)
 {
-	for (auto color : m_fColor)
+	for (int i = 0; i < 4; i++)
 	{
-		color = { R,G,B,A };
+		m_fColor[i] = {R,G,B,A};
 	}
 }
 
@@ -175,7 +186,51 @@ DirectX::XMFLOAT4 UIObject::GetColor(int index)
 		return m_fColor[index];
 }
 
+/**
+* \brief 始点、終点、角度を指定してグラデーションを描画.
+* 
+* \param colorFrom 始点(各値 0.0f ~ 1.0f)
+* \param colorTo 終点(各値 0.0f ~ 1.0f)
+* \param degree 角度(0 ~ 360: 0 = 上から下)
+*/
 void UIObject::GenerateGradient(DirectX::XMFLOAT4 colorFrom, DirectX::XMFLOAT4 colorTo, int degree)
 {
+  float angleRad = DirectX::XMConvertToRadians(degree);
+	
+	DirectX::XMFLOAT2 dir(std::cos(angleRad), std::sin(angleRad));
 
+	DirectX::XMFLOAT2 v[4] = {
+			DirectX::XMFLOAT2(-0.5f,  0.5f), 
+			DirectX::XMFLOAT2(-0.5f, -0.5f), 
+			DirectX::XMFLOAT2(0.5f,  0.5f), 
+			DirectX::XMFLOAT2(0.5f, -0.5f), 
+	};
+
+	//--- 射影値を計算
+	float t[4];
+	float tMin = FLT_MAX;
+	float tMax = -FLT_MAX;
+	for (int i = 0; i < 4; ++i)
+	{
+		t[i] = v[i].x * dir.x + v[i].y * dir.y;
+		tMin = min(tMin, t[i]);
+		tMax = max(tMax, t[i]);
+	}
+
+	float invLen = (tMax != tMin) ? 1.0f / (tMax - tMin) : 0.0f;
+
+	//--- 正規化して色を補間し、頂点カラーに反映
+	for (int i = 0; i < 4; ++i)
+	{
+		float u = (t[i] - tMin) * invLen;
+		u = std::clamp(u, 0.0f, 1.0f);
+
+		DirectX::XMFLOAT4 col;
+		col.x = colorFrom.x + (colorTo.x - colorFrom.x) * u;
+		col.y = colorFrom.y + (colorTo.y - colorFrom.y) * u;
+		col.z = colorFrom.z + (colorTo.z - colorFrom.z) * u;
+		col.w = colorFrom.w + (colorTo.w - colorFrom.w) * u;
+
+		m_fColor[i] = col;
+	}
 }

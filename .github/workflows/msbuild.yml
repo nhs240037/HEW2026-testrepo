@@ -28,11 +28,19 @@ jobs:
   build:
     runs-on: windows-latest
 
+    env:
+      DOTNET_CLI_UI_LANGUAGE: ja-JP
+      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: false
+
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6.0.1
+
+    - name: Set UTF-8 encoding
+      run: |
+        $OutputEncoding = [System.Text.Encoding]::UTF8
 
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v2
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
@@ -42,13 +50,15 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:OutDir="../build/build/Debug" ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:OutDir="../build/build/Debug" /m /p:SourceCharset=UTF-8 /p:CL="/source-charset:.932 /execution-charset:.932" ${{env.SOLUTION_FILE_PATH}}
     
     - name: Build Release
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION_RELEASE}} /p:OutDir="../build/build/Release" ${{env.SOLUTION_FILE_PATH}}
+      run: |
+        chcp 932
+        msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION_RELEASE}} /p:OutDir="../build/build/Release" /m /p:SourceCharset=UTF-8 /p:CL="/source-charset:.932 /execution-charset:.932" ${{env.SOLUTION_FILE_PATH}}
 
     - name: Copy Assets and DLL for Artifact
       working-directory: ${{env.GITHUB_WORKSPACE}}

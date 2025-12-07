@@ -50,16 +50,20 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:OutDir="../build/build/Debug" /m /p:SourceCharset=UTF-8 /p:CL="/source-charset:.932 /execution-charset:.932" ${{env.SOLUTION_FILE_PATH}}
+      run: |
+        chcp 932 >nul
+        msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:OutDir="../build/build/Debug" /m /p:SourceCharset=UTF-8 /p:CL="/source-charset:.932 /execution-charset:.932" ${{env.SOLUTION_FILE_PATH}}
+      shell: cmd
     
     - name: Build Release
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: |
-        chcp 932
+        chcp 932 >nul
         msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION_RELEASE}} /p:OutDir="../build/build/Release" /m /p:SourceCharset=UTF-8 /p:CL="/source-charset:.932 /execution-charset:.932" ${{env.SOLUTION_FILE_PATH}}
-
+      shell: cmd
+      
     - name: Copy Assets and DLL for Artifact
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: xcopy ".\HEW2026_Project\assimp-vc143-mtd.dll" ".\build\build\Debug\" /y; xcopy ".\HEW2026_Project\Assets" ".\build\build\Debug\Assets\" /e /i /y; xcopy ".\HEW2026_Project\assimp-vc143-mt.dll" ".\build\build\Release\" /y; xcopy ".\HEW2026_Project\Assets" ".\build\build\Release\Assets\" /e /i /y
@@ -76,4 +80,3 @@ jobs:
         path: ./build
         retention-days: 3
 
-        

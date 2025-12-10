@@ -3,12 +3,12 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: MSBuild Artifact
+name: MSBuild Check
 
 on:
-  push:
-    branches: [ "main", "Milestone/*" ]
   workflow_dispatch: 
+  pull_request:
+    branches: [ "main", "Milestone/*" ]
 
 env:
   # Path to the solution file relative to the root of the project.
@@ -24,7 +24,7 @@ permissions:
   contents: read
 
 jobs:
-  build-and-upload:
+  build:
     runs-on: windows-latest
 
     env:
@@ -62,20 +62,3 @@ jobs:
         chcp 932 >nul
         msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION_RELEASE}} /p:OutDir="../build/build/Release" /m ${{env.SOLUTION_FILE_PATH}}
       shell: cmd
-
-    - name: Copy Assets and DLL for Artifact
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: xcopy ".\HEW2026_Project\assimp-vc143-mtd.dll" ".\build\build\Debug\" /y; xcopy ".\HEW2026_Project\Assets" ".\build\build\Debug\Assets\" /e /i /y; xcopy ".\HEW2026_Project\assimp-vc143-mt.dll" ".\build\build\Release\" /y; xcopy ".\HEW2026_Project\Assets" ".\build\build\Release\Assets\" /e /i /y
-
-    - name: Calculate Artifact folder name
-      id: vars
-      shell: bash
-      run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v5.0.0
-      with:
-        name: HEW2026-Build.${{ github.run_number }}-${{ steps.vars.outputs.sha_short }}
-        path: ./build
-        retention-days: 3
-

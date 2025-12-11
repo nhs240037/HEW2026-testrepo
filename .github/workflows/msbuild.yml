@@ -47,7 +47,7 @@ jobs:
 
       - name: Set UTF-8 encoding
         run: |
-          $OutputEncoding = [System.Text.Encoding]::UTF8
+          [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2

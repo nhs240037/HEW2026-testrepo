@@ -60,9 +60,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
-      # - name: Restore NuGet packages
-      #   working-directory: ${{env.GITHUB_WORKSPACE}}
-      #   run: msbuild -t:restore
+      - name: Restore NuGet packages
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: msbuild -t:restore
 
       - name: Build ${{ matrix.configuration }}
         working-directory: ${{env.GITHUB_WORKSPACE}}
@@ -72,7 +72,7 @@ jobs:
         # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
         run: |
           chcp 932 >nul
-          msbuild -restore /m ^
+          msbuild -restore /m:24 ^
           /p:Configuration=${{matrix.configuration}} ^
           /p:OutDir="../build/${{matrix.configuration}}/${{matrix.configuration}}" ^
           ${{env.SOLUTION_FILE_PATH}}

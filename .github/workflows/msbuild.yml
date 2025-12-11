@@ -82,7 +82,6 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         shell: cmd
         run: |
-          chcp 932 >nul
           IF /I "${{ matrix.configuration }}"=="Debug" (
           xcopy ".\HEW2026_Project\assimp-vc143-mtd.dll" ".\build\build\Debug\" /y; xcopy ".\HEW2026_Project\Assets" ".\build\build\Debug\Assets\" /e /i /y
           ) ELSE (

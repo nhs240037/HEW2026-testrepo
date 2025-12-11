@@ -40,7 +40,7 @@ jobs:
     env:
       DOTNET_CLI_UI_LANGUAGE: ja-JP
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: false
-      NUGET_PACKAGES: ${{ runner.temp }}/nuget-packages
+      # NUGET_PACKAGES: ${{ runner.temp }}/nuget-packages
 
     steps:
       - uses: actions/checkout@v6.0.1
@@ -53,19 +53,21 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Cache NuGet packages
-        uses: actions/cache@vc143
+        uses: actions/cache@v4
         with:
-          path: ${{ env.NUGET_PACKAGES }}
+          path: ${{ runner.temp }}/nuget-packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/[Pp]ackages*.config', '**/packages.lock.json', '**/*.props', '**/*.targets') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
 
-      - name: Restore NuGet packages
-        working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: msbuild -t:restore
+      # - name: Restore NuGet packages
+      #   working-directory: ${{env.GITHUB_WORKSPACE}}
+      #   run: msbuild -t:restore
 
       - name: Build ${{ matrix.configuration }}
         working-directory: ${{env.GITHUB_WORKSPACE}}
+        env:
+          NUGET_PACKAGES: ${{ runner.temp }}/nuget-packages
         # Add additional options to the MSBuild command line here (like platform or verbosity level).
         # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
         run: |

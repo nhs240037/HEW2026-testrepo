@@ -84,7 +84,7 @@ jobs:
 
       - name: Restore NuGet packages
         working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: msbuild -t:restore
+        run: msbuild /restore
 
       - name: Build ${{ matrix.configuration }}
         working-directory: ${{env.GITHUB_WORKSPACE}}

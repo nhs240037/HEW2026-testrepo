@@ -92,8 +92,10 @@ jobs:
 
       - name: Calculate Artifact folder name
         id: vars
-        shell: bash
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        shell: pwsh
+        run: |
+          $sha_short = git rev-parse --short HEAD
+          "sha_short=$sha_short" >> $env:GITHUB_OUTPUT
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v5.0.0

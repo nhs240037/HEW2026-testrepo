@@ -9,6 +9,11 @@ on:
   push:
     branches: ["main", "Milestone/*"]
   workflow_dispatch:
+    inputs:
+      configuration:
+        description: 'Build configuration (Debug/Release/all)'
+        required: false
+        default: 'Debug'
 
 env:
   # Path to the solution file relative to the root of the project.
@@ -17,7 +22,7 @@ env:
   # Configuration type to build.
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-  BUILD_CONFIGURATION: Debug
+  BUILD_CONFIGURATION_DEBUG: Debug
   BUILD_CONFIGURATION_RELEASE: Release
 
 permissions:
@@ -27,9 +32,15 @@ jobs:
   build-and-upload:
     runs-on: test-self
 
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [Debug, Release]
+
     env:
       DOTNET_CLI_UI_LANGUAGE: ja-JP
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: false
+      NUGET_PACKAGES: ${{ runners.temp }}/nuget-packages
 
     steps:
       - uses: actions/checkout@v6.0.1
@@ -41,31 +52,40 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
 
+      - name: Cache NuGet packages
+        uses: actions/cache@vc143
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/[Pp]ackages*.config', '**/packages.lock.json', '**/*.props', '**/*.targets') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
       - name: Restore NuGet packages
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: msbuild -t:restore
 
-      - name: Build Debug
+      - name: Build ${{ matrix.configuration }}
         working-directory: ${{env.GITHUB_WORKSPACE}}
         # Add additional options to the MSBuild command line here (like platform or verbosity level).
         # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
         run: |
           chcp 932 >nul
-          msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:OutDir="../build/build/Debug" /m ${{env.SOLUTION_FILE_PATH}}
-        shell: cmd
-
-      - name: Build Release
-        working-directory: ${{env.GITHUB_WORKSPACE}}
-        # Add additional options to the MSBuild command line here (like platform or verbosity level).
-        # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-        run: |
-          chcp 932 >nul
-          msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION_RELEASE}} /p:OutDir="../build/build/Release" /m ${{env.SOLUTION_FILE_PATH}}
+          msbuild -restore /m ^
+          /p:Configuration=${{matrix.configuration}} ^
+          /p:OutDir="../build/build/${{matrix.configuration}}" ^
+          ${{env.SOLUTION_FILE_PATH}}
         shell: cmd
 
       - name: Copy Assets and DLL for Artifact
         working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: xcopy ".\HEW2026_Project\assimp-vc143-mtd.dll" ".\build\build\Debug\" /y; xcopy ".\HEW2026_Project\Assets" ".\build\build\Debug\Assets\" /e /i /y; xcopy ".\HEW2026_Project\assimp-vc143-mt.dll" ".\build\build\Release\" /y; xcopy ".\HEW2026_Project\Assets" ".\build\build\Release\Assets\" /e /i /y
+        shell: cmd
+        run: |
+          chcp 932 >nul
+          IF /I "${{ matrix.configuration }}"=="Debug" (
+          xcopy ".\HEW2026_Project\assimp-vc143-mtd.dll" ".\build\build\Debug\" /y; xcopy ".\HEW2026_Project\Assets" ".\build\build\Debug\Assets\" /e /i /y
+          ) ELSE (
+          xcopy ".\HEW2026_Project\assimp-vc143-mt.dll" ".\build\build\Release\" /y; xcopy ".\HEW2026_Project\Assets" ".\build\build\Release\Assets\" /e /i /y
+          )
 
       - name: Calculate Artifact folder name
         id: vars

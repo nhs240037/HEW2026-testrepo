@@ -67,9 +67,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.1
 
-      - name: Set UTF-8 encoding
-        run: |
-          [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+      # - name: Set UTF-8 encoding
+      #   run: |
+      #     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2

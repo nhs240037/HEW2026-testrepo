@@ -29,13 +29,35 @@ permissions:
   contents: read
 
 jobs:
+  prepare-matrix:
+    runs-on: test-self
+    outputs:
+      configurations: ${{ steps.set-matrix.outputs.configurations }}
+    steps:
+      - name: Decide configurations
+        id: set-matrix
+        shell: cmd
+        run: |
+          IF "%GITHUB_EVENT_NAME%"=="push" (
+            REM push のときは Debug だけ
+            echo configurations=["Debug"]>> %GITHUB_OUTPUT%
+          ) ELSE (
+            REM 手動実行時は input に応じて
+            IF /I "${{ inputs.configuration }}"=="all" (
+              echo configurations=["Debug","Release"]>> %GITHUB_OUTPUT%
+            ) ELSE (
+              echo configurations=["${{ inputs.configuration }}"]>> %GITHUB_OUTPUT%
+            )
+          )
+
   build-and-upload:
+    needs: prepare-matrix
     runs-on: test-self
 
     strategy:
       fail-fast: false
       matrix:
-        configuration: [Debug, Release]
+        configuration: ${{fromJson(needs.prepare-matrix.outputs.configurations)}}
 
     env:
       DOTNET_CLI_UI_LANGUAGE: ja-JP

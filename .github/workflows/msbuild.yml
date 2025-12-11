@@ -40,7 +40,7 @@ jobs:
     env:
       DOTNET_CLI_UI_LANGUAGE: ja-JP
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: false
-      NUGET_PACKAGES: ${{ runners.temp }}/nuget-packages
+      NUGET_PACKAGES: ${{ runner.temp }}/nuget-packages
 
     steps:
       - uses: actions/checkout@v6.0.1

@@ -52,7 +52,7 @@ jobs:
 
   build-and-upload:
     needs: prepare-matrix
-    runs-on: test-self
+    runs-on: windows-latest
 
     strategy:
       fail-fast: false

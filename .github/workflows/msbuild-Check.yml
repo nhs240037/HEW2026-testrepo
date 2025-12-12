@@ -56,7 +56,6 @@ jobs:
       fail-fast: false
       matrix:
         configuration: ${{fromJson(needs.prepare-matrix.outputs.configurations)}}
-        core: ["2","4","8"]
 
     env:
       DOTNET_CLI_UI_LANGUAGE: ja-JP
@@ -91,7 +90,7 @@ jobs:
         # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
         run: |
           chcp 932 >nul
-          msbuild /m:${{matrix.core}} ^
+          msbuild /m:2 ^
           /p:Configuration=${{matrix.configuration}} ^
           /p:OutDir="../build/${{matrix.configuration}}/${{matrix.configuration}}" ^
           ${{env.SOLUTION_FILE_PATH}}

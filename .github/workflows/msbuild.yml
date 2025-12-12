@@ -86,13 +86,11 @@ jobs:
 
       - name: Build ${{ matrix.configuration }}
         working-directory: ${{env.GITHUB_WORKSPACE}}
-        env:
-          NUGET_PACKAGES: ${{ runner.temp }}/nuget-packages
         # Add additional options to the MSBuild command line here (like platform or verbosity level).
         # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
         run: |
           chcp 932 >nul
-          msbuild /m:8 ^
+          msbuild /m:2 ^
           /p:Configuration=${{matrix.configuration}} ^
           /p:OutDir="../build/${{matrix.configuration}}/${{matrix.configuration}}" ^
           ${{env.SOLUTION_FILE_PATH}}

@@ -39,11 +39,9 @@ jobs:
         shell: cmd
         run: |
           IF "%GITHUB_EVENT_NAME%"=="push" (
-            REM push のときは Debug だけ
             echo configurations=["Debug"]>> %GITHUB_OUTPUT%
           ) ELSE (
-            REM 手動実行時は input に応じて
-            IF /I "${{ inputs.configuration }}"=="all" (
+w            IF /I "${{ inputs.configuration }}"=="all" (
               echo configurations=["Debug","Release"]>> %GITHUB_OUTPUT%
             ) ELSE (
               echo configurations=["${{ inputs.configuration }}"]>> %GITHUB_OUTPUT%
@@ -114,10 +112,9 @@ jobs:
 
       - name: Calculate Artifact folder name
         id: vars
-        shell: pwsh
+        shell: cmd
         run: |
-          $sha_short = git rev-parse --short HEAD
-          "sha_short=$sha_short" >> $env:GITHUB_OUTPUT
+          for /f "tokens=*" %%i in ('git rev-parse --short HEAD') do @echo sha_short=%%i>> %GITHUB_OUTPUT%
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v5.0.0

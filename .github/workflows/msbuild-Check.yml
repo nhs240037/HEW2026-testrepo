@@ -3,12 +3,17 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: MSBuild Check
+name: MSBuild Artifact
 
 on:
-  workflow_dispatch: 
-  pull_request:
-    branches: [ "main", "Milestone/*" ]
+  push:
+    branches: ["main", "Milestone/*"]
+  workflow_dispatch:
+    inputs:
+      configuration:
+        description: 'Build configuration (Debug/Release/all)'
+        required: false
+        default: 'Debug'
 
 env:
   # Path to the solution file relative to the root of the project.
@@ -17,48 +22,78 @@ env:
   # Configuration type to build.
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-  BUILD_CONFIGURATION: Debug
+  BUILD_CONFIGURATION_DEBUG: Debug
   BUILD_CONFIGURATION_RELEASE: Release
 
 permissions:
   contents: read
 
 jobs:
-  build:
-    runs-on: windows-latest
+  prepare-matrix:
+    runs-on: test-self
+    outputs:
+      configurations: ${{ steps.set-matrix.outputs.configurations }}
+    steps:
+      - name: Decide configurations
+        id: set-matrix
+        shell: cmd
+        run: |
+          IF "%GITHUB_EVENT_NAME%"=="push" (
+            echo configurations=["Debug"]>> %GITHUB_OUTPUT%
+          ) ELSE (
+            IF /I "${{ inputs.configuration }}"=="all" (
+              echo configurations=["Debug","Release"]>> %GITHUB_OUTPUT%
+            ) ELSE (
+              echo configurations=["${{ inputs.configuration }}"]>> %GITHUB_OUTPUT%
+            )
+          )
+
+  build-and-upload:
+    needs: prepare-matrix
+    runs-on: test-self
+
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: ${{fromJson(needs.prepare-matrix.outputs.configurations)}}
 
     env:
       DOTNET_CLI_UI_LANGUAGE: ja-JP
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: false
+      # NUGET_PACKAGES: ${{ runner.temp }}/nuget-packages
 
     steps:
-    - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.1
 
-    - name: Set UTF-8 encoding
-      run: |
-        $OutputEncoding = [System.Text.Encoding]::UTF8
+      # - name: Set UTF-8 encoding
+      #   run: |
+      #     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
 
-    - name: Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+      # - name: Cache NuGet packages
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ${{ runner.temp }}/nuget-packages
+      #     key: ${{ runner.os }}-nuget-${{ hashFiles('**/[Pp]ackages*.config', '**/packages.lock.json', '**/*.props', '**/*.targets') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-nuget-
 
-    - name: Build Debug
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: |
-        chcp 932 >nul
-        msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:OutDir="../build/build/Debug" /m ${{env.SOLUTION_FILE_PATH}}
-      shell: cmd
-    
-    - name: Build Release
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: |
-        chcp 932 >nul
-        msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION_RELEASE}} /p:OutDir="../build/build/Release" /m ${{env.SOLUTION_FILE_PATH}}
-      shell: cmd
+      # - name: Restore NuGet packages
+      #   working-directory: ${{env.GITHUB_WORKSPACE}}
+      #   run: msbuild /restore
+
+      - name: Build ${{ matrix.configuration }}
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        env:
+          NUGET_PACKAGES: ${{ runner.temp }}/nuget-packages
+        # Add additional options to the MSBuild command line here (like platform or verbosity level).
+        # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+        run: |
+          chcp 932 >nul
+          msbuild /m:8 ^
+          /p:Configuration=${{matrix.configuration}} ^
+          /p:OutDir="../build/${{matrix.configuration}}/${{matrix.configuration}}" ^
+          ${{env.SOLUTION_FILE_PATH}}
+        shell: cmd

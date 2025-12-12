@@ -41,7 +41,7 @@ jobs:
           IF "%GITHUB_EVENT_NAME%"=="push" (
             echo configurations=["Debug"]>> %GITHUB_OUTPUT%
           ) ELSE (
-w            IF /I "${{ inputs.configuration }}"=="all" (
+            IF /I "${{ inputs.configuration }}"=="all" (
               echo configurations=["Debug","Release"]>> %GITHUB_OUTPUT%
             ) ELSE (
               echo configurations=["${{ inputs.configuration }}"]>> %GITHUB_OUTPUT%

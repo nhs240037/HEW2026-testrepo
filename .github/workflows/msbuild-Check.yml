@@ -3,10 +3,10 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: MSBuild Artifact
+name: MSBuild Check0
 
 on:
-  push:
+  pull_request:
     branches: ["main", "Milestone/*"]
   workflow_dispatch:
     inputs:

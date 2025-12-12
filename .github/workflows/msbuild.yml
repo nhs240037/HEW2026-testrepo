@@ -52,7 +52,7 @@ jobs:
 
   build-and-upload:
     needs: prepare-matrix
-    runs-on: windows-latest
+    runs-on: test-self
 
     strategy:
       fail-fast: false
@@ -74,17 +74,17 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
 
-      - name: Cache NuGet packages
-        uses: actions/cache@v4
-        with:
-          path: ${{ runner.temp }}/nuget-packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/[Pp]ackages*.config', '**/packages.lock.json', '**/*.props', '**/*.targets') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
+      # - name: Cache NuGet packages
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ${{ runner.temp }}/nuget-packages
+      #     key: ${{ runner.os }}-nuget-${{ hashFiles('**/[Pp]ackages*.config', '**/packages.lock.json', '**/*.props', '**/*.targets') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-nuget-
 
-      - name: Restore NuGet packages
-        working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: msbuild /restore
+      # - name: Restore NuGet packages
+      #   working-directory: ${{env.GITHUB_WORKSPACE}}
+      #   run: msbuild /restore
 
       - name: Build ${{ matrix.configuration }}
         working-directory: ${{env.GITHUB_WORKSPACE}}
@@ -94,7 +94,7 @@ jobs:
         # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
         run: |
           chcp 932 >nul
-          msbuild -restore /m:24 ^
+          msbuild /m:8 ^
           /p:Configuration=${{matrix.configuration}} ^
           /p:OutDir="../build/${{matrix.configuration}}/${{matrix.configuration}}" ^
           ${{env.SOLUTION_FILE_PATH}}
